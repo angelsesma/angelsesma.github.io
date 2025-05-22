@@ -34,11 +34,19 @@ body {
   padding-right: 1cm;
 }
 
+.profile img{
+ -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+    filter: grayscale(100%);
+  -webkit-filter: blur(2px); /* Safari 6.0 - 9.0 */
+  filter: blur(2px);
+}
+
 .profile_name {
   float: left;
   padding-left: 2cm;
   color: white;
 }
+
 
 .profile_name .contact_info {
   font-size: 15px;
