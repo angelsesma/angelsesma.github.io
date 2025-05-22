@@ -34,12 +34,6 @@ body {
   padding-right: 1cm;
 }
 
-.profile img{
- -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
-    filter: grayscale(100%);
-  -webkit-filter: blur(2px); /* Safari 6.0 - 9.0 */
-  filter: blur(2px);
-}
 
 .profile_name {
   float: left;
@@ -113,9 +107,13 @@ h2 {
 }
 
 .profile_image {
-  width: 550px;
+  width: 185px;
   height: fit-content;
   vertical-align: middle;
+   -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+    filter: grayscale(100%);
+  -webkit-filter: blur(2px); /* Safari 6.0 - 9.0 */
+  filter: blur(2px);
   margin: 5px;
 }
 
