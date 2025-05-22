@@ -1,332 +1,193 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Travel-Boom - Explore the World</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-
-        .navbar {
-        background: rgba(255, 140, 0, 0.9); /* Soft orange with transparency */
-        padding: 15px 20px;
-        }
-
-        .nav-links {
-        background-color: rgba(255, 140, 0, 0.8); /* Semi-transparent bright orange */
-        border-radius: 10px;
-        display: inline-block;
-        backdrop-filter: blur(5px); /* optional, fancy blur behind text */
-        text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7); /* shadow for extra contrast */
-        color: white;
-        text-transform: uppercase;
-        padding: 10px 15px;
-        transition: background 0.3s ease-in-out;
-        
-        }   
-
-        .nav-links:hover {
-        background: white;
-        color: orange;
-        }
-
-        
-        /* Page Sections */
-        .page-section {
-            display: none;
-            padding: 100px 5% 50px;
-            min-height: 100vh;
-        }
-        
-        .page-section.active {
-            display: block;
-        }
-
-        /* About Us Section */
-        .team-members {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .team-card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-
-        .team-card img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 1rem;
-        }
-
-        /* Contact Form */
-        .contact-form {
-            max-width: 600px;
-            margin: 2rem auto;
-            background: white;
-            padding: 2rem;
-            border-radius: 10px;
-        }
-
-        .form-group {
-            margin-bottom: 1rem;
-        }
-
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 0.8rem;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-
-        .hero {
-        background: url('your-image.jpg') no-repeat center center/cover;
-        height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        color: white;
-        position: relative;
-        }
-
-        .hero-content {
-        background-color: rgba(255, 140, 0, 0.8); /* Semi-transparent bright orange */
-        padding: 2rem;
-        border-radius: 10px;
-        display: inline-block;
-        backdrop-filter: blur(5px); /* optional, fancy blur behind text */
-        color: white; /* text stays bright */
-        text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7); /* shadow for extra contrast */
-        }
-
-        .hero h1 {
-        font-size: 3rem;
-        z-index: 1;
-        }
-
-        .hero .cta-button {
-        background: orange;
-        padding: 15px 30px;
-        border-radius: 10px;
-        font-size: 1.2rem;
-        transition: transform 0.2s ease-in-out;
-        }
-
-        .hero .cta-button:hover {
-        transform: scale(1.1);
-        background: darkorange;
-        }
-
-        .recommendation-category {
-            margin: 3rem 0;
-        }
-
-        .recommendation-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 2rem;
-            margin-top: 1.5rem;
-        }
-
-        .recommendation-card {
-            position: relative;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        .recommendation-card img {
-            width: 100%;
-            height: 300px;
-            object-fit: cover;
-        }
-
-        .card-content {
-            position: absolute;
-            bottom: 0;
-            background: rgba(0,0,0,0.6);
-            color: white;
-            width: 100%;
-            padding: 1rem;
-        }
-    </style>
-</head>
-<body>
+<html>
+  <head>
+    <title>SESMA, Ángel - Portfolio</title>
+    <link rel="stylesheet" href="./style.css"/>
+    <script src="./script.js"></script>
+  </head>
+  <body>
     <!-- Navigation Bar -->
-    <nav class="navbar">
-        <div class="logo">TravelBoom</div>
-        <div class="nav-links">
-            <a href="#home" class="active">Home</a>
-            <a href="#about">About Us</a>
-            <a href="#contact">Contact Us</a>
+    <nav>
+      <div id="home">
+        <div class="profile_name">
+          Ángel Alberto Sesma González
+          <div class="contact_info">
+          <img src="html_finalprojimages/envelope.png" alt="https://icons8.com/icon/124377/circled-envelope"/>
+          angelsesma[at]gmail[dot]com
+   
+        <!--/div>
+        <div style="clear:both;"></div>
+        <div class="contact_info">
+          <img src="html_finalprojimages/phone.png" alt="https://icons8.com/icon/124377/circled-envelope"/>
+          +13456764598
+
         </div>
+        </div-->
+        <div class="topdiv">
+          <a class="topmenu" href="#about-me">About Me</a>
+          <a class="topmenu" href="#skills">Skills</a>
+          <a class="topmenu" href="#projects">Projects</a>
+          <a class="topmenu" href="#recommendations">Recommendations</a>
+          <!-- Add the links for Skills, Projects and Recommendation here -->
+
+        </div>
+      </div>    
     </nav>
 
-    <!-- Home Section -->
-    <section id="home" class="page-section active">
-        <div class="hero">
-            <img src="maldives.jpg" alt="Maldives Beach" width="800px" height="200px">
-            <div class="hero-content">
-                <h1>Discover Your Next Adventure</h1>
-                <p>Explore hidden gems and immerse yourself in diverse cultures around the world.</p>
-                
-                <div class="search-container">
-                    <input type="text" class="search-bar" placeholder="Search destinations..." id="searchInput">
-                    <button class="search-button">Search</button>
-                    <div class="recommendations" id="recommendations"></div>
-                </div>
+    <!-- About Me -->
+    <section id="about-me" class="container">
+      <div>
+        <img src="html_finalprojimages/yo.png" class="profile_image" width="189px" height="190px"/>
+      </div>
 
-                <button class="cta-button">Book Now</button>
-            </div>
+      <div>
+          <h1>
+            Hi, I'm Ángel! <img src="html_finalprojimages/waving-hand.png" width="60px"/>
+          </h1>
+          <p>
+            I am a web developer with +12 years of experience in both application and presentation layers.
+            I have worked on applications and microservices deployed on CISCO, Huggingface, Google Cloud, Github, IBM Cloud. 
+            I am an avid user of Python & Pytorch and have worked on Automation, Glitch, Neural Networks, Hydra to name a few.
+          </p>
+      </div>
+    </section>
+              
+    <!-- Skills -->
+    <section id="skills">
+      <h2>Skills</h2>
+      <div style="clear:both;"></div>
 
-            <div class="social-media">
-                <a href="#"><i class="fab fa-facebook"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-            </div>
+      <div class="all_skills">
+        <div class="skill">
+          <img src="html_finalprojimages/html5.png"/>
+          <h6>HTML</h6>
+          <p>+10 years experience</p>
+        </div>  
+
+        <div class="skill">
+          <img src="html_finalprojimages/js.jpeg"/>
+          <h6>JavaScript</h6>
+          <p>+10 years experience</p>
+        </div> 
+
+          <div class="skill">
+            <img src="html_finalprojimages/flash.png"/>
+            <h6>Flash</h6>
+            <p>+3 years experience</p>
+          </div> 
+
+          <div class="skill">
+            <img src="html_finalprojimages/java.png"/>
+            <h6>Java</h6>
+            <p>+3 years experience</p>
+          </div> 
+
+          <div class="skill">
+            <img src="html_finalprojimages/react.png"/>
+            <h6>React</h6>
+            <p>+2 years experience</p>
+          </div>
+        <!-- Add more skills here -->
+
+
+      </div>
+    </section>
+          
+    <!-- Projects -->
+    <section class="projects" id="projects">
+      <h2>
+        Projects
+      </h2>
+      <div style="clear:both;"></div>
+
+        <div id="projects-container" class="projects-container">
+          <div class="project-card">
+            <h3>Candela</h3>
+            <ul>
+              <li>Developed a Python program that counts patterns present in professional Wei-Qi game records, available on: Github.com</li>
+            </ul>
+          </div>
+          <hr>
+          <div class="project-card">
+            <h3>Same-tide-droplet</h3>
+            <ul>
+              <li>Working on a Transmedia Art portfolio that emulates a Command-line interface hosted on: Glitch.com</li>
+            </ul>
+          </div>
+          <hr>
+          <div class="project-card">
+            <h3>Travel Boom</h3>
+            <ul>
+              <li>Prototyping a Search engine for Travel Agencies</li>
+            </ul>
+          </div>
+    </div>
+    </section>
+    <div style="clear:both;"></div>
+
+    <!-- Recommendations -->
+    <section id="recommendations">
+      <h2>Recommendations</h2>
+      <div style="clear:both;"></div>
+      <div class="all_recommendations" id="all_recommendations">
+        <div class="recommendation">
+          <span>&#8220;</span>
+          Ángel is a very quick learner and quickly grasps key concepts of Web development. 
+          He got a great attitude & is an excellent team player. 
+          He has a curious mind and asks the right question. 
+          He takes initiative within a team and has potentials to lead the team.
+          <span>&#8221;</span>
         </div>
-
-        <!-- Recommendations -->
-        <div class="recommendation-category">
-            <h2>Top Beach Destinations</h2>
-            <div class="recommendation-grid">
-                <div class="recommendation-card">
-                    <img src="bali.jpg" alt="Bali Beach">
-                    <div class="card-content">
-                        <h3>Bali, Indonesia</h3>
-                        <p>White sandy beaches and crystal clear waters</p>
-                    </div>
-                </div>
-                <div class="recommendation-card">
-                    <img src="maldives.jpg" alt="Maldives Beach">
-                    <div class="card-content">
-                        <h3>Maldives</h3>
-                        <p>Luxury overwater bungalows and marine life</p>
-                    </div>
-                </div>
-            </div>
+        <div class="recommendation">
+          <span>&#8220;</span>
+          Working with Ángel has been an awesome experience. 
+          He is highly knowledgable and always goes the extra step to make sure everything is right. 
+          For any future projects that need his expertise I would definitely want to work with him again.
+          <span>&#8221;</span>
         </div>
-
-        <div class="recommendation-category">
-            <h2>Cultural Temples</h2>
-            <div class="recommendation-grid">
-                <div class="recommendation-card">
-                    <img src="angkor.jpg" alt="Angkor Wat">
-                    <div class="card-content">
-                        <h3>Angkor Wat, Cambodia</h3>
-                        <p>Largest religious monument in the world</p>
-                    </div>
-                </div>
-                <div class="recommendation-card">
-                    <img src="kioto.jpg" alt="Kyoto Temple">
-                    <div class="card-content">
-                        <h3>Kyoto, Japan</h3>
-                        <p>Historic temples and traditional gardens</p>
-                    </div>
-                </div>
-            </div>
+        <div class="recommendation">
+          <span>&#8220;</span>
+          I had worked along with Ángel during the initial phase of our venture which needed Web development. 
+          He is a committed resource who has in depth knowledge about the domain. 
+          He will be an asset for any organisation! 
+          <span>&#8221;</span>
         </div>
+        <div class="recommendation">
+            <span>&#8220;</span>
+            I have worked along with Ángel for years in many projects. 
+            He has a curious mind and has in depth knowledge about the domain. 
+            10/10
+            <span>&#8221;</span>
+          </div>
+      </div>
     </section>
 
-    <!-- About Us Section -->
-    <section id="about" class="page-section">
-        <h2>About TravelBoom</h2>
-        <p>We are passionate about connecting travelers with authentic cultural experiences worldwide.</p>
-        
-        <div class="team-members">
-            <div class="team-card">
-                <img src="Sarah.jpg" alt="Team Member">
-                <h3>Sarah Johnson</h3>
-                <p>CEO & Founder</p>
-                <p>Travel enthusiast with 15 years experience</p>
-            </div>
-            <div class="team-card">
-                <img src="Chen.jpg" alt="Team Member">
-                <h3>Michael Chen</h3>
-                <p>Head of Operations</p>
-                <p>Expert in Asian destinations</p>
-            </div>
-            <div class="team-card">
-                <img src="Maria.jpg" alt="Team Member">
-                <h3>Maria Gomez</h3>
-                <p>Customer Experience</p>
-                <p>Bilingual travel specialist</p>
-            </div>
-        </div>
+    <!-- Recommendation Form -->
+    <section id="contact">
+      <div class="flex_center">
+        <fieldset>
+          <legend class="introduction">Leave a Recommendation</legend>          
+          <input type="text" placeholder="Name (Optional)"> <br/>
+          <textarea id="new_recommendation" cols="500" rows="10" placeholder="Message"></textarea>
+          <div class="flex_center">
+            <button id="recommend_btn" onclick="addRecommendation()">Submit</button>
+          </div>
+        </fieldset>
+      </div>
     </section>
 
-    <!-- Contact Us Section -->
-    <section id="contact" class="page-section">
-        <div class="contact-form">
-            <h2>Contact Us</h2>
-            <form>
-                <div class="form-group">
-                    <input type="text" placeholder="Your Name" required>
-                </div>
-                <div class="form-group">
-                    <input type="email" placeholder="Your Email" required>
-                </div>
-                <div class="form-group">
-                    <input type="text" placeholder="Subject" required>
-                </div>
-                <div class="form-group">
-                    <textarea rows="5" placeholder="Your Message" required></textarea>
-                </div>
-                <button class="cta-button">Send Message</button>
-            </form>
-        </div>
-    </section>
+    <div class="iconbutton">
+      <a href="#home">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="white" width="63px">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 11.25l-3-3m0 0l-3 3m3-3v7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+      </a>
+    </div>
 
-    <script>
-        // Navigation between pages
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                
-                // Hide all sections
-                document.querySelectorAll('.page-section').forEach(section => {
-                    section.classList.remove('active');
-                });
-                
-                // Show target section
-                document.querySelector(targetId).classList.add('active');
-                
-                // Update active class in navigation
-                document.querySelectorAll('.nav-links a').forEach(a => {
-                    a.classList.remove('active');
-                });
-                this.classList.add('active');
-            });
-        });
-
-        // Country Recommendations (Add to existing script)
-        const countryRecommendations = {
-            'Japan': ['Tokyo Tower', 'Mount Fuji'],
-            'Italy': ['Colosseum', 'Venice Canals']
-        };
-
-        // Update search functionality to include countries
-        const destinations = [
-            ...Object.keys(countryRecommendations),
-            "Paris, France",
-            "Tokyo, Japan",
-            "New York, USA",
-            "Bali, Indonesia",
-            "Rome, Italy",
-            "Sydney, Australia"
-        ];
-
-        // Rest of previous script remains
-    </script>
-</body>
+    <div class="popup" id="popup" class="flex_center">
+      <img src="html_finalprojimages/checkmark--outline.svg"/>
+      <h3>Thank you for recommending me!</h3>
+      <button onclick="showPopup(false)">Ok</button>
+    </div>
+  </body>
 </html>
