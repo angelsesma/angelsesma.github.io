@@ -1,0 +1,175 @@
+html {
+}
+
+body {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+#myCanvas {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  overflow-y: hidden;
+  position: fixed;
+  background-size: cover;
+}
+
+div.jsterm a {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #ffffff;
+  font-weight: 300;
+  text-decoration: none;
+  vertical-align: baseline;
+  font-size: 16px;
+  font-family: monospace;
+  font-style: normal;
+}
+
+div.jsterm a:hover {
+  text-decoration: underline;
+}
+
+div.jsterm {
+  background: rgba(0, 0, 0, 0.7);
+  font-family: monospace;
+  font-size: 16px;
+  color: #00ccff;
+  width: 900px;
+  margin-bottom: 20px;
+  white-space: pre-wrap;
+}
+
+div.jsterm .host,
+div.jsterm .host a {
+  color: #00fffa;
+  font-weight: bold;
+}
+
+div.jsterm .user,
+div.jsterm .user a {
+  color: #44fbaa;
+  font-weight: bold;
+}
+
+div.jsterm .cwd,
+div.jsterm .cwd a {
+  color: #ff00ff;
+  font-weight: bold;
+}
+
+div.jsterm .dir,
+div.jsterm .dir a {
+  color: yellow;
+  font-weight: bold;
+}
+div.jsterm .link,
+div.jsterm .link a,
+div.jstern .link a:visited {
+  color: #0f0fff;
+  font-weight: bold;
+}
+
+div.jsterm .exec,
+div.jsterm .exec a,
+div.jstern .exec a:visited {
+  color: #cc00ff;
+  font-weight: bold;
+}
+
+div.jsterm .img,
+div.jsterm .img a {
+  color: #42d124;
+  font-weight: bold;
+}
+
+div.jsterm .iframe,
+div.jsterm .iframe a {
+  color: orange;
+  font-weight: bold;
+}
+
+div.jsterm .text,
+div.jsterm .text a {
+  color: white;
+}
+
+div.jsterm .eidogo,
+div.jsterm .eidogo a {
+  color: gold;
+  font-weight: bold;
+}
+div.jsterm .text:hover,
+div.jsterm .text a:hover {
+  font-weight: bold;
+}
+
+#blinker {
+  line-height: 0.9em;
+}
+
+.blink {
+  animation: blink 1s steps(1, end) infinite;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes rainbow {
+  0% {
+    color: DeepPink;
+  }
+  10% {
+    color: purple;
+  }
+  20% {
+    color: coral;
+  }
+  30% {
+    color: red;
+  }
+  40% {
+    color: orange;
+  }
+  50% {
+    color: yellow;
+  }
+  60% {
+    color: green;
+  }
+  70% {
+    color: cyan;
+  }
+  100% {
+    color: DodgerBlue;
+  }
+}
+
+@-webkit-keyframes agua {
+  0% {
+    color: white;
+  }
+  50% {
+    color: cyan;
+  }
+  70% {
+    color: teal;
+  }
+  90% {
+    color: cyan;
+  }
+  100% {
+    color: white;
+  }
+}
