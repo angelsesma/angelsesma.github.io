@@ -126,35 +126,6 @@ div.jsterm .text a:hover {
   }
 }
 
-@-webkit-keyframes rainbow {
-  0% {
-    color: DeepPink;
-  }
-  10% {
-    color: purple;
-  }
-  20% {
-    color: coral;
-  }
-  30% {
-    color: red;
-  }
-  40% {
-    color: orange;
-  }
-  50% {
-    color: yellow;
-  }
-  60% {
-    color: green;
-  }
-  70% {
-    color: cyan;
-  }
-  100% {
-    color: DodgerBlue;
-  }
-}
 
 @-webkit-keyframes agua {
   0% {
