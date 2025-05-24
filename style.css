@@ -106,7 +106,8 @@ h2 {
 
 #about-me h1 {
   font-size: 65px;
-  margin: 90px;
+  margin-top: 60px;
+  margin-left: 90px;
   color: #2169b8;
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
 }
@@ -114,7 +115,7 @@ h2 {
 #about-me p {
   font-size: 25px;
   color: #555;
-  margin: 90px;
+  margin-left: 90px;
   line-height: 1.4;
 }
 
@@ -125,7 +126,8 @@ h2 {
   filter: none;
   border-radius: 10px;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-  margin: 60px;
+  margin-top: 60px;
+  margin-left: 90px;
   border: 1px solid rgba(255, 255, 255, 0.7);
 }
 
