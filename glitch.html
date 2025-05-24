@@ -21,7 +21,7 @@
 
       rn = () => Math.random();
       noise()
-        .color(() => a.fft[2] * 1.111, 1.717, 2.6)
+        .color(() => a.fft[2] * 0.811, 0.717, 2.6)
         .modulate(noise(() => a.fft[1] * 1.245))
         .scale(() => a.fft[2] * 2.565)
         .layer(
@@ -34,7 +34,7 @@
         .out(o0);
       osc()
         .modulate(noise(() => a.fft[1] * 2.484))
-        .color(0.846, 0.278, 1.118)
+        .color(0.546, 0.278, 1.118)
         .out(o1);
       src(o0)
         .modulate(o1)
