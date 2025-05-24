@@ -99,6 +99,7 @@ h2 {
 
 /* About Me */
 .about-me {
+   padding: 20px;
   display: flex;
   align-items: center;
 }
@@ -124,9 +125,7 @@ h2 {
   filter: none;
   border-radius: 10px;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-  padding: 20px;
   margin: 5px;
-  margin: 80px;
   border: 1px solid rgba(255, 255, 255, 0.7);
 }
 
