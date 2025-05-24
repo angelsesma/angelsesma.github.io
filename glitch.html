@@ -34,8 +34,8 @@
         .blend(o0)
         .out(o0);
       osc()
-        .modulate(noise(() => a.fft[1] + 0.484))
-        .color(0.146, 0.278, 0.818)
+        .modulate(noise(() => a.fft[1] * 2.484))
+        .color(0.846, 0.178, 0.118)
         .out(o1);
       src(o0)
         .modulate(o1)
