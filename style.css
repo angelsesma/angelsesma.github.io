@@ -1,0 +1,394 @@
+body {
+  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  background: linear-gradient(to bottom, #e8f4ff, #ffffff);
+  background-attachment: fixed;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+/* Navigation Bar */
+#home {
+  background: linear-gradient(to bottom, #4a8fd2, #2169b8);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+  padding-bottom: 1cm;
+  margin-left: -1cm;
+  margin-right: -1cm;
+  margin-top: -1cm;
+  padding-top: 2cm;
+  padding-bottom: 2cm;
+  height: 5mm;
+}
+
+.topmenu {
+  color: rgba(255, 255, 255, 0.9);
+  margin: 10px;
+  padding: 20px;
+  font-size: 20px;
+  text-decoration: none;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.topmenu:hover {
+  color: white;
+  font-weight: bolder;
+  text-decoration: none;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+}
+
+.topdiv {
+  float: right;
+  padding-right: 1cm;
+}
+
+.profile_name {
+  float: left;
+  padding-left: 2cm;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.profile_name .contact_info {
+  font-size: 15px;
+  font-style: italic;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+
+.contact_info img {
+  width: 25px;
+  margin-right: 10px;
+  float: left;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+}
+
+/* Titles */
+h2 {
+  text-align: justify;
+  font-size: 50px;
+  text-align: center;
+  float: left;
+  color: #2169b8;
+  margin: 30px;
+  margin-left: 60px;
+  margin-top: 40px;
+  margin-bottom: 0px;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.introduction {
+  text-align: justify;
+  font-size: 30px;
+  text-align: center;
+  float: left;
+  margin-top: 30px;
+  margin-bottom: 20px;
+  animation-duration: 5s;
+  position: relative;
+  color: #333;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.9);
+}
+
+/* Used in the About Me sections */
+.container {
+  display: flex;
+}
+
+/* About Me */
+.about-me {
+  display: flex;
+  align-items: center;
+}
+
+#about-me h1 {
+  font-size: 65px;
+  margin-top: 90px;
+  color: #2169b8;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+#about-me p {
+  font-size: 25px;
+  color: #555;
+  margin-top: -1cm;
+  line-height: 1.4;
+}
+
+.profile_image {
+  width: 185px;
+  height: fit-content;
+  vertical-align: middle;
+  filter: none;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  margin: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+}
+
+/* Skills */
+.all_skills {
+  display: flex;
+  flex-direction: row;
+  flex-flow: wrap;
+}
+
+.skill {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  display: block;
+  border-radius: 12px;
+  text-align: center;
+  margin: 50px;
+  padding: 20px;
+  width: 2in;
+  font-size: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.skill:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+}
+
+.skill img {
+  height: 35px;
+  align-items: center;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+}
+
+.skills h6 {
+  align-items: center;
+  font-size: 20px;
+  margin-block-start: 8px;
+  margin-block-end: 5px;
+  font-weight: bold;
+  color: #2169b8;
+} 
+
+.skills p {
+  align-items: center;
+  font-size: 15px;
+  color: #555;
+  margin-block-start: 5px;
+  margin-block-end: 5px;
+} 
+
+.flex_center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Projects */
+.projects-container {
+  margin-top: 30px;
+  margin-left: 60px;
+}
+
+.projects-container hr {
+  border: 1px solid rgba(200, 220, 240, 0.5);
+  width: 75%;
+  margin-left: 5cm;
+}
+
+.project-card {
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 12px;
+  margin: 15px 15px 25px 30px;
+  padding: 20px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.project-card h3 {
+  font-size: 25px;
+  margin-left: 10px;
+  color: #2169b8;
+}
+
+.project-card li {
+  font-size: 20px;
+  margin-left: 30px;
+  line-height: 1.4;
+  color: #444;
+}
+
+/* Recommendations */
+.all_recommendations {
+  display: flex;
+  align-items: center;
+  margin-left: 1in;
+  flex-direction: row;
+  flex-flow: wrap;
+  padding: 20px;
+}
+
+.recommendation {
+  font-style: italic;
+  text-align: left;
+  width: 21.875rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+  margin: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  font-size: 18px;
+  height: 150px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.recommendation:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+}
+
+.recommendation span {
+  color: #2169b8;
+  font-size: 20px;
+  font-weight: bold;
+  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Scroll to Top Button */
+.iconbutton {
+  width: 48px;
+  height: 48px;
+  border-radius: 100%;
+  background: linear-gradient(to bottom, #4a8fd2, #2169b8);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  right: 3%;
+  bottom: 3%;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+  transition: all 0.2s ease;
+}
+
+.iconbutton:hover {
+  background: linear-gradient(to bottom, #5a9fe2, #2979c8);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.8);
+  transform: translateY(-2px);
+}
+
+/* Form Pop-up */
+.popup {
+  width: 400px;
+  background: rgba(230, 240, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  position: fixed;
+  padding: 30px;
+  visibility: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+.popup img {
+  padding-top: 20px;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+}
+
+.popup button {
+  background: linear-gradient(to bottom, #f8f8f8, #e8e8e8);
+  border: 1px solid rgba(100, 150, 200, 0.5);
+  color: #2169b8;
+  display: block;
+  border-radius: 10px;
+  text-align: center;
+  margin: 50px;
+  padding: 10px;
+  width: 2in;
+  font-size: 20px;
+  margin-left: 25%;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+  transition: all 0.2s ease;
+}
+
+.popup button:hover {
+  background: linear-gradient(to bottom, #4a8fd2, #2169b8);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  color: white;
+  font-weight: bolder;
+  cursor: pointer;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+  transform: translateY(-2px);
+}
+
+/* Recommendation Form */
+input, textarea {
+  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  margin: 10px;
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(100, 150, 200, 0.3);
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  border-color: #4a8fd2;
+  box-shadow: 0 0 5px rgba(74, 143, 210, 0.5), inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+fieldset {
+  display: flexbox;
+  align-content: center;
+  justify-content: center;
+  padding: 25px;
+  margin-left: 50px;
+  margin-right: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(5px);
+  width: 50%;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Buttons */
+button {
+  background: linear-gradient(to bottom, #f8f8f8, #e8e8e8);
+  border: 1px solid rgba(100, 150, 200, 0.5);
+  color: #2169b8;
+  display: block;
+  border-radius: 10px;
+  text-align: center;
+  margin: 50px;
+  padding: 10px;
+  width: 2in;
+  font-size: 20px;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  background: linear-gradient(to bottom, #4a8fd2, #2169b8);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+  transform: translateY(-2px);
+}
