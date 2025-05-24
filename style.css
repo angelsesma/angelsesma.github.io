@@ -114,7 +114,7 @@ h2 {
 #about-me p {
   font-size: 25px;
   color: #555;
-  margin-top: -1cm;
+  margin: 90px;
   line-height: 1.4;
 }
 
@@ -125,7 +125,7 @@ h2 {
   filter: none;
   border-radius: 10px;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-  margin-left: 60px;
+  margin: 60px;
   border: 1px solid rgba(255, 255, 255, 0.7);
 }
 
