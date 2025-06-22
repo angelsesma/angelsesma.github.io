@@ -15,12 +15,12 @@ body {
 }
 
 div.jsterm a {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(255, 255, 255, 0.9);
   color: #000000;
   font-weight: 300;
   text-decoration: none;
   vertical-align: baseline;
-  font-size: 16px;
+  font-size: 19px;
   font-family: monospace;
   font-style: normal;
 }
@@ -32,7 +32,7 @@ div.jsterm a:hover {
 div.jsterm {
   background: rgba(255, 255, 255, 0.7);
   font-family: monospace;
-  font-size: 16px;
+  font-size: 19px;
   color: #335588;
   width: 900px;
   margin-bottom: 20px;
@@ -43,17 +43,20 @@ div.jsterm .host,
 div.jsterm .host a {
   color: #009993;
   font-weight: bold;
+  font-size: 19px;
 }
 
 div.jsterm .user,
 div.jsterm .user a {
   color: #008755;
   font-weight: bold;
+  font-size: 19px;
 }
 
 div.jsterm .cwd,
 div.jsterm .cwd a {
   color: #880088;
+  font-size: 19px;
   font-weight: bold;
 }
 
@@ -61,12 +64,15 @@ div.jsterm .dir,
 div.jsterm .dir a {
   color: orange;
   font-weight: bold;
+  font-size: 19px;
 }
+
 div.jsterm .link,
 div.jsterm .link a,
 div.jstern .link a:visited {
   color: #090999;
   font-weight: bold;
+    font-size: 19px;
 }
 
 div.jsterm .exec,
@@ -74,33 +80,39 @@ div.jsterm .exec a,
 div.jstern .exec a:visited {
   color: #770099;
   font-weight: bold;
+  font-size: 19px;
 }
 
 div.jsterm .img,
 div.jsterm .img a {
   color: #428824;
   font-weight: bold;
+  font-size: 19px;
 }
 
 div.jsterm .iframe,
 div.jsterm .iframe a {
   color: brown;
   font-weight: bold;
+  font-size: 19px;
 }
 
 div.jsterm .text,
 div.jsterm .text a {
   color: black;
+  font-size: 19px;
 }
 
 div.jsterm .eidogo,
 div.jsterm .eidogo a {
   color: gold;
   font-weight: bold;
+  font-size: 19px;
 }
 div.jsterm .text:hover,
 div.jsterm .text a:hover {
   font-weight: bold;
+  font-size: 21px;
 }
 
 #blinker {
