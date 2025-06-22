@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Theme Toggle Example</title>
+  <style>
+    :root {
+      --bg-color: #ffffff;
+      --text-color: #000000;
+      --secondary-bg: #f0f0f0;
+      --border-color: #ddd;
+    }
+
+    [data-theme="dark"] {
+      --bg-color: #1a1a1a;
+      --text-color: #ffffff;
+      --secondary-bg: #2d2d2d;
+      --border-color: #444;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      min-height: 100vh;
+    }
+
+    #theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--secondary-bg);
+      border: 2px solid var(--border-color);
+      border-radius: 50%;
+      padding: 10px;
+      cursor: pointer;
+      font-size: 20px;
+      transition: all 0.3s ease;
+    }
+
+    #theme-toggle:hover {
+      transform: scale(1.1);
+    }
+
+    .sun-icon { display: none; }
+    .moon-icon { display: inline; }
+
+    [data-theme="dark"] .sun-icon { display: inline; }
+    [data-theme="dark"] .moon-icon { display: none; }
+
+    /* Example content styling */
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: var(--secondary-bg);
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      border: 1px solid var(--border-color);
+    }
+body {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+#myCanvas {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  overflow-y: hidden;
+  position: fixed;
+  background-size: cover;
+}
+
+div.jsterm a {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #ffffff;
+  font-weight: 300;
+  text-decoration: none;
+  vertical-align: baseline;
+  font-size: 16px;
+  font-family: monospace;
+  font-style: normal;
+}
+
+div.jsterm a:hover {
+  text-decoration: underline;
+}
+
+div.jsterm {
+  background: rgba(0, 0, 0, 0.7);
+  font-family: monospace;
+  font-size: 16px;
+  color: #00ccff;
+  width: 900px;
+  margin-bottom: 20px;
+  white-space: pre-wrap;
+}
+
+div.jsterm .host,
+div.jsterm .host a {
+  color: #00fffa;
+  font-weight: bold;
+}
+
+div.jsterm .user,
+div.jsterm .user a {
+  color: #44fbaa;
+  font-weight: bold;
+}
+
+div.jsterm .cwd,
+div.jsterm .cwd a {
+  color: #ff00ff;
+  font-weight: bold;
+}
+
+div.jsterm .dir,
+div.jsterm .dir a {
+  color: yellow;
+  font-weight: bold;
+}
+div.jsterm .link,
+div.jsterm .link a,
+div.jstern .link a:visited {
+  color: #0f0fff;
+  font-weight: bold;
+}
+
+div.jsterm .exec,
+div.jsterm .exec a,
+div.jstern .exec a:visited {
+  color: #cc00ff;
+  font-weight: bold;
+}
+
+div.jsterm .img,
+div.jsterm .img a {
+  color: #42d124;
+  font-weight: bold;
+}
+
+div.jsterm .iframe,
+div.jsterm .iframe a {
+  color: orange;
+  font-weight: bold;
+}
+
+div.jsterm .text,
+div.jsterm .text a {
+  color: white;
+}
+
+div.jsterm .eidogo,
+div.jsterm .eidogo a {
+  color: gold;
+  font-weight: bold;
+}
+div.jsterm .text:hover,
+div.jsterm .text a:hover {
+  font-weight: bold;
+}
+
+#blinker {
+  line-height: 0.9em;
+}
+
+.blink {
+  animation: blink 1s steps(1, end) infinite;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+
+@-webkit-keyframes agua {
+  0% {
+    color: white;
+  }
+  50% {
+    color: cyan;
+  }
+  70% {
+    color: teal;
+  }
+  90% {
+    color: cyan;
+  }
+  100% {
+    color: white;
+  }
+}
+  
+</style>
+
+<script src="https://unpkg.com/hydra-synth"></script>
+</head>
+<body>
+  <button id="theme-toggle" aria-label="Toggle theme">
+    <span class="sun-icon">☀️</span>
+    <span class="moon-icon">🌙</span>
+  </button>
+
+   <script type="text/javascript" src="/data/config/commands/com5.js"></script>
+    <script type="text/javascript" src="/data/config/config.js"></script>
+    <script type="text/javascript" src="/data/config/js/jsterm.js"></script>
+    <canvas id="myCanvas">
+    <script>
+      // create a new hydra-synth instance
+      var hydra = new Hydra({
+        canvas: document.getElementById("myCanvas"),
+        detectAudio: true,
+      });
+      A = window.innerWidth / window.innerHeight;
+
+      rn = () => Math.random();
+      noise()
+        .color(() => a.fft[2] * 0.811, 0.717, 2.6)
+        .modulate(noise(() => a.fft[1] * 1.245))
+        .scale(() => a.fft[2] * 2.565)
+        .layer(
+          src(o0)
+            .mask(osc(15.38).modulateRotate(osc(), rn, 0.949))
+            .scale(() => a.fft[2] * 2.098)
+            .luma(0.25, 0.419)
+        )
+        .blend(o0)
+        .out(o0);
+      osc()
+        .modulate(noise(() => a.fft[1] * 2.484))
+        .color(0.146, 0.278, 1.118)
+        .out(o1);
+      src(o0)
+        .modulate(o1)
+        .layer(src(o1).mask(o1).saturate(1.707))
+        .modulateRotate(o1)
+        .rotate(({ time }) => (time % 83.897) * 0.072)
+        .out(o2);
+      render(o2);
+
+      setResolution(window.innerWidth * 1, window.innerHeight * 1);
+    </script></canvas>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+
+    // Check for saved theme preference or default to 'light'
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    html.setAttribute('data-theme', currentTheme);
+
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = html.getAttribute('data-theme');
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      
+      html.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+    });
+  </script>
+</body>
+</html>
