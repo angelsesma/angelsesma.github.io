@@ -308,11 +308,9 @@ COMMANDS.bambu = function(argv, cb) {
          if (entry.name.startswith('.'))
             return;
          for (var i = 0; i < level; i++) str += "|    ";
-         if (entry.type == "agua") str += "|~💦  ";
-         else if (entry.type == "dir") str += "|-🌿"; 
+         if (entry.type == "agua") str += "|~🀤  ";
+         else if (entry.type == "dir") str += "|-🀤"; 
          else str += "|--";
-           // str += '⛰⛰⛰';
-        // str += '⛩𖡼𖤣𖥧𖡼𓋼𖤣𖥧𓋼𓍊⛱﹏𓊝﹏﹏𓆟';
          term.write(str);
          term.writeLink(entry, term.dirString(dir) + '/' + entry.name);
          term.write('<br>');
@@ -339,11 +337,8 @@ COMMANDS.tree = function(argv, cb) {
          if (entry.name.startswith('.'))
             return;
          for (var i = 0; i < level; i++) str += "|    ";
-         if (entry.type == "dir") str += "|&mdash;|;&mdash;"; 
-         if (entry.type == "agua") str += "|&mdash;🚰&mdash;  ";
-         else str += "|&mdash;🀤&mdash;  ";
-        // str += '⛰⛰⛰';
-        // str += '⛩𖡼𖤣𖥧𖡼𓋼𖤣𖥧𓋼𓍊⛱﹏𓊝﹏﹏𓆟';
+         if (entry.type == "dir") str += "|--- "; 
+         else str += "|--🀤 ";
          term.write(str);
          term.writeLink(entry, term.dirString(dir) + '/' + entry.name);
          term.write('<br>');
