@@ -68,12 +68,12 @@
             {
              "name": "AGUA",
              "type": "exec",
-             "contents": "/glitch.html"
+             "contents": "<a href='glitch.html'>Click-me</a>"
           },
             {
           "name": "TRUENO",
           "type": "exec",
-          "contents": "/thunder.html"
+          "contents": "<a href='thunder.html'>Click-me</a>"
          }
            
           ]
@@ -93,7 +93,7 @@
         {
           "name": "FungiFic",  
           "type": "img",
-          "contents": "/Funfic/FungiFic.png"
+          "contents": "data/Funfic/FungiFic.png"
         }
       ]
     },

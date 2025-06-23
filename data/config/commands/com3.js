@@ -481,7 +481,7 @@ COMMANDS.raiz = function (argv, cb) {
       var str = "";
 
       if (entry.name.startswith(".")) return;
-      for (var i = 0; i < level; i++) str += "_    ";
+      for (var i = 0; i < level; i++) str += "     ";
       if (entry.type == "agua") str += " --🚰";
       else if (entry.type == "lava") str += " --🌋";
       else if (entry.type == "bio") str += " --📚";
