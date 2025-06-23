@@ -1,0 +1,156 @@
+body {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+#myCanvas {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  overflow-y: hidden;
+  position: fixed;
+  background-size: cover;
+}
+
+div.jsterm a {
+  background-color: rgba(255, 155, 55, 0.1);
+  color: #f66301;
+  font-weight: bold;
+  text-decoration: none;
+  vertical-align: baseline;
+  font-size: 29px;
+  font-family: monospace;
+  font-style: normal;
+}
+
+div.jsterm a:hover {
+  text-decoration: underline;
+}
+
+div.jsterm {
+  background: rgba(255, 255, 255, 0.2);
+  font-family: monospace;
+  font-size: 29px;
+  color: #fdc305;
+  font-weight: bold;
+  width: 900px;
+  margin-bottom: 20px;
+  white-space: pre-wrap;
+}
+
+div.jsterm .host,
+div.jsterm .host a {
+  color: #ff8800;
+  font-weight: bolder;
+  font-size: 29px;
+}
+
+div.jsterm .user,
+div.jsterm .user a {
+  color: #ff8800;
+  font-weight: bold;
+  font-size: 29px;
+}
+
+div.jsterm .cwd,
+div.jsterm .cwd a {
+  color: #888888;
+  font-size: 29px;
+  font-weight: bold;
+}
+
+div.jsterm .dir,
+div.jsterm .dir a {
+  color: orange;
+  font-weight: bold;
+  font-size: 29px;
+}
+
+div.jsterm .link,
+div.jsterm .link a,
+div.jstern .link a:visited {
+  color: #090999;
+  font-weight: bold;
+    font-size: 29px;
+}
+
+div.jsterm .exec,
+div.jsterm .exec a,
+div.jstern .exec a:visited {
+  color: #770099;
+  font-weight: bold;
+  font-size: 29px;
+}
+
+div.jsterm .img,
+div.jsterm .img a {
+  color: #428824;
+  font-weight: bold;
+  font-size: 29px;
+}
+
+div.jsterm .iframe,
+div.jsterm .iframe a {
+  color: brown;
+  font-weight: bold;
+  font-size: 29px;
+}
+
+div.jsterm .text,
+div.jsterm .text a {
+  color: black;
+  font-size: 29px;
+}
+
+div.jsterm .eidogo,
+div.jsterm .eidogo a {
+  color: gold;
+  font-weight: bold;
+  font-size: 29px;
+}
+div.jsterm .text:hover,
+div.jsterm .text a:hover {
+  font-weight: bold;
+  font-size: 29px;
+}
+
+#blinker {
+  line-height: 0.9em;
+}
+
+.blink {
+  animation: blink 1s steps(1, end) infinite;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+
+@-webkit-keyframes agua {
+  0% {
+    color: white;
+  }
+  50% {
+    color: cyan;
+  }
+  70% {
+    color: teal;
+  }
+  90% {
+    color: cyan;
+  }
+  100% {
+    color: white;
+  }
+}
