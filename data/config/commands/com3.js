@@ -297,6 +297,36 @@ COMMANDS.borrar = function (argv, cb) {
   cb();
 };
 
+COMMANDS.bambu = function(argv, cb) {
+   var term = this._terminal,
+       home;
+
+   function writeTree(dir, level) {
+      dir.contents.forEach(function(entry) {
+         var str = '';
+
+         if (entry.name.startswith('.'))
+            return;
+         for (var i = 0; i < level; i++) str += "|    ";
+         if (entry.type == "agua") str += "|&mdash;~&mdash;  ";
+         else if (entry.type == "dir") str += "|&mdash;/;&mdash;"; 
+           // str += '⛰⛰⛰';
+        // str += '⛩𖡼𖤣𖥧𖡼𓋼𖤣𖥧𓋼𓍊⛱﹏𓊝﹏﹏𓆟';
+         term.write(str);
+         term.writeLink(entry, term.dirString(dir) + '/' + entry.name);
+         term.write('<br>');
+         if (entry.type === 'dir')
+            writeTree(entry, level + 1);
+      });
+   };
+   home = this._terminal.getEntry('~');
+   this._terminal.writeLink(home, '~');
+   this._terminal.write('<br>');
+   writeTree(home, 0);
+   cb();
+}
+
+
 COMMANDS.tree = function(argv, cb) {
    var term = this._terminal,
        home;
@@ -482,7 +512,7 @@ COMMANDS.raiz = function (argv, cb) {
   cb();
 };
 
-COMMANDS.tao = function (argv, cb) {
+COMMANDS.taogpt = function (argv, cb) {
   var term = this._terminal,
     home;
 
