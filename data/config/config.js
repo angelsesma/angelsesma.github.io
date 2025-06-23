@@ -21,4 +21,4 @@ CONFIG.prompt = function(cwd, user) {
    return ' ';
 };
 
-CONFIG.username = 'guest';
+CONFIG.username = 'fuego';
