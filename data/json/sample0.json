@@ -10,7 +10,7 @@
         {
           "name": "Kifu",
           "type": "eidogo",
-          "contents": "/eidogo/game.html"
+          "contents": "/data/eidogo/index.html"
           
         }
       ]
@@ -68,7 +68,7 @@
             {
              "name": "AGUA",
              "type": "exec",
-             "contents": "<a href='glitch.html'>Click-me</a>"
+             "contents": "<a href='agua.html'>Click-me</a>"
           },
             {
           "name": "TRUENO",
