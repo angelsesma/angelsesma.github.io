@@ -66,15 +66,15 @@
           "contents": [
             
             {
-          "name": "AGUA",
-          "type": "exec",
-          "contents": "/glitch.html"
-        },
-         {
+             "name": "AGUA",
+             "type": "exec",
+             "contents": "/glitch.html"
+          },
+            {
           "name": "TRUENO",
           "type": "exec",
           "contents": "/thunder.html"
-        }
+         }
            
           ]
         }
