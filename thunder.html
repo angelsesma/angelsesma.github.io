@@ -19,30 +19,12 @@
       });
       A = window.innerWidth / window.innerHeight;
 
-      rn = () => Math.random();
-      noise()
-        .color(() => a.fft[2] * 0.811, 0.717, 2.6)
-        .modulate(noise(() => a.fft[1] * 1.245))
-        .scale(() => a.fft[2] * 2.565)
-        .layer(
-          src(o0)
-            .mask(osc(15.38).modulateRotate(osc(), rn, 0.949))
-            .scale(() => a.fft[2] * 2.098)
-            .luma(0.25, 0.519)
-        )
-        .blend(o0)
-        .out(o0);
-      osc()
-        .modulate(noise(() => a.fft[1] * 2.484))
-        .color(1.146, 1.278, 1.118)
-        .out(o1);
-      src(o0)
-        .modulate(o1)
-        .layer(src(o1).mask(o1).saturate(1.707))
-        .modulateRotate(o1)
-        .rotate(({ time }) => (time % 83.897) * 0.072)
-        .out(o2);
-      render(o2);
+      osc(3, 1.9, 0.001)
+	      .kaleid([3, 8.237, 7, 13.761, 0.397, 4.255].fast(0.2))
+	      .rotate(0.009, () => Math.sin(time) * -0.001)
+	      .modulateRotate(o0, () => Math.sin(time) * 0.005)
+	      .scale(() => a.fft[2] * 1.246)
+	      .out(o0);
 
       setResolution(window.innerWidth * 1, window.innerHeight * 1);
     </script></canvas>

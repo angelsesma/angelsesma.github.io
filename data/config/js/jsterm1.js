@@ -518,7 +518,7 @@
 
   var term = Object.create(Terminal);
   term.init(CONFIG, "/data/json/sample.json", COMMANDS, function () {
-    term.enqueue("tree").begin();
+    term.enqueue("taogpt").enqueue("bambu").begin();
   });
 
   window.typeCommand = function (command) {

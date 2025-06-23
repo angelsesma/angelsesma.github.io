@@ -308,8 +308,9 @@ COMMANDS.bambu = function(argv, cb) {
          if (entry.name.startswith('.'))
             return;
          for (var i = 0; i < level; i++) str += "|    ";
-         if (entry.type == "agua") str += "|&mdash;~&mdash;  ";
-         else if (entry.type == "dir") str += "|&mdash;/;&mdash;"; 
+         if (entry.type == "agua") str += "|~💦  ";
+         else if (entry.type == "dir") str += "|-🌿"; 
+         else str += "|--";
            // str += '⛰⛰⛰';
         // str += '⛩𖡼𖤣𖥧𖡼𓋼𖤣𖥧𓋼𓍊⛱﹏𓊝﹏﹏𓆟';
          term.write(str);
@@ -337,10 +338,11 @@ COMMANDS.tree = function(argv, cb) {
 
          if (entry.name.startswith('.'))
             return;
-         for (var i = 0; i < level; i++) str += "↯    ";
-         if (entry.type == "agua") str += "↯&mdash;🚰&mdash;  ";
-         else if (entry.type == "dir") str += "↯&mdash;↯;&mdash;"; 
-           // str += '⛰⛰⛰';
+         for (var i = 0; i < level; i++) str += "|    ";
+         if (entry.type == "dir") str += "|&mdash;|;&mdash;"; 
+         if (entry.type == "agua") str += "|&mdash;🚰&mdash;  ";
+         else str += "|&mdash;🀤&mdash;  ";
+        // str += '⛰⛰⛰';
         // str += '⛩𖡼𖤣𖥧𖡼𓋼𖤣𖥧𓋼𓍊⛱﹏𓊝﹏﹏𓆟';
          term.write(str);
          term.writeLink(entry, term.dirString(dir) + '/' + entry.name);
@@ -518,7 +520,7 @@ COMMANDS.taogpt = function (argv, cb) {
 
   function castReading(dir, level) {
     var dict = {
-      0: "<h1>81</h1>True words aren't eloquent; eloquent words aren't true. Wise men don't need to prove their point; men who need to prove their point aren't wise. The Master has no possessions. The more he does for others, the happier he is. The more he gives to others, the wealthier he is. The Tao nourishes by not forcing. By not dominating, the Master leads.",
+      0: "<h1>81</h1> Las palabras verdaderas no son elocuentes; las elocuentes no son verdaderas. Los sabios no necesitan probar su punto; quienes necesitan probar su punto no son sabios. La Maestra no tiene posesiones. Cuanto más hace por otros, más feliz es. Cuanto más da a otros, más rico es. El Tao nutre sin forzar. Sin dominar, la Maestra lidera.",
       1: "<h1>1</h1>El Tao que puede ser expresado no es el Tao eterno. El Tao es el origen de todo, pero no puede ser capturado con palabras ni definido por conceptos. Cuando intentamos nombrarlo, lo limitamos, y el verdadero Tao trasciende cualquier límite. Es como un río invisible que fluye eternamente: podemos sentirlo, pero no atraparlo. <br/><strong>Interpretación:</strong> Este capítulo nos invita a dejar de lado las etiquetas y las definiciones rígidas. Para acercarnos al Tao, debemos abrazar el misterio y la experiencia directa, en lugar de aferrarnos a ideas preconcebidas.",
       2: "<h1>2</h1>Cuando todos reconocen lo bello como bello, surge lo feo. El mundo está lleno de opuestos: bello y feo, bueno y malo, alto y bajo. Pero estos opuestos no existen por sí mismos, sino que se definen mutuamente. El sabio, sin embargo, no se aferra a los extremos, sino que actúa sin forzar, sin juzgar, y deja que las cosas sigan su curso natural.<br/><strong>Interpretación:</strong> Este capítulo nos enseña a trascender la dualidad. En lugar de obsesionarnos con lo ''bueno'' o lo''malo'', debemos aprender a aceptar la interdependencia de las cosas y a fluir con la vida sin prejuicios.",
       3: "<h1>3</h1>No exaltar a los talentosos evita la competencia. Si los líderes no glorifican el éxito, la riqueza o el poder, las personas no se sentirán tentadas a competir ni a desear lo que no tienen. Si el gobernante actúa con simplicidad y vacía su mente de ambiciones, el pueblo vivirá en paz y armonía.<br/><strong>Interpretación:</strong> Este capítulo critica la obsesión por el estatus y la competencia. Nos invita a valorar la simplicidad y a vivir sin deseos excesivos, confiando en que la verdadera felicidad surge de la serenidad interior.",
@@ -599,7 +601,7 @@ COMMANDS.taogpt = function (argv, cb) {
       78:"<h1>78</h1> Nada en el mundo es tan suave y flexible como el agua. Sin embargo, para disolver lo duro e inflexible, nada puede superarla. Lo suave vence lo duro; lo gentil vence lo rígido. Todos saben que esto es cierto, pero pocos pueden ponerlo en práctica. Por eso la Maestra permanece serena en medio del dolor. El mal no puede entrar en su corazón. Porque ha renunciado a ayudar, es la mayor ayuda para la gente. Las verdaderas palabras parecen paradójicas.",
       79:"<h1>79</h1> El fracaso es una oportunidad. Si culpas a otros, no habrá fin a la culpa. Por eso la Maestra cumple sus obligaciones y corrige sus propios errores. Hace lo que necesita hacer y no exige nada de otros.",
       80:"<h1>80</h1> Si un país es gobernado con sabiduría, sus habitantes estarán contentos. Disfrutan el trabajo de sus manos y no pierden tiempo inventando máquinas ahorradoras de trabajo. Como aman mucho sus hogares, no están interesados en viajar. Puede haber algunos carros y barcos, pero estos no van a ningún lado. Puede haber un arsenal de armas, pero nadie las usa nunca. La gente disfruta de su comida, toma placer en estar con su familia, pasa los fines de semana trabajando en sus jardines, se deleita con las actividades del vecindario. Y aunque el próximo país está tan cerca que se pueden oír los gallos cantar y los perros ladrar, están contentos de morir de viejos sin haberlo visto nunca.",
-      81:"<h1>81</h1> Las palabras verdaderas no son elocuentes; las elocuentes no son verdaderas. Los sabios no necesitan probar su punto; quienes necesitan probar su punto no son sabios. La Maestra no tiene posesiones. Cuanto más hace por otros, más feliz es. Cuanto más da a otros, más rico es. El Tao nutre sin forzar. Sin dominar, la Maestra lidera."
+    
     }
       for (let i = 0; i < 1; i++) {
       var str = dict[Math.floor(Math.random() * Object.keys(dict).length)];
