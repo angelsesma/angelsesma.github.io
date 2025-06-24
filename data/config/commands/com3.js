@@ -57,7 +57,7 @@ COMMANDS.ayuda = function (argv, cb) {
       'se pueden leer usando "cat". Los <span class="eidogo">kifu</span> ' +
       'se pueden visualizar con el comando "eidogo". Las <span class="img">imagenes</span> se ' +
       'muestran con "gimp".'+
-      ' Escribe el comando tao para leer un capítulo del libro del tao traducido por UKLG<br>'+'<br>Para salir de un comando presiona Ctrl+C <br><br>' 
+      'Escribe el comando taogpt para leer un capítulo del libro del tao traducido por UKLG<br>'+'<br>Para salir de un comando presiona Ctrl+C <br><br>' 
   );
   this._terminal.write("Los comandos son:<br>");
   for (var c in this._terminal.commands) {
@@ -308,9 +308,9 @@ COMMANDS.bambu = function(argv, cb) {
          if (entry.name.startswith('.'))
             return;
          for (var i = 0; i < level; i++) str += "|    ";
-         if (entry.type == "agua") str += "-🀤  ";
+         if (entry.type == "agua") str += "🀤  ";
          else if (entry.type == "dir") str += "--"; 
-         else str += "-🀤";
+         else str += "🀤";
          term.write(str);
          term.writeLink(entry, term.dirString(dir) + '/' + entry.name);
          term.write('<br>');
