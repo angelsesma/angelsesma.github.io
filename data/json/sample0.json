@@ -72,7 +72,7 @@
           },
             {
           "name": "TRUENO",
-          "type": "link",
+          "type": "exec",
           "contents": "<a href='thunder.html'>Click-me</a>"
          }
            
