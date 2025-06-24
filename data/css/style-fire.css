@@ -30,7 +30,7 @@ div.jsterm a:hover {
 }
 
 div.jsterm {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.0);
   font-family: monospace;
   font-size: 29px;
   color: #fdc305;
