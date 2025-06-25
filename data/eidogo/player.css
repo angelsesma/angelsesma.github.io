@@ -283,7 +283,7 @@
     margin: 0 5px 0 0;
     padding: 5px;
     text-align: center;
-    background: #ccc url(https://cdn.glitch.global/a2fb1b3a-5049-444a-9cf1-3d52c6f5b0d5/done_bg.png?v=1642090066468) repeat-x;
+    background: #ccc url(done_bg.png) repeat-x;
     color: #222;
     border: 2px solid #999;
     border-top: 2px solid #fff;

@@ -498,7 +498,7 @@
             }.bind(this)
           );
         } else if (entry && entry.type == "exec") {
-          window.open(entry.contents, "_blank");
+          window.open(entry.contents, ' target="_blank" rel="noopener noreferrer"');
           this._prompt();
         } else {
           this.write(command + ": comando no existe");

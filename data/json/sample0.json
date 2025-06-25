@@ -3,20 +3,9 @@
   "type": "dir",
   "contents": [
     
+    
     {
-      "name": "Baduk",
-      "type": "dir",
-      "contents": [
-        {
-          "name": "Kifu",
-          "type": "eidogo",
-          "contents": "/data/eidogo/index.html"
-          
-        }
-      ]
-    },
-    {
-      "name": "Ceramica",
+      "name": "Arcilla",
       "type": "dir",
       "contents": [
         {
@@ -44,7 +33,7 @@
       ]
     },
     {
-      "name": "Galeria",
+      "name": "Grafica",
       "type": "dir",
       "contents": [
         {
@@ -56,28 +45,21 @@
           "name": "profile-glitch",
           "type": "iframe",
           "contents": "/profile.html"
-        }
-           
-          ]
         },
-        {
-          "name": "Temas",
-          "type": "dir",
-          "contents": [
-            
-            {
-             "name": "AGUA",
-             "type": "exec",
-             "contents": "<a href='agua.html'>Click-me</a>"
-          },
-            {
-          "name": "TRUENO",
-          "type": "exec",
-          "contents": "<a href='thunder.html'>Click-me</a>"
-         }
-           
+          
+          {
+          "name": "chip-art",
+          "type": "iframe",
+          "contents": "/chip.html"
+        },
+          {
+          "name": "monoliths",
+          "type": "iframe",
+          "contents": "/monoliths.html"
+        }
           ]
         }
+        
       ]
     },
 
@@ -91,8 +73,8 @@
           "contents": "/SN2016KG/index.html"
         } , 
         {
-          "name": "FungiFic",  
-          "type": "img",
+          "name": "FungiFicciones",  
+          "type": "iframe",
           "contents": "data/Funfic/FungiFic.png"
         }
       ]
@@ -106,11 +88,6 @@
           "name": "Sauce-de-rio",
           "type": "iframe",
           "contents": "/json/senryuu/index.html"
-        },
-        {
-          "name": "Viaje",
-          "type": "text",
-          "contents": "<h3><p>Viaje</p><p>(Samuel Menashe)</p></h3></br><p>Agua se abre sin fin</p><p>En la proa del navío</p><p>Se alza y luego cae</p><p>Hacia lo lejos</p><p>Los días se vuelven uno</p><p>Soy quien fuí</p>"
         },
         {
           "name": "Metro",
