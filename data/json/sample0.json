@@ -37,13 +37,13 @@
       "type": "dir",
       "contents": [
         {
-          "name": "Arte_generativo",
+          "name": "Digital",
           "type": "dir",
           "contents": [
             
           
           {
-          "name": "Glitch-art",
+          "name": "Glitch-AI",
           "type": "iframe",
           "contents": "/data/pics/GlitchArt/glitch3.pdf"
         },
@@ -53,11 +53,41 @@
           "contents": "/data/pics/Monolitos/index.html"
         }
           ]
+        },
+        {
+          "name": "Huecograbado",
+          "type": "dir",
+          "contents": [
+            {
+          "name": "Aguafuerte/Aguatinta",
+          "type": "iframe",
+          "contents": "/data/pics/Grabado/glitch3.pdf"
+        },
+          {
+          "name": "Linoleo",
+          "type": "iframe",
+          "contents": "/data/pics/Grabado/index.html"
+        },
+        {
+          "name": "Colografia",
+          "type": "iframe",
+          "contents": "/data/pics/Grabado/index.html"
         }
         
+      ]}
+    ]
+    },
+    {
+      "name": "Narrativa-Transmedia",
+      "type": "dir",
+      "contents": [
+        {
+          "name": "Dos Compuertas",
+          "type": "iframe",
+          "contents": "/SN2016KG/index.html"
+        } 
       ]
     },
-
     {
       "name": "Fanfic",
       "type": "dir",
@@ -114,7 +144,33 @@
               "contents": "<h3><p>Confluencia</p><p>(Marianne Karplus)</p></h3></br><p>Cuando dos ríos se encuentran a veces dudan si mezclarse</p><p>El sedimento lodoso guarda distancia del verdeagua cristalino</p><p>Cada cual refleja en el paisaje su labranza, ahora cuidadosa</p><p>Ahora turbulenta</p><p>En sus desfiladeros el cañon es testigo</p><p>Cicatriz del continuo descenso de moléculas</p><p>Agua atraída hacia la gravedad</p><p>Erosiona cristales, partículas, semillas</p><p>Lodos sedientos que fluyen</p><p>Divagan, tamborilean</p><p>Los ríos emergen y derivan</p><p>Lejos de las rústicas montañas</p><p>Uno hacia otro</p><p>Comienzan a aliviarse de su carga</p><p>Los diversos caminos se funden</p><p>Los caudales más densos descienden</p><p>Ocultan su sedimento, el pasado</p><p>En la intersección</p><p>Donde el remolino prueba a las aguas</p><p>Nube y claridad se complementan</p><p>Y con tiempo</p><p>Su dispersión</p><p>Su conjunción</p><p>Recorren</p><p> La corriente</p><p>Balanceada</p><p>"
             }
           ]
+        },
+        {
+      "name": "Video",
+      "type": "dir",
+      "contents": [
+        {
+          "name": "Arte",
+          "type": "dir",
+          "contents": [
+            
+          
+          {
+          "name": "Props_Inaudible",
+          "type": "iframe",
+          "contents": "/data/pics/Cine/glitch3.pdf"
+        },
+          {
+          "name": "Efectos Visuales",
+          "type": "iframe",
+          "contents": "/data/pics/Cine/index.html"
         }
+          ]
+        }
+        
+      ]
+    }
+
       ]
     }
   ]
