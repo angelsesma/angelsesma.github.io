@@ -1,0 +1,244 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Gallery with Navigation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .gallery-container {
+            position: relative;
+            width: 80%;
+            max-width: 800px;
+            height: 500px;
+            margin: 0 auto;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            background-color: #fff;
+            border-radius: 8px;
+        }
+
+        .gallery {
+            display: flex;
+            height: 100%;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+
+        .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            transition: background-color 0.3s;
+        }
+
+        .nav-arrow:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .nav-arrow:disabled {
+            background-color: rgba(0, 0, 0, 0.2);
+            cursor: not-allowed;
+        }
+
+        #prev-btn {
+            left: 10px;
+        }
+
+        #next-btn {
+            right: 10px;
+        }
+
+        .image-counter {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <h1>Image Gallery</h1>
+
+    <div class="gallery-container">
+        <div class="gallery" id="gallery">
+            <!-- Image placeholders - replace with your actual filenames -->
+            <img src="fonoglitch1.jpg" alt="Image 1">
+            <img src="fonoglitch2.jpg" alt="Image 2">
+            <img src="fonoglitch3.jpg" alt="Image 3">
+            <img src="fonoglitch4.jpg" alt="Image 4">
+            <img src="fonoglitch5.jpg" alt="Image 5">
+            <img src="fonoglitch6.jpg" alt="Image 6">
+            <img src="fonoglitch7.jpg" alt="Image 7">
+            <img src="fonoglitch8.jpg" alt="Image 8">
+            <img src="fonoglitch9.jpg" alt="Image 9">
+            <img src="fonoglitch10.jpg" alt="Image 10">
+            <img src="fonoglitch11.jpg" alt="Image 11">
+            <img src="fonoglitch12.jpg" alt="Image 12">
+            <img src="fonoglitch13.jpg" alt="Image 13">
+            <img src="fonoglitch14.jpg" alt="Image 14">
+            <img src="fonoglitch15.jpg" alt="Image 15">
+            <img src="fonoglitch16.jpg" alt="Image 16">
+            <img src="fonoglitch17.jpg" alt="Image 17">
+            <img src="fonoglitch18.jpg" alt="Image 18">
+            <img src="fonoglitch19.jpg" alt="Image 19">
+            <img src="fonoglitch20.jpg" alt="Image 20">
+            <img src="fonoglitch21.jpg" alt="Image 21">
+            <img src="fonoglitch22.jpg" alt="Image 22">
+            <img src="fonoglitch23.jpg" alt="Image 23">
+            <img src="fonoglitch24.jpg" alt="Image 24">
+            <img src="fonoglitch25.jpg" alt="Image 25">
+            <img src="fonoglitch26.jpg" alt="Image 26">
+            <img src="fonoglitch27.jpg" alt="Image 27">
+            <img src="fonoglitch28.jpg" alt="Image 28">
+            <img src="fonoglitch29.jpg" alt="Image 29">
+            <img src="fonoglitch30.jpg" alt="Image 30">
+            <img src="fonoglitch31.jpg" alt="Image 31">
+            <img src="fonoglitch32.jpg" alt="Image 32">
+            <img src="fonoglitch33.jpg" alt="Image 33">
+            <img src="fonoglitch34.jpg" alt="Image 34">
+            <img src="fonoglitch35.jpg" alt="Image 35">
+            <img src="fonoglitch36.jpg" alt="Image 36">
+            <img src="fonoglitch37.jpg" alt="Image 37">
+            <img src="fonoglitch38.jpg" alt="Image 38">
+            <img src="fonoglitch39.jpg" alt="Image 39">
+            <img src="fonoglitch40.jpg" alt="Image 40">
+            <img src="fonoglitch41.jpg" alt="Image 41">
+            <img src="fonoglitch42.jpg" alt="Image 42">
+            <img src="fonoglitch43.jpg" alt="Image 43">
+            <img src="fonoglitch44.jpg" alt="Image 44">
+            <img src="fonoglitch45.jpg" alt="Image 45">
+            <img src="fonoglitch46.jpg" alt="Image 46">
+            <img src="fonoglitch47.jpg" alt="Image 47">
+            <img src="fonoglitch48.jpg" alt="Image 48">
+            <img src="fonoglitch49.jpg" alt="Image 49">
+            <img src="fonoglitch50.jpg" alt="Image 50">
+            <img src="fonoglitch51.jpg" alt="Image 51">
+            <img src="fonoglitch52.jpg" alt="Image 52">
+            <img src="fonoglitch53.jpg" alt="Image 53">
+            <img src="fonoglitch54.jpg" alt="Image 54">
+            <img src="fonoglitch55.jpg" alt="Image 55">
+            <img src="fonoglitch56.jpg" alt="Image 56">
+            <img src="fonoglitch57.jpg" alt="Image 57">
+            <img src="fonoglitch58.jpg" alt="Image 58">
+            <img src="fonoglitch59.jpg" alt="Image 59">
+            <img src="fonoglitch60.jpg" alt="Image 60">
+            <img src="fonoglitch61.jpg" alt="Image 61">
+            <img src="fonoglitch62.jpg" alt="Image 62">
+            <img src="fonoglitch63.jpg" alt="Image 63">
+            <img src="fonoglitch64.jpg" alt="Image 64">
+            <img src="fonoglitch65.jpg" alt="Image 65">
+            <img src="fonoglitch66.jpg" alt="Image 66">
+            <img src="fonoglitch67.jpg" alt="Image 67">
+            <img src="fonoglitch68.jpg" alt="Image 68">
+            <img src="fonoglitch69.jpg" alt="Image 69">
+            <img src="fonoglitch70.jpg" alt="Image 70">
+            <img src="fonoglitch71.jpg" alt="Image 71">
+            <img src="fonoglitch72.jpg" alt="Image 72">
+            <img src="fonoglitch73.jpg" alt="Image 73">
+            <img src="fonoglitch74.jpg" alt="Image 74">
+            <img src="fonoglitch75.jpg" alt="Image 75">
+        </div>
+
+        <button class="nav-arrow" id="prev-btn" disabled>&#10094;</button>
+        <button class="nav-arrow" id="next-btn">&#10095;</button>
+    </div>
+
+    <div class="image-counter">
+        Image <span id="current-image">1</span> of <span id="total-images">75</span>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const gallery = document.getElementById('gallery');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const currentImageSpan = document.getElementById('current-image');
+            const totalImagesSpan = document.getElementById('total-images');
+
+            const images = gallery.querySelectorAll('img');
+            const totalImages = images.length;
+            let currentIndex = 0;
+
+            // Set total images count
+            totalImagesSpan.textContent = totalImages;
+
+            // Function to update gallery position
+            function updateGallery() {
+                gallery.style.transform = `translateX(-${currentIndex * 100}%)`;
+                currentImageSpan.textContent = currentIndex + 1;
+
+                // Update button states
+                prevBtn.disabled = currentIndex === 0;
+                nextBtn.disabled = currentIndex === totalImages - 1;
+            }
+
+            // Event listeners for navigation
+            prevBtn.addEventListener('click', function() {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    updateGallery();
+                }
+            });
+
+            nextBtn.addEventListener('click', function() {
+                if (currentIndex < totalImages - 1) {
+                    currentIndex++;
+                    updateGallery();
+                }
+            });
+
+            // Keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowLeft') {
+                    if (currentIndex > 0) {
+                        currentIndex--;
+                        updateGallery();
+                    }
+                } else if (e.key === 'ArrowRight') {
+                    if (currentIndex < totalImages - 1) {
+                        currentIndex++;
+                        updateGallery();
+                    }
+                }
+            });
+
+            // Initialize gallery
+            updateGallery();
+        });
+    </script>
+</body>
+</html>
+
