@@ -41,21 +41,16 @@
           "type": "dir",
           "contents": [
             
-            {
-          "name": "profile-glitch",
-          "type": "iframe",
-          "contents": "/profile.html"
-        },
           
           {
-          "name": "chip-art",
+          "name": "Glitch-art",
           "type": "iframe",
-          "contents": "/chip.html"
+          "contents": "/data/pics/GlitchArt/glitch3.pdf"
         },
           {
-          "name": "monoliths",
+          "name": "Monolitos",
           "type": "iframe",
-          "contents": "/monoliths.html"
+          "contents": "/data/pics/Monolitos/index.html"
         }
           ]
         }
