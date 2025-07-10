@@ -280,7 +280,7 @@ COMMANDS.lava = function (argv, cb) {
     );
   } else {
     this._terminal.write(
-      '<iframe referrerpolicy="no-referrer" sandbox="allow-same-origin, allow-scripts" src="' + entry.contents +'" width="800px" height="600px"/><br/>'
+      '<iframe referrerpolicy="no-referrer", allow-scripts" src="' + entry.contents +'" width="800px" height="600px"/><br/>'
     );
     cb();
     lavas = this._terminal.div.getElementsByTagName("lava");
