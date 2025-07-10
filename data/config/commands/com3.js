@@ -178,7 +178,7 @@ COMMANDS.iframe = function (argv, cb) {
     );
   } else {
     this._terminal.write(
-      '<iframe referrerpolicy="no-referrer" sandbox="allow-same-origin, allow-scripts" src="' +
+      '<iframe referrerpolicy="no-referrer", allow-scripts" src="' +
         entry.contents +
         '" width="800px" height="600px"/>'
     );
