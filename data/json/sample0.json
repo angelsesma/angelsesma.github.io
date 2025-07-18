@@ -61,7 +61,7 @@
             {
           "name": "Aguafuerte/Aguatinta",
           "type": "iframe",
-          "contents": "/data/pics/Grabado/glitch3.pdf"
+          "contents": "/data/pics/Grabado/index.html"
         },
           {
           "name": "Linoleo",
@@ -78,6 +78,22 @@
     ]
     },
     {
+      "name": "Fanfic",
+      "type": "dir",
+      "contents": [
+        {
+          "name": "SN2016KG",
+          "type": "iframe",
+          "contents": "/SN2016KG/index.html"
+        } , 
+        {
+          "name": "FungiFiction",  
+          "type": "text",
+          "contents": "[Created with CHATGPT-3 (2021)] The spores were getting out of hand. I put them in a lead-lined box, but they could still see each other. So I put tin foil on the box, but that didn't stop them from talking to each other. I put the box in a lead-lined room, but they could still hear each other. So I put acoustic dampening material on the walls, but they could still feel each other. I put the room in a lead-lined basement, but they could still smell each other. So I put the basement in a lead-lined house, but they could still feel each other. </br>So I put the house in a lead-lined neighborhood, but they could still feel each other. So I put the neighborhood on a rocket and shot it into space, but they could still feel each other. So I put the rocket in orbit around Jupiter, but they could still feel each other. So I put Jupiter on a rocket and shot it into space, but they could still feel each other. So I put the rocket in orbit around the sun, but they could still feel each other. So I put the sun on a rocket and shot it into space, but they could still feel each other. </br>So I put the rocket in orbit around a black hole, but they could still feel each other. So I put the black hole on a rocket and shot it into space, but they could still feel each other. So I put the rocket in orbit around a supernova, but they could still feel each other. So I put the supernova on a rocket and shot it into space, but they could still feel each other. So I put the rocket in orbit around a galaxy, but they could still feel each other. So I put the galaxy on a rocket and shot it into space, but they could still feel each other. So I put the rocket in orbit around a cluster of galaxies, but they could still feel each other. So I put the cluster of galaxies on a rocket and shot it into space, but they could still feel each other. So I put the rocket in orbit around a supercluster of galaxies, but they could still feel each other. </br>So I put the supercluster of galaxies on a rocket and shot it into space, but they could still feel each other. So I put the rocket in orbit around a wall of galaxies, but they could still feel each other. So I put the wall of galaxies on a rocket and shot it into space, but they could still feel each other. So I put the rocket in orbit around a supercluster of superclusters of galaxies, but they could still feel each other. So I put the supercluster of superclusters of galaxies on a rocket and shot it into space, but they could still feel each other. So I put the rocket in orbit around a void, but they could still feel each other. So I put the void on a rocket and shot it into space, but they could still feel each other. So I put the rocket in orbit around a supercluster of superclusters of superclusters of galaxies, but they could still feel each other.</br>So I put the supercluster of superclusters of superclusters of galaxies on a rocket and shot it into space, but they could still feel each other. So I put the rocket in orbit around an empty void, but they could still feel each other. So I put the empty void on a rocket and shot it into space, but they could still feel each other."
+        }
+      ]
+    },
+    {
       "name": "Narrativa-Transmedia",
       "type": "dir",
       "contents": [
@@ -88,22 +104,7 @@
         } 
       ]
     },
-    {
-      "name": "Fanfic",
-      "type": "dir",
-      "contents": [
-        {
-          "name": "SN2016KG",
-          "type": "iframe",
-          "contents": "/SN2016KG/index.html"
-        } , 
-        {
-          "name": "FungiFicciones",  
-          "type": "iframe",
-          "contents": "data/Funfic/FungiFic.png"
-        }
-      ]
-    },
+  
 
     {
       "name": "Traduccion",
@@ -144,8 +145,11 @@
               "contents": "<h3><p>Confluencia</p><p>(Marianne Karplus)</p></h3></br><p>Cuando dos ríos se encuentran a veces dudan si mezclarse</p><p>El sedimento lodoso guarda distancia del verdeagua cristalino</p><p>Cada cual refleja en el paisaje su labranza, ahora cuidadosa</p><p>Ahora turbulenta</p><p>En sus desfiladeros el cañon es testigo</p><p>Cicatriz del continuo descenso de moléculas</p><p>Agua atraída hacia la gravedad</p><p>Erosiona cristales, partículas, semillas</p><p>Lodos sedientos que fluyen</p><p>Divagan, tamborilean</p><p>Los ríos emergen y derivan</p><p>Lejos de las rústicas montañas</p><p>Uno hacia otro</p><p>Comienzan a aliviarse de su carga</p><p>Los diversos caminos se funden</p><p>Los caudales más densos descienden</p><p>Ocultan su sedimento, el pasado</p><p>En la intersección</p><p>Donde el remolino prueba a las aguas</p><p>Nube y claridad se complementan</p><p>Y con tiempo</p><p>Su dispersión</p><p>Su conjunción</p><p>Recorren</p><p> La corriente</p><p>Balanceada</p><p>"
             }
           ]
-        },
-        {
+        }
+      ]
+    },
+    
+    {
       "name": "Video",
       "type": "dir",
       "contents": [
@@ -171,7 +175,5 @@
       ]
     }
 
-      ]
-    }
   ]
 }
