@@ -160,14 +160,9 @@
             
           
           {
-          "name": "Props_Inaudible",
+          "name": "Propmaster",
           "type": "iframe",
-          "contents": "/data/pics/Cine/glitch3.pdf"
-        },
-          {
-          "name": "Efectos Visuales",
-          "type": "iframe",
-          "contents": "/data/pics/Cine/index.html"
+          "contents": "/data/props/index.html"
         }
           ]
         }
