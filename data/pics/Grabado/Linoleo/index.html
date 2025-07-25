@@ -1,0 +1,171 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎋</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #050505;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #FFF;
+            font-size: 48px;
+            margin-bottom: 30px;
+        }
+
+        .gallery-container {
+            position: relative;
+            width: 80%;
+            max-width: 800px;
+            height: 500px;
+            margin: 0 auto;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            background-color: #555;
+            border-radius: 8px;
+        }
+
+        .gallery {
+            display: flex;
+            height: 100%;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+
+        .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: orange;
+            border: none;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            transition: background-color 0.3s;
+        }
+
+        .nav-arrow:hover {
+            background-color: rgba(255, 0, 0, 0.8);
+        }
+
+        .nav-arrow:disabled {
+            background-color: rgba(180, 180, 180, 0.454);
+            cursor: not-allowed;
+        }
+
+        #prev-btn {
+            left: 10px;
+        }
+
+        #next-btn {
+            right: 10px;
+        }
+
+        .image-counter {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="gallery-container">
+        <div class="gallery" id="gallery">
+            <!-- Image placeholders - replace with your actual filenames -->
+            <img src="Piramide.jpeg" alt="Image 1">
+            <img src="Chapulines.jpeg" alt="Image 2">
+            
+        </div>
+
+        <button class="nav-arrow" id="prev-btn" disabled>&#10094;</button>
+        <button class="nav-arrow" id="next-btn">&#10095;</button>
+    </div>
+
+    <div class="image-counter">
+        Image <span id="current-image">1</span> of <span id="total-images">75</span>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const gallery = document.getElementById('gallery');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const currentImageSpan = document.getElementById('current-image');
+            const totalImagesSpan = document.getElementById('total-images');
+
+            const images = gallery.querySelectorAll('img');
+            const totalImages = images.length;
+            let currentIndex = 0;
+
+            // Set total images count
+            totalImagesSpan.textContent = totalImages;
+
+            // Function to update gallery position
+            function updateGallery() {
+                gallery.style.transform = `translateX(-${currentIndex * 100}%)`;
+                currentImageSpan.textContent = currentIndex + 1;
+
+                // Update button states
+                prevBtn.disabled = currentIndex === 0;
+                nextBtn.disabled = currentIndex === totalImages - 1;
+            }
+
+            // Event listeners for navigation
+            prevBtn.addEventListener('click', function() {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    updateGallery();
+                }
+            });
+
+            nextBtn.addEventListener('click', function() {
+                if (currentIndex < totalImages - 1) {
+                    currentIndex++;
+                    updateGallery();
+                }
+            });
+
+            // Keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowLeft') {
+                    if (currentIndex > 0) {
+                        currentIndex--;
+                        updateGallery();
+                    }
+                } else if (e.key === 'ArrowRight') {
+                    if (currentIndex < totalImages - 1) {
+                        currentIndex++;
+                        updateGallery();
+                    }
+                }
+            });
+
+            // Initialize gallery
+            updateGallery();
+        });
+    </script>
+</body>
+</html>
+
