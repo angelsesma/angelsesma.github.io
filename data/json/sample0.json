@@ -55,23 +55,18 @@
           ]
         },
         {
-          "name": "Huecograbado",
+          "name": "Grabado",
           "type": "dir",
           "contents": [
             {
-          "name": "Aguafuerte/Aguatinta",
+          "name": "Aguafuerte",
           "type": "iframe",
-          "contents": "/data/pics/Grabado/index.html"
+          "contents": "/data/pics/Grabado/Aguafuerte/index.html"
         },
           {
           "name": "Linoleo",
           "type": "iframe",
-          "contents": "/data/pics/Grabado/index.html"
-        },
-        {
-          "name": "Colografia",
-          "type": "iframe",
-          "contents": "/data/pics/Grabado/index.html"
+          "contents": "/data/pics/Grabado/Linoleo/index.html"
         }
         
       ]}
@@ -98,7 +93,7 @@
       "type": "dir",
       "contents": [
         {
-          "name": "Dos Compuertas",
+          "name": "Dos_Compuertas",
           "type": "iframe",
           "contents": "/SN2016KG/index.html"
         } 
