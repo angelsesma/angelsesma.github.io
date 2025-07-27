@@ -2,36 +2,7 @@
   "name": "~",
   "type": "dir",
   "contents": [
-    
-    
-    {
-      "name": "Arcilla",
-      "type": "dir",
-      "contents": [
-        {
-          "name": "Alta-temperatura",
-          "type": "dir",
-          "contents": [
-            {
-              "name": "Vasija-0224",
-              "type": "lava",
-              "contents": "data/vr/main1.html"
-            }
-          ]
-        },
-        {
-          "name": "Baja-temperatura",
-          "type": "dir",
-          "contents": [
-            {
-              "name": "Vasija-0424",
-              "type": "lava",
-              "contents": "data/vr/main2.html"
-            }
-          ]
-        }
-      ]
-    },
+
     {
       "name": "Grafica",
       "type": "dir",
@@ -40,7 +11,11 @@
           "name": "Digital",
           "type": "dir",
           "contents": [
-            
+            {
+          "name": "3D",
+          "type": "iframe",
+          "contents": "/data/pics/3D/index.html"
+        },
           
           {
           "name": "Glitch-AI",
@@ -51,7 +26,13 @@
           "name": "Monolitos",
           "type": "iframe",
           "contents": "/data/pics/Monolitos/index.html"
+        },
+        {
+          "name": "Mural",
+          "type": "iframe",
+          "contents": "/data/pics/Mural/index.html"
         }
+          
           ]
         },
         {
@@ -95,7 +76,7 @@
         {
           "name": "Dos_Compuertas",
           "type": "iframe",
-          "contents": "/SN2016KG/index.html"
+          "contents": "/data/doscompuertas/index.html"
         } 
       ]
     },
