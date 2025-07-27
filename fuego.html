@@ -47,24 +47,19 @@ src(o0)
 render(o2);
 
       setResolution(window.innerWidth * 1, window.innerHeight * 1);
-    </script></canvas><script>
-    // Enable on-screen keyboard on page load
+    </script></canvas>
+    <script>
+    /// Add this to your existing JavaScript
 document.addEventListener('DOMContentLoaded', function() {
-  // Check if the device has a touch input
   if ('ontouchstart' in window) {
-    // Focus on a text input to trigger the on-screen keyboard
-    var input = document.createElement('input');
-    input.type = 'text';
-    input.style.position = 'absolute';
-    input.style.top = '-1000px';
-    input.style.left = '-1000px';
-    document.body.appendChild(input);
-    input.focus();
-    // Remove the input element after a short delay
-    setTimeout(function() {
-      document.body.removeChild(input);
-    }, 100);
+    const commandInput = document.querySelector('.command input, .command textarea');
+    
+    if (commandInput) {
+      commandInput.focus();
+      setTimeout(() => commandInput.focus(), 100);
+    }
   }
-});</script>
+});
+</script>
   </body>
 </html>

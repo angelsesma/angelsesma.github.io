@@ -481,13 +481,13 @@ COMMANDS.raiz = function (argv, cb) {
       var str = "";
 
       if (entry.name.startswith(".")) return;
-      for (var i = 0; i < level; i++) str += "&#x2588;   ";
+      for (var i = 0; i < level; i++) str += "|    ";
       if (entry.type == "agua") str += "&#x2588;&#x2591;&#x2591;🚰";
       else if (entry.type == "lava") str += " --🌋";
       else if (entry.type == "bio") str += " --📚";
       else if (entry.type == "text") str += "&#x2588;&#x2591;&#x2591;&#128211;";
       else if (entry.type == "img") str += " &#x2591;&#x2591;🖼️";
-      else if (entry.type == "iframe") str += "&#x2588;--&#128214;";
+      else if (entry.type == "iframe") str += "&#x2588;&#x2591;&#x2591;&#128214;";
       else if (entry.type == "eidogo") str += " &#x2591;&#x2591;&#127912;";
       else if (entry.type == "snes") str += " --&#x1F579;";
       else if (entry.type == "exec") str += " &#x2591;&#x2591;&#128478;";
