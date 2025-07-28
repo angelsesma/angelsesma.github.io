@@ -481,17 +481,17 @@ COMMANDS.raiz = function (argv, cb) {
       var str = "";
 
       if (entry.name.startswith(".")) return;
-      for (var i = 0; i < level; i++) str += "&#x2588;    ";
-      if (entry.type == "agua") str += "&#x2591;&#x2591;🚰";
-      else if (entry.type == "lava") str += " --🌋";
-      else if (entry.type == "bio") str += " --📚";
-      else if (entry.type == "text") str += "&#x2591;&#x2591;&#128211;";
-      else if (entry.type == "img") str += " &#x2591;&#x2591;🖼️";
-      else if (entry.type == "iframe") str += "&#x2591;&#x2591;&#128214;";
-      else if (entry.type == "eidogo") str += "&#x2591;&#x2591;&#127912;";
+      for (var i = 0; i < level; i++) str += "&#x2591;    ";
+      if (entry.type == "agua") str += "🚰";
+      else if (entry.type == "lava") str += " 🌋";
+      else if (entry.type == "bio") str += " 📚";
+      else if (entry.type == "text") str += "&#128211;";
+      else if (entry.type == "img") str += " ;🖼️";
+      else if (entry.type == "iframe") str += "&#128214;";
+      else if (entry.type == "eidogo") str += "&#127912;";
       else if (entry.type == "snes") str += " --&#x1F579;";
-      else if (entry.type == "exec") str += "&#x2591;&#x2591;&#128478;";
-      else if (entry.type == "link") str += "&#x2591;&#x2591;🔗";
+      else if (entry.type == "exec") str += "&#128478;";
+      else if (entry.type == "link") str += "🔗";
       else if (entry.type == "dir") str += "&#x2593;&#x2593;&#x2593;";
       term.write(str);
       term.writeLink(entry, term.dirString(dir) + "/" + entry.name);
