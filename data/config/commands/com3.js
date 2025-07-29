@@ -492,7 +492,7 @@ COMMANDS.raiz = function (argv, cb) {
       else if (entry.type == "snes") str += " --&#x1F579;";
       else if (entry.type == "exec") str += "&#128478;";
       else if (entry.type == "link") str += "🔗";
-      else if (entry.type == "dir") str += "&#x2593;&#x2593;&#x2593;";
+      else if (entry.type == "dir") str += "&#x2593;";
       term.write(str);
       term.writeLink(entry, term.dirString(dir) + "/" + entry.name);
       term.write("<br>");
