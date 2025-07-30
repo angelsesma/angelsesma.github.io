@@ -175,8 +175,7 @@ COMMANDS.exec = function (argv, cb) {
 };
 
 COMMANDS.getinfo = function (argv, cb){
-function getDeviceAndNetworkInfo() {
-  // 1. Device & Browser Info (non-personal)
+
   const deviceInfo = {
     // Browser/OS
     userAgent: navigator.userAgent,
@@ -213,11 +212,9 @@ function getDeviceAndNetworkInfo() {
     'behavior: '+behaviorInfo+'</br>'+
     'timestamp: '+new Date().toISOString(),
   );
-}
-
-getDeviceAndNetworkInfo();
-cb();
-};
+  cb();
+  return;
+  };
 
 COMMANDS.iframe = function (argv, cb) {
   var filename = this._terminal.parseArgs(argv).filenames[0],
