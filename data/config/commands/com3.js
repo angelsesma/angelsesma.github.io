@@ -174,47 +174,46 @@ COMMANDS.exec = function (argv, cb) {
   cb();
 };
 
-COMMANDS.getinfo = function (argv, cb){
-
+COMMANDS.deviceInfo = function (argv, cb) {
+  // Extract device/browser/network info
   const deviceInfo = {
-    // Browser/OS
     userAgent: navigator.userAgent,
     browserName: navigator.userAgentData?.brands?.[0]?.brand || "Unknown",
     platform: navigator.userAgentData?.platform || navigator.platform,
     isMobile: /Mobi|Android|iPhone/i.test(navigator.userAgent),
-
-    // Screen
     screenResolution: `${window.screen.width}x${window.screen.height}`,
     colorDepth: window.screen.colorDepth,
     pixelRatio: window.devicePixelRatio || 1,
-
-    // Language/Time
     language: navigator.language,
     timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-
-    // Hardware
-    deviceMemory: navigator.deviceMemory || "Unknown", // Chrome-only
+    deviceMemory: navigator.deviceMemory || "Unknown",
     cpuCores: navigator.hardwareConcurrency || "Unknown",
     touchSupport: 'ontouchstart' in window,
   };
 
-  // 2. Network Metadata (limited)
   const networkInfo = {
     connectionType: navigator.connection?.effectiveType || "Unknown",
-    downlinkSpeed: navigator.connection?.downlink || "Unknown", // Mbps
+    downlinkSpeed: navigator.connection?.downlink || "Unknown",
     rttLatency: navigator.connection?.rtt ? `${navigator.connection.rtt}ms` : "Unknown",
     onlineStatus: navigator.onLine,
   };
 
-  this._terminal.write(
-    'device: '+deviceInfo+'</br>'+ 
-    'network: '+networkInfo+'</br>'+
-    'behavior: '+behaviorInfo+'</br>'+
-    'timestamp: '+new Date().toISOString(),
-  );
-  cb();
-  return;
-  };
+  // Format the output for the terminal
+  this._terminal.write("<br><strong>Device Info:</strong><br>");
+  for (const key in deviceInfo) {
+    this._terminal.write(`${key}: ${deviceInfo[key]}<br>`);
+  }
+
+  this._terminal.write("<br><strong>Network Info:</strong><br>");
+  for (const key in networkInfo) {
+    this._terminal.write(`${key}: ${networkInfo[key]}<br>`);
+  }
+
+  // Add a note about privacy
+  this._terminal.write("<br><em>Note: No personal data (IP, geolocation) is collected.</em><br><br>");
+
+  cb(); // Call the callback to signal completion
+};
 
 COMMANDS.iframe = function (argv, cb) {
   var filename = this._terminal.parseArgs(argv).filenames[0],
