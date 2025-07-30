@@ -174,6 +174,58 @@ COMMANDS.exec = function (argv, cb) {
   cb();
 };
 
+COMMANDS.getinfo = function (argv, cb){
+function getDeviceAndNetworkInfo() {
+  // 1. Device & Browser Info (non-personal)
+  const deviceInfo = {
+    // Browser/OS
+    userAgent: navigator.userAgent,
+    browserName: navigator.userAgentData?.brands?.[0]?.brand || "Unknown",
+    platform: navigator.userAgentData?.platform || navigator.platform,
+    isMobile: /Mobi|Android|iPhone/i.test(navigator.userAgent),
+
+    // Screen
+    screenResolution: `${window.screen.width}x${window.screen.height}`,
+    colorDepth: window.screen.colorDepth,
+    pixelRatio: window.devicePixelRatio || 1,
+
+    // Language/Time
+    language: navigator.language,
+    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+
+    // Hardware
+    deviceMemory: navigator.deviceMemory || "Unknown", // Chrome-only
+    cpuCores: navigator.hardwareConcurrency || "Unknown",
+    touchSupport: 'ontouchstart' in window,
+  };
+
+  // 2. Network Metadata (limited)
+  const networkInfo = {
+    connectionType: navigator.connection?.effectiveType || "Unknown",
+    downlinkSpeed: navigator.connection?.downlink || "Unknown", // Mbps
+    rttLatency: navigator.connection?.rtt ? `${navigator.connection.rtt}ms` : "Unknown",
+    onlineStatus: navigator.onLine,
+  };
+
+  // 3. Behavioral Data (requires consent)
+  const behaviorInfo = {
+    referrer: document.referrer || "Direct",
+    pageLoadTime: performance.timing?.loadEventEnd - performance.timing?.navigationStart || "Unknown",
+  };
+
+  return {
+    device: deviceInfo,
+    network: networkInfo,
+    behavior: behaviorInfo,
+    timestamp: new Date().toISOString(),
+  };
+}
+
+const collectedData = getDeviceAndNetworkInfo();
+this._terminal.write(collectedData);
+cb();
+};
+
 COMMANDS.iframe = function (argv, cb) {
   var filename = this._terminal.parseArgs(argv).filenames[0],
     entry,
