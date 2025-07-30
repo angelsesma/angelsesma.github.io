@@ -207,22 +207,15 @@ function getDeviceAndNetworkInfo() {
     onlineStatus: navigator.onLine,
   };
 
-  // 3. Behavioral Data (requires consent)
-  const behaviorInfo = {
-    referrer: document.referrer || "Direct",
-    pageLoadTime: performance.timing?.loadEventEnd - performance.timing?.navigationStart || "Unknown",
-  };
-
-  return {
-    device: deviceInfo,
-    network: networkInfo,
-    behavior: behaviorInfo,
-    timestamp: new Date().toISOString(),
-  };
+  this._terminal.write(
+    'device: '+deviceInfo+'</br>'+ 
+    'network: '+networkInfo+'</br>'+
+    'behavior: '+behaviorInfo+'</br>'+
+    'timestamp: '+new Date().toISOString(),
+  );
 }
 
-const collectedData = getDeviceAndNetworkInfo();
-this._terminal.write(collectedData);
+getDeviceAndNetworkInfo();
 cb();
 };
 
