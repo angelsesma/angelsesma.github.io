@@ -472,6 +472,40 @@ COMMANDS.iching = function (argv, cb) {
   cb();
 };
 
+COMMANDS.paip = function (argv, cb) {
+  var term = this._terminal,
+    home;
+
+  function writeTree(dir, level) {
+    dir.contents.forEach(function (entry) {
+      var str = "";
+
+      if (entry.name.startswith(".")) return;
+      for (var i = 0; i < level; i++) str += "___";
+      if (entry.type == "agua") str += "🚰";
+      else if (entry.type == "lava") str += "🌋";
+      else if (entry.type == "bio") str += "📚";
+      else if (entry.type == "text") str += "&#128211;";
+      else if (entry.type == "img") str += " ;🖼️";
+      else if (entry.type == "iframe") str += "&#128214;";
+      else if (entry.type == "eidogo") str += "&#127912;";
+      else if (entry.type == "snes") str += " &#x1F579;";
+      else if (entry.type == "exec") str += "&#128478;";
+      else if (entry.type == "link") str += "🔗";
+      else if (entry.type == "dir") str += "/";
+      term.write(str);
+      term.writeLink(entry, term.dirString(dir) + "/" + entry.name);
+      term.write("<br>");
+      if (entry.type === "dir") writeTree(entry, level + 1);
+    });
+  }
+  home = this._terminal.getEntry("~");
+
+  this._terminal.write("~<br>");
+  writeTree(home, 0);
+  cb();
+};
+
 COMMANDS.raiz = function (argv, cb) {
   var term = this._terminal,
     home;
