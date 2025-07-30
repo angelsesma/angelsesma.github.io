@@ -47,6 +47,20 @@ COMMANDS.agua = function (argv, cb) {
   cb();
 };
 
+COMMANDS.hola = function (argv, cb) {
+  this._terminal.write(
+    "<strong>Bienvenidx a mi portafolio web! </strong></br>" +
+    "Usa el comando raiz seguido de la tecla enter para ver el directorio de archivos" +
+    "Usa el comando iching seguido de la tecla enter para consultar el libro de los cambios");
+
+  this._terminal.write("Comandos disponibles:<br>");
+  for (var c in this._terminal.commands) {
+    if (this._terminal.commands.hasOwnProperty(c) && !c.startswith("_"))
+      this._terminal.write(c + "  ");
+  }
+  cb();
+};
+
 COMMANDS.ayuda = function (argv, cb) {
   this._terminal.write(
     "<br><br><br><br>usa el comando <strong>iching</strong>" +
@@ -481,7 +495,7 @@ COMMANDS.paip = function (argv, cb) {
       var str = "";
 
       if (entry.name.startswith(".")) return;
-      for (var i = 0; i < level; i++) str += "___";
+      for (var i = 0; i < level; i++) str += "   ";
       if (entry.type == "agua") str += "🚰";
       else if (entry.type == "lava") str += "🌋";
       else if (entry.type == "bio") str += "📚";
