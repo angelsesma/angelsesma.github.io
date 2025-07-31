@@ -1,7 +1,3 @@
-// Remixed from:
-
-// Copyright 2013 Clark DuVall
-//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -50,30 +46,11 @@ COMMANDS.agua = function (argv, cb) {
 COMMANDS.hola = function (argv, cb) {
   this._terminal.write(
     "<strong>Bienvenidx a mi portafolio web! </strong></br>" +
-    "Usa el comando raiz seguido de la tecla enter para ver el directorio de archivos" +
-    "Usa el comando iching seguido de la tecla enter para consultar el libro de los cambios");
+    "Usa el comando <strong>hola</strong> seguido de la tecla enter para ver este mensaje</br>" +
+    "Usa el comando <strong>raiz</strong> seguido de la tecla enter para ver el directorio de archivos</br>" +
+    "Usa el comando <strong>iching</strong> seguido de la tecla enter para consultar el libro de los cambios</br>");
 
   this._terminal.write("Comandos disponibles:<br>");
-  for (var c in this._terminal.commands) {
-    if (this._terminal.commands.hasOwnProperty(c) && !c.startswith("_"))
-      this._terminal.write(c + "  ");
-  }
-  cb();
-};
-
-COMMANDS.ayuda = function (argv, cb) {
-  this._terminal.write(
-    "<br><br><br><br>usa el comando <strong>iching</strong>" +
-      "para leer la energía del momento.  Escribe o da clic en el nombre de un " +
-      '<span class="exec">link</span> para verlo. Usa "cd" para abrir un ' +
-      '<span class="dir">directorio</span>, o "ls" para enlistar' +
-      ' sus contenidos. Los contenidos de un <span class="text">texto</span> ' +
-      'se pueden leer usando "cat". Los <span class="eidogo">kifu</span> ' +
-      'se pueden visualizar con el comando "eidogo". Las <span class="img">imagenes</span> se ' +
-      'muestran con "gimp".'+
-      'Escribe el comando taogpt para leer un capítulo del libro del tao traducido por UKLG<br>'+'<br>Para salir de un comando presiona Ctrl+C <br><br>' 
-  );
-  this._terminal.write("Los comandos son:<br>");
   for (var c in this._terminal.commands) {
     if (this._terminal.commands.hasOwnProperty(c) && !c.startswith("_"))
       this._terminal.write(c + "  ");
@@ -378,7 +355,7 @@ COMMANDS.bambu = function(argv, cb) {
    this._terminal.write('<br>');
    writeTree(home, 0);
    cb();
-}
+};
 
 
 COMMANDS.tree = function(argv, cb) {
@@ -406,43 +383,100 @@ COMMANDS.tree = function(argv, cb) {
    this._terminal.write('<br>');
    writeTree(home, 0);
    cb();
-}
-
-COMMANDS.sudo = function (argv, cb) {
-  var count = 0;
-  this._terminal.returnHandler = function () {
-    if (++count < 3) {
-      this.write("<br/>Intente nuevamente.<br/>");
-      this.write("[sudo] password para " + this.config.username + ": ");
-      this.scroll();
-    } else {
-      this.write("<br/>sudo: 3 intentos de password incorrectos");
-      cb();
-    }
-  }.bind(this._terminal);
-  this._terminal.write(
-    "[sudo] password para " + this._terminal.config.username + ": "
-  );
-  this._terminal.scroll();
 };
 
+// Login Command
 COMMANDS.login = function (argv, cb) {
-  this._terminal.returnHandler = function () {
-    var username = this.stdout().innerHTML;
+  const terminal = this._terminal;
+  let username;
 
-    this.scroll();
-    if (username) this.config.username = username;
-    this.write("<br>Password: ");
-    this.scroll();
-    this.returnHandler = function () {
-      cb();
-    };
-  }.bind(this._terminal);
-  this._terminal.write("Nombre: ");
-  this._terminal.newStdout();
-  this._terminal.scroll();
+  // Check if already logged in
+  if (isAuthenticated()) {
+    terminal.write("You are already logged in. Use 'logout' to sign out.<br>");
+    terminal.scroll();
+    return cb(true);
+  }
+
+  // Attempt limit check
+  if (failedAttempts >= MAX_ATTEMPTS) {
+    terminal.write("<br>Too many failed attempts! Please try again later.<br>");
+    terminal.scroll();
+    return cb(false);
+  }
+
+  terminal.returnHandler = function () {
+    if (!username) {
+      // Capture username
+      username = terminal.stdout().textContent.trim();
+      terminal.config.username = username;
+      terminal.write("<br>Password: ");
+      terminal.scroll();
+
+      // Mask password input
+      const originalWrite = terminal.write;
+      let passwordChars = [];
+      terminal.write = function (data) {
+        if (data === '\r' || data === '\n') {
+          terminal.write = originalWrite;
+          terminal.write("<br>");
+          terminal.scroll();
+
+          const password = passwordChars.join('');
+          passwordChars = [];
+
+          // Simple authentication
+          if (username === AUTH_CREDENTIALS.username && password === AUTH_CREDENTIALS.password) {
+            // Set secure cookie with encrypted "token" (username)
+            const encryptedToken = encrypt(username);
+            setSecureCookie('auth_token', encryptedToken);
+
+            terminal.write("Login successful!<br>");
+            terminal.scroll();
+            failedAttempts = 0; // Reset attempts
+            cb(true);
+          } else {
+            failedAttempts++;
+            terminal.write(`<br>Invalid username or password. Attempts left: ${MAX_ATTEMPTS - failedAttempts}<br>`);
+            terminal.scroll();
+            cb(false);
+          }
+        } else {
+          passwordChars.push(data);
+          originalWrite.call(terminal, '*');
+        }
+      };
+
+      return;
+    }
+  };
+
+  terminal.write("Username: ");
+  terminal.scroll();
 };
 
+// Logout Command
+COMMANDS.logout = function (argv, cb) {
+  const terminal = this._terminal;
+  deleteCookie('auth_token');
+  failedAttempts = 0; // Reset attempts
+  terminal.write("Logged out successfully.<br>");
+  terminal.scroll();
+  cb(true);
+};
+
+// Example Protected Command (requires valid cookie)
+COMMANDS.secret = function (argv, cb) {
+  const terminal = this._terminal;
+  if (isAuthenticated()) {
+    terminal.write("Access granted! Here's your secret message: 'Hello, authenticated user!'<br>");
+    terminal.scroll();
+    cb(true);
+  } else {
+    terminal.write("Access denied. Please login first.<br>");
+    terminal.scroll();
+    cb(false);
+  }
+};
 COMMANDS.iching = function (argv, cb) {
   var term = this._terminal,
     home;
@@ -695,3 +729,44 @@ COMMANDS.taogpt = function (argv, cb) {
   castReading(home, 0);
   cb();
 };
+
+// Configuration
+const MAX_ATTEMPTS = 3;
+let failedAttempts = 0;
+
+// Predefined credentials for simple authentication (DEMO ONLY - INSECURE)
+const AUTH_CREDENTIALS = {
+  username: 'admin',
+  password: 'password123'
+};
+
+// Simple encryption/decryption (base64 obfuscation - not secure for production)
+function encrypt(text) {
+  return btoa(unescape(encodeURIComponent(text)));
+}
+function decrypt(encryptedText) {
+  return decodeURIComponent(escape(atob(encryptedText)));
+}
+
+// Cookie helpers
+function setSecureCookie(name, value, days = 1) {
+  const expires = new Date(Date.now() + days * 864e5).toUTCString();
+  document.cookie = `${name}=${value}; expires=${expires}; path=/; Secure; SameSite=Strict`;
+}
+function getCookie(name) {
+  const cookies = document.cookie.split('; ');
+  const cookie = cookies.find(row => row.startsWith(`${name}=`));
+  return cookie ? cookie.split('=')[1] : null;
+}
+function deleteCookie(name) {
+  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; Secure; SameSite=Strict`;
+}
+
+// Helper to check if authenticated (validates cookie)
+function isAuthenticated() {
+  const token = getCookie('auth_token');
+  if (!token) return false;
+  const decrypted = decrypt(token);
+  return decrypted === AUTH_CREDENTIALS.username; // Simple check (extend as needed)
+}
+
