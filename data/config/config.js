@@ -16,9 +16,9 @@ var CONFIG = CONFIG || {};
 
 CONFIG.prompt = function(cwd, user) {
    if (user)
-      return '<span class="user">' + user + '~~>'
+      return '<span class="user">' + user + '>>'
           '</span>';
    return ' ';
 };
 
-CONFIG.username = 'fuego';
+CONFIG.username = 'guest';

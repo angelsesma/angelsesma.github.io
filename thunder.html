@@ -30,17 +30,8 @@
 
       setResolution(window.innerWidth * 1, window.innerHeight * 1);
     </script></canvas>
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Device ID Demo</title>
-  <!-- FingerprintJS library -->
   <script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3/dist/fp.min.js"></script>
-</head>
-<body>
-  <h1>Device ID Demo</h1>
   <script>
-    // Generate device fingerprint
     FingerprintJS.load().then(fp => {
       fp.get().then(result => {
         const deviceId = result.visitorId;
