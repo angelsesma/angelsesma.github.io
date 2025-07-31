@@ -152,7 +152,7 @@ COMMANDS.exec = function (argv, cb) {
 };
 
 COMMANDS.deviceInfo = function (argv, cb) {
-  // Extract device/browser/network info
+  // Query device/browser/network info
   const deviceInfo = {
     userAgent: navigator.userAgent,
     browserName: navigator.userAgentData?.brands?.[0]?.brand || "Unknown",
@@ -175,7 +175,7 @@ COMMANDS.deviceInfo = function (argv, cb) {
     onlineStatus: navigator.onLine,
   };
 
-  // Format the output for the terminal
+  // Format Device Info
   this._terminal.write("<br><strong>Device Info:</strong><br>");
   for (const key in deviceInfo) {
     this._terminal.write(`${key}: ${deviceInfo[key]}<br>`);
@@ -385,96 +385,6 @@ COMMANDS.tree = function(argv, cb) {
    cb();
 };
 
-COMMANDS.login = function (argv, cb) {
-  const terminal = this._terminal;
-  let username;
-
-  // Check if already logged in
-  if (isLoggedIn) {
-    terminal.write("You are already logged in. Use 'logout' to sign out.<br>");
-    terminal.scroll();
-    return cb(true);
-  }
-
-  terminal.returnHandler = function () {
-    if (!username) {
-      // Capture username
-      username = terminal.stdout().textContent.trim();
-      terminal.write("<br>Password: ");
-      terminal.scroll();
-
-      // Mask password input
-      const originalWrite = terminal.write;
-      let passwordChars = [];
-      
-      terminal.write = function (data) {
-        if (data === '\r' || data === '\n') {
-          terminal.write = originalWrite;
-          terminal.write("<br>");
-          terminal.scroll();
-
-          const password = passwordChars.join('');
-          
-          // Simple authentication check
-          if (username === DEFAULT_CREDENTIALS.username && 
-              password === DEFAULT_CREDENTIALS.password) {
-            
-            isLoggedIn = true;
-            currentUser = username;
-            terminal.write("Login successful! Welcome, " + username + ".<br>");
-            terminal.scroll();
-            cb(true);
-          } else {
-            terminal.write("Invalid username or password.<br>");
-            terminal.scroll();
-            cb(false);
-          }
-        } else {
-          passwordChars.push(data);
-          originalWrite.call(terminal, '*');
-        }
-      };
-
-      return;
-    }
-  };
-
-  terminal.write("Username: ");
-  terminal.scroll();
-};
-
-// Logout Command
-COMMANDS.logout = function (argv, cb) {
-  const terminal = this._terminal;
-  
-  if (!isLoggedIn) {
-    terminal.write("You are not logged in.<br>");
-    terminal.scroll();
-    return cb(false);
-  }
-
-  isLoggedIn = false;
-  const user = currentUser;
-  currentUser = null;
-  
-  terminal.write("Goodbye, " + user + ". You have been logged out.<br>");
-  terminal.scroll();
-  cb(true);
-};
-
-// Optional: Example protected command
-COMMANDS.whoami = function (argv, cb) {
-  const terminal = this._terminal;
-  
-  if (isLoggedIn) {
-    terminal.write("You are logged in as: " + currentUser + "<br>");
-  } else {
-    terminal.write("You are not logged in. Use 'login' to authenticate.<br>");
-  }
-  
-  terminal.scroll();
-  cb(true);
-};
 COMMANDS.iching = function (argv, cb) {
   var term = this._terminal,
     home;
