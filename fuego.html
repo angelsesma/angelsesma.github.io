@@ -61,5 +61,25 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 </script>
+<!-- Include FingerprintJS -->
+<script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3/dist/fp.min.js"></script>
+
+<script>
+// Initialize FingerprintJS and send ID to backend
+async function identifyDevice() {
+  const fp = await FingerprintJS.load();
+  const { visitorId } = await fp.get();
+  
+  // Send to backend
+  fetch('/api/register-device', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ deviceId: visitorId })
+  });
+}
+
+// Run on page load
+identifyDevice();
+</script>
   </body>
 </html>
