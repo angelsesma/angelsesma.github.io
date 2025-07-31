@@ -10,6 +10,47 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// Configuration
+const MAX_ATTEMPTS = 3;
+let failedAttempts = 0;
+
+// Predefined credentials for simple authentication (DEMO ONLY - INSECURE)
+const AUTH_CREDENTIALS = {
+  username: 'admin',
+  password: 'password123'
+};
+
+// Simple encryption/decryption (base64 obfuscation - not secure for production)
+function encrypt(text) {
+  return btoa(unescape(encodeURIComponent(text)));
+}
+function decrypt(encryptedText) {
+  return decodeURIComponent(escape(atob(encryptedText)));
+}
+
+// Cookie helpers
+function setSecureCookie(name, value, days = 1) {
+  const expires = new Date(Date.now() + days * 864e5).toUTCString();
+  document.cookie = `${name}=${value}; expires=${expires}; path=/; Secure; SameSite=Strict`;
+}
+function getCookie(name) {
+  const cookies = document.cookie.split('; ');
+  const cookie = cookies.find(row => row.startsWith(`${name}=`));
+  return cookie ? cookie.split('=')[1] : null;
+}
+function deleteCookie(name) {
+  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; Secure; SameSite=Strict`;
+}
+
+// Helper to check if authenticated (validates cookie)
+function isAuthenticated() {
+  const token = getCookie('auth_token');
+  if (!token) return false;
+  const decrypted = decrypt(token);
+  return decrypted === AUTH_CREDENTIALS.username; // Simple check (extend as needed)
+}
+
+
 var COMMANDS = COMMANDS || {};
 
 COMMANDS.agua = function (argv, cb) {
@@ -730,43 +771,4 @@ COMMANDS.taogpt = function (argv, cb) {
   cb();
 };
 
-// Configuration
-const MAX_ATTEMPTS = 3;
-let failedAttempts = 0;
-
-// Predefined credentials for simple authentication (DEMO ONLY - INSECURE)
-const AUTH_CREDENTIALS = {
-  username: 'admin',
-  password: 'password123'
-};
-
-// Simple encryption/decryption (base64 obfuscation - not secure for production)
-function encrypt(text) {
-  return btoa(unescape(encodeURIComponent(text)));
-}
-function decrypt(encryptedText) {
-  return decodeURIComponent(escape(atob(encryptedText)));
-}
-
-// Cookie helpers
-function setSecureCookie(name, value, days = 1) {
-  const expires = new Date(Date.now() + days * 864e5).toUTCString();
-  document.cookie = `${name}=${value}; expires=${expires}; path=/; Secure; SameSite=Strict`;
-}
-function getCookie(name) {
-  const cookies = document.cookie.split('; ');
-  const cookie = cookies.find(row => row.startsWith(`${name}=`));
-  return cookie ? cookie.split('=')[1] : null;
-}
-function deleteCookie(name) {
-  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; Secure; SameSite=Strict`;
-}
-
-// Helper to check if authenticated (validates cookie)
-function isAuthenticated() {
-  const token = getCookie('auth_token');
-  if (!token) return false;
-  const decrypted = decrypt(token);
-  return decrypted === AUTH_CREDENTIALS.username; // Simple check (extend as needed)
-}
 
