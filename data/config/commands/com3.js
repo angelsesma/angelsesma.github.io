@@ -10,47 +10,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Configuration
-const MAX_ATTEMPTS = 3;
-let failedAttempts = 0;
-
-// Predefined credentials for simple authentication (DEMO ONLY - INSECURE)
-const AUTH_CREDENTIALS = {
-  username: 'admin',
-  password: 'password123'
-};
-
-// Simple encryption/decryption (base64 obfuscation - not secure for production)
-function encrypt(text) {
-  return btoa(unescape(encodeURIComponent(text)));
-}
-function decrypt(encryptedText) {
-  return decodeURIComponent(escape(atob(encryptedText)));
-}
-
-// Cookie helpers
-function setSecureCookie(name, value, days = 1) {
-  const expires = new Date(Date.now() + days * 864e5).toUTCString();
-  document.cookie = `${name}=${value}; expires=${expires}; path=/; Secure; SameSite=Strict`;
-}
-function getCookie(name) {
-  const cookies = document.cookie.split('; ');
-  const cookie = cookies.find(row => row.startsWith(`${name}=`));
-  return cookie ? cookie.split('=')[1] : null;
-}
-function deleteCookie(name) {
-  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; Secure; SameSite=Strict`;
-}
-
-// Helper to check if authenticated (validates cookie)
-function isAuthenticated() {
-  const token = getCookie('auth_token');
-  if (!token) return false;
-  const decrypted = decrypt(token);
-  return decrypted === AUTH_CREDENTIALS.username; // Simple check (extend as needed)
-}
-
-
 var COMMANDS = COMMANDS || {};
 
 COMMANDS.agua = function (argv, cb) {
@@ -426,36 +385,28 @@ COMMANDS.tree = function(argv, cb) {
    cb();
 };
 
-// Login Command
 COMMANDS.login = function (argv, cb) {
   const terminal = this._terminal;
   let username;
 
   // Check if already logged in
-  if (isAuthenticated()) {
+  if (isLoggedIn) {
     terminal.write("You are already logged in. Use 'logout' to sign out.<br>");
     terminal.scroll();
     return cb(true);
-  }
-
-  // Attempt limit check
-  if (failedAttempts >= MAX_ATTEMPTS) {
-    terminal.write("<br>Too many failed attempts! Please try again later.<br>");
-    terminal.scroll();
-    return cb(false);
   }
 
   terminal.returnHandler = function () {
     if (!username) {
       // Capture username
       username = terminal.stdout().textContent.trim();
-      terminal.config.username = username;
       terminal.write("<br>Password: ");
       terminal.scroll();
 
       // Mask password input
       const originalWrite = terminal.write;
       let passwordChars = [];
+      
       terminal.write = function (data) {
         if (data === '\r' || data === '\n') {
           terminal.write = originalWrite;
@@ -463,21 +414,18 @@ COMMANDS.login = function (argv, cb) {
           terminal.scroll();
 
           const password = passwordChars.join('');
-          passwordChars = [];
-
-          // Simple authentication
-          if (username === AUTH_CREDENTIALS.username && password === AUTH_CREDENTIALS.password) {
-            // Set secure cookie with encrypted "token" (username)
-            const encryptedToken = encrypt(username);
-            setSecureCookie('auth_token', encryptedToken);
-
-            terminal.write("Login successful!<br>");
+          
+          // Simple authentication check
+          if (username === DEFAULT_CREDENTIALS.username && 
+              password === DEFAULT_CREDENTIALS.password) {
+            
+            isLoggedIn = true;
+            currentUser = username;
+            terminal.write("Login successful! Welcome, " + username + ".<br>");
             terminal.scroll();
-            failedAttempts = 0; // Reset attempts
             cb(true);
           } else {
-            failedAttempts++;
-            terminal.write(`<br>Invalid username or password. Attempts left: ${MAX_ATTEMPTS - failedAttempts}<br>`);
+            terminal.write("Invalid username or password.<br>");
             terminal.scroll();
             cb(false);
           }
@@ -498,25 +446,34 @@ COMMANDS.login = function (argv, cb) {
 // Logout Command
 COMMANDS.logout = function (argv, cb) {
   const terminal = this._terminal;
-  deleteCookie('auth_token');
-  failedAttempts = 0; // Reset attempts
-  terminal.write("Logged out successfully.<br>");
+  
+  if (!isLoggedIn) {
+    terminal.write("You are not logged in.<br>");
+    terminal.scroll();
+    return cb(false);
+  }
+
+  isLoggedIn = false;
+  const user = currentUser;
+  currentUser = null;
+  
+  terminal.write("Goodbye, " + user + ". You have been logged out.<br>");
   terminal.scroll();
   cb(true);
 };
 
-// Example Protected Command (requires valid cookie)
-COMMANDS.secret = function (argv, cb) {
+// Optional: Example protected command
+COMMANDS.whoami = function (argv, cb) {
   const terminal = this._terminal;
-  if (isAuthenticated()) {
-    terminal.write("Access granted! Here's your secret message: 'Hello, authenticated user!'<br>");
-    terminal.scroll();
-    cb(true);
+  
+  if (isLoggedIn) {
+    terminal.write("You are logged in as: " + currentUser + "<br>");
   } else {
-    terminal.write("Access denied. Please login first.<br>");
-    terminal.scroll();
-    cb(false);
+    terminal.write("You are not logged in. Use 'login' to authenticate.<br>");
   }
+  
+  terminal.scroll();
+  cb(true);
 };
 COMMANDS.iching = function (argv, cb) {
   var term = this._terminal,
