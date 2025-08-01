@@ -12,37 +12,6 @@
 
 var COMMANDS = COMMANDS || {};
 
-COMMANDS.agua = function (argv, cb) {
-  var filenames = this._terminal.parseArgs(argv).filenames,
-    stdout;
-
-  this._terminal.scroll();
-  if (!filenames.length) {
-    this._terminal.returnHandler = function () {
-      stdout = this.stdout();
-      if (!stdout) return;
-      stdout.innerHTML += "<br>" + stdout.innerHTML + "<br>";
-      this.scroll();
-      this.newStdout();
-    }.bind(this._terminal);
-    return;
-  }
-  filenames.forEach(function (filename, i) {
-    var entry = this._terminal.getEntry(filename);
-
-    if (!entry)
-      this._terminal.write(
-        "agua: " + filename + ": No existe tal archivo o directorio"
-      );
-    else if (entry.type === "dir")
-      this._terminal.write("agua: " + filename + ": No es un directorio.");
-    else
-      this._terminal.write('<span class="agua">' + entry.contents + "</span>"); //
-    if (i !== filenames.length - 1) this._terminal.write("<br>");
-  }, this);
-  cb();
-};
-
 COMMANDS.hola = function (argv, cb) {
   this._terminal.write(
     "<strong>Bienvenidx a mi portafolio web! </strong></br>" +
@@ -102,52 +71,6 @@ COMMANDS.cd = function (argv, cb) {
     terminal.cwd = entry;
   }
 
-  cb();
-};
-
-COMMANDS.eidogo = function (argv, cb) {
-  var filename = this._terminal.parseArgs(argv).filenames[0],
-    entry,
-    eidogos;
-
-  if (!filename) {
-    this._terminal.write("eidogo: se requiere una ruta de eidogo");
-    cb();
-    return;
-  }
-
-  entry = this._terminal.getEntry(filename);
-  if (!entry || entry.type !== "eidogo") {
-    this._terminal.write(
-      "eidogo: el archivo " + filename + " no es un archivo de tipo eidogo."
-    );
-  } else {
-    this._terminal.write(
-      '<iframe src="' + entry.contents + '" width="480px" height="600px"/>'
-    );
-  }
-  cb();
-};
-
-COMMANDS.exec = function (argv, cb) {
-  var filename = this._terminal.parseArgs(argv).filenames[0],
-    entry,
-    eidogos;
-
-  if (!filename) {
-    this._terminal.write("exec: se requiere unarchivo ejecutable");
-    cb();
-    return;
-  }
-
-  entry = this._terminal.getEntry(filename);
-  if (!entry || entry.type !== "exec") {
-    this._terminal.write(
-      "exec: el archivo " + filename + " no es un archivo de tipo ejecutable."
-    );
-  } else {
-    this._terminal.write(entry.contents);
-  }
   cb();
 };
 
@@ -294,95 +217,9 @@ COMMANDS.gimp = function (argv, cb) {
   cb();
 };
 
-COMMANDS.lava = function (argv, cb) {
-  var filename = this._terminal.parseArgs(argv).filenames[0],
-    entry,
-    lavas;
-
-  if (!filename) {
-    this._terminal.write("lava: se requiere una ruta de lava");
-    cb();
-    return;
-  }
-
-  entry = this._terminal.getEntry(filename);
-  if (!entry || entry.type !== "lava") {
-    this._terminal.write(
-      "lava: el archivo " + filename + " no es un archivo de tipo lava."
-    );
-  } else {
-    this._terminal.write(
-      '<iframe referrerpolicy="no-referrer", allow-scripts" src="' + entry.contents +'" width="800px" height="600px"/><br/>'
-    );
-    cb();
-    lavas = this._terminal.div.getElementsByTagName("lava");
-    lavas[lavas.length - 1].onload = function () {
-      this.scroll();
-    }.bind(this._terminal);
-    if ("caption" in entry) this._terminal.write("<br/>" + entry.caption);
-  }
-  cb();
-};
-
 COMMANDS.borrar = function (argv, cb) {
   this._terminal.div.innerHTML = "";
   cb();
-};
-
-COMMANDS.bambu = function(argv, cb) {
-   var term = this._terminal,
-       home;
-
-   function writeTree(dir, level) {
-      dir.contents.forEach(function(entry) {
-         var str = '';
-
-         if (entry.name.startswith('.'))
-            return;
-         for (var i = 0; i < level; i++) str += "|    ";
-         if (entry.type == "agua") str += "🀤  ";
-         else if (entry.type == "dir") str += "--"; 
-         else str += "🀤";
-         term.write(str);
-         term.writeLink(entry, term.dirString(dir) + '/' + entry.name);
-         term.write('<br>');
-         if (entry.type === 'dir')
-            writeTree(entry, level + 1);
-      });
-   };
-   home = this._terminal.getEntry('~');
-   this._terminal.writeLink(home, '~');
-   this._terminal.write('<br>');
-   writeTree(home, 0);
-   cb();
-};
-
-
-COMMANDS.tree = function(argv, cb) {
-   var term = this._terminal,
-       home;
-
-   function writeTree(dir, level) {
-      dir.contents.forEach(function(entry) {
-         var str = '';
-
-         if (entry.name.startswith('.'))
-            return;
-         for (var i = 0; i < level; i++) str += "    ";
-         if (entry.type == "dir") str += "-- "; 
-         else str += "🀤 ";
-         term.write(str);
-         term.writeLink(entry, term.dirString(dir) + '/' + entry.name);
-         term.write('<br>');
-         if (entry.type === 'dir')
-            writeTree(entry, level + 1);
-      });
-   };
-   home = this._terminal.getEntry('~');
-   this._terminal.writeLink(home, '~');
-   this._terminal.write('<br>');
-   writeTree(home, 0);
-   cb();
 };
 
 COMMANDS.iching = function (argv, cb) {
@@ -513,15 +350,9 @@ COMMANDS.raiz = function (argv, cb) {
 
       if (entry.name.startswith(".")) return;
       for (var i = 0; i < level; i++) str += "&#x2591;    ";
-      if (entry.type == "agua") str += "🚰";
-      else if (entry.type == "lava") str += " 🌋";
-      else if (entry.type == "bio") str += " 📚";
-      else if (entry.type == "text") str += "&#128211;";
+      if (entry.type == "text") str += "&#128211;";
       else if (entry.type == "img") str += " ;🖼️";
       else if (entry.type == "iframe") str += "&#128214;";
-      else if (entry.type == "eidogo") str += "&#127912;";
-      else if (entry.type == "snes") str += " --&#x1F579;";
-      else if (entry.type == "exec") str += "&#128478;";
       else if (entry.type == "link") str += "🔗";
       else if (entry.type == "dir") str += "&#x2593;";
       term.write(str);
