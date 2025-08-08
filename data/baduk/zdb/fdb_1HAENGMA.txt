@@ -1,0 +1,112 @@
+[Zine_de_Baduk] [VOL1] MMXXV
+{::H::A::E::N::G::M::A::]
+
+~MOVIMIENTOS_DE_CABALLO~
+	
+	"Las piedras caminan"
+		-Proverbio
+
+La técnica conocida como Haengma 
+es original de Corea. Consta de 
+un conjunto de jugadas en las que 
+las piedras amigas "caminan"
+sobre el tablero 
+como un caballo.
+
+____________________________portada
+
+1)LA EXTENSIÓN (NOBI)
+
++++++++/5	Los movimientos
+++++☻++/4	más lentos también
+++++☻++/3		...
++++++++/2
+////////1
+87654321
+
+-----------------------------p.1
+
+2)LA DIAGONAL (KOSUMI) 
+
+
++++++++/5	Son las conexiones 
++++☻+++/4	más fuertes
+++++☻++/3.
++++++++/2
+////////1
+87654321
+
+-----------------------------p.2
+
+
+3)SALTO DE UN ESPACIO (IKEN-TOBI)
+
+++++☻++/5	"Un salto de un 
++++++++/4	espacio siempre
+++++☻++/3	es buena idea"
++++++++/2	   
+////////1		-Proverbio
+87654321
+
+-----------------------------p.3
+
+4)SALTO DE CABALLO (KEIMA) 
+
+
++++☻+++/5	"Usa el salto  
++++++++/4	de caballo para
+++++☻++/3		atacar"
++++++++/2		
+////////1		-Proverbio
+87654321
+
+-----------------------------p.4
+
+
+5)SALTO DE CABALLO LARGO (OGEIMA) 
+
+
++++☻+++/5.  El salto de caballo 
++++++++/4	largo es muy
++++++++/3	rápido, pero
+++++☻++/2	puede ser	
+////////1	desconectado. 
+87654321	
+
+-----------------------------p.5
+
+6)SALTO DE DOS ESPACIOS (NIKEN TOBI) 
+
+
+++++☻++/5	Un salto de dos 
++++++++/4	espacios se usa
++++++++/3	para formar una 		
+++++☻++/2	base en la orilla	
+////////1	 del tablero.
+87654321	
+
+-----------------------------p.6
+
+7)SALTO DE ELEFANTE  
+
+
+++++☻++/5	El salto de elefante 
++++++++/4	es otra forma fuerte y
+++++++☻/3	eficiente de caminar		
++++++++/2	en
+////////1	 el tablero.
+87654321	
+
+-----------------------------p.7
+
+8)SALTO DE ELEFANTE  
+
+
+++++☻++/5	Pero es fácil 
++++++☺+/4	de cortar si
+++++++☻/3	hay piedras	
++++++++/2	enemigas		
+////////1	 cerca.
+87654321	
+
+-----------------------------p.7
