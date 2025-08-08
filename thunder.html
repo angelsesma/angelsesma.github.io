@@ -30,20 +30,5 @@
 
       setResolution(window.innerWidth * 1, window.innerHeight * 1);
     </script></canvas>
-  <script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3/dist/fp.min.js"></script>
-  <script>
-    FingerprintJS.load().then(fp => {
-      fp.get().then(result => {
-        const deviceId = result.visitorId;
-        
-        // Send device ID to backend
-        fetch('data.php', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ deviceId: deviceId })
-        });
-      });
-    });
-  </script> 
 </body>
 </html>
