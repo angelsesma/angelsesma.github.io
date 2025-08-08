@@ -54,7 +54,7 @@
     ]
     },
     {
-      "name": "cifi",
+      "name": "Cifi",
       "type": "dir",
       "contents": [
         {
@@ -70,13 +70,13 @@
       ]
     },
     {
-      "name": "zine_de_baduk",
+      "name": "Zine_de_baduk",
       "type": "dir",
       "contents": [
         {
           "name": "VOL1--HAENGMA",
           "type": "iframe",
-          "contents": "/data/baduk/zdb/haengma.txt"
+          "contents": "/data/baduk/zdb/zdbVOL1_frente.png"
         } 
       ]
     },
