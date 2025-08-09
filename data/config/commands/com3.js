@@ -306,33 +306,61 @@ COMMANDS.iching = function (argv, cb) {
   cb();
 };
 
+COMMANDS.tree = function(argv, cb) {
+   var term = this._terminal,
+       home;
+
+   function writeTree(dir, level) {
+      dir.contents.forEach(function(entry) {
+         var str = '';
+
+         if (entry.name.startswith('.'))
+            return;
+         for (var i = 0; i < level; i++) str += "⛰⛰    ";
+         if (entry.type == "agua") str += '⛩𖡼𓋼𖤣𖥧𓋼𓍊⛱﹏𓊝﹏﹏𓆟';
+         else if (entry.type == "dir") str += '⛰⛰⛰⛩'; 
+           // str += '⛰⛰⛰';
+        // str += '⛩𖡼𖤣𖥧𖡼𓋼𖤣𖥧𓋼𓍊⛱﹏𓊝﹏﹏𓆟';
+         term.write(str);
+         term.writeLink(entry, term.dirString(dir) + '/' + entry.name);
+         term.write('<br>');
+         if (entry.type === 'dir')
+            writeTree(entry, level + 1);
+      });
+   };
+   home = this._terminal.getEntry('~');
+   this._terminal.writeLink(home, '~');
+   this._terminal.write('<br>');
+   writeTree(home, 0);
+   cb();
+}
+
+
 COMMANDS.raiz = function (argv, cb) {
   var term = this._terminal,
     home;
-
   function writeTree(dir, level) {
-    dir.contents.forEach(function (entry) {
-      var str = "";
+      dir.contents.forEach(function(entry) {
+         var str = '';
 
-      if (entry.name.startswith(".")) return;
-      for (var i = 0; i < level; i++) str += "&#x2591;    ";
-      if (entry.type == "text") str += "&#128211;";
-      else if (entry.type == "img") str += " ;🖼️";
-      else if (entry.type == "iframe") str += "&#128214;";
-      else if (entry.type == "link") str += "🔗";
-      else if (entry.type == "dir") str += "&#x2591;</br>&#x2591;    &#x2593;";
-      term.write(str);
-      term.writeLink(entry, term.dirString(dir) + "/" + entry.name);
-      term.write("<br>");
-      if (entry.type === "dir") writeTree(entry, level + 1);
-    });
-  }
-  home = this._terminal.getEntry("~");
-
-  this._terminal.write("~<br>");
-  writeTree(home, 0);
-  cb();
-};
+         if (entry.name.startswith('.'))
+            return;
+         for (var i = 0; i < level; i++) str += "⛰⛰    ";
+         if (entry.type == "dir") str += '⛰⛰⛰⛩'; 
+         term.write(str);
+         term.writeLink(entry, term.dirString(dir) + '/' + entry.name);
+         term.write('<br>');
+         if (entry.type === 'dir')
+            writeTree(entry, level + 1);
+      });
+   };
+   home = this._terminal.getEntry('~');
+   this._terminal.writeLink(home, '~');
+   this._terminal.write('<br>');
+   writeTree(home, 0);
+   cb();
+}
+;
 
 COMMANDS.taogpt = function (argv, cb) {
   var term = this._terminal,
