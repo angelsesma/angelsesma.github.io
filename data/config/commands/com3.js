@@ -173,7 +173,7 @@ COMMANDS.deviceInfo2 = function (argv, cb) {
   }
 };
 
-COMMANDS.deviceInfo = async function (argv, cb) {
+COMMANDS.deviceInfo3 = async function (argv, cb) {
   // 1️⃣  Authentication ----------------------------------------------------
   if (argv.password !== "secretpassword") {
     this._terminal.write(
