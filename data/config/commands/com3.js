@@ -518,8 +518,9 @@ COMMANDS.raiz = function (argv, cb) {
 
          if (entry.name.startswith('.'))
             return;
-         for (var i = 0; i < level; i++) str += "⛰⛰    ";
-         if (entry.type == "dir") str += '⛰⛰⛰⛩'; 
+         for (var i = 0; i < level; i++) str += "⛰    ";
+         if (entry.type == "dir") str += '⛩';
+         else str += '𓍊' 
          term.write(str);
          term.writeLink(entry, term.dirString(dir) + '/' + entry.name);
          term.write('<br>');
