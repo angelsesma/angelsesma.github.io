@@ -7,12 +7,13 @@
     <script src="https://unpkg.com/hydra-synth"></script>
   </head>
   <body>
+    <!--github.com/clarkduvall/jsterm-->
     <script type="text/javascript" src="/data/config/commands/com3.js"></script>
     <script type="text/javascript" src="/data/config/config.js"></script>
     <script type="text/javascript" src="/data/config/js/jsterm1.js"></script>
     <canvas id="myCanvas">
-    <script>
-      // create a new hydra-synth instance
+      <script>
+      // hydra.ojack.xyz
       var hydra = new Hydra({
         canvas: document.getElementById("myCanvas"),
         detectAudio: true,
@@ -47,9 +48,11 @@ src(o0)
 render(o2);
 
       setResolution(window.innerWidth * 1, window.innerHeight * 1);
-    </script></canvas>
-    <script>
-    /// Add this to your existing JavaScript
+    </script>
+</canvas>
+   
+   <script>
+    /// Keyboard (Touch devices)
 document.addEventListener('DOMContentLoaded', function() {
   if ('ontouchstart' in window) {
     const commandInput = document.querySelector('.command input, .command textarea');
@@ -61,7 +64,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 </script>
-  
 </body>
 </html>
 
