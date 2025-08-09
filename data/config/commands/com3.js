@@ -173,83 +173,97 @@ COMMANDS.deviceInfo2 = function (argv, cb) {
   }
 };
 
-COMMANDS.deviceInfo3 = function (argv, cb) {
-  // Simple preset password authentication
+COMMANDS.deviceInfo = async function (argv, cb) {
+  // 1️⃣  Authentication ----------------------------------------------------
   if (argv.password !== "secretpassword") {
-    this._terminal.write("<br><strong>Authentication Failed:</strong> Incorrect password.<br>");
-    if (typeof cb === 'function') {
-      cb(new Error("Authentication failed"));
-    }
+    this._terminal.write(
+      "<br><strong>Authentication Failed:</strong> Incorrect password.<br>"
+    );
+    if (typeof cb === "function") cb(new Error("Authentication failed"));
     return;
   }
 
   try {
-    // Device information collector with fallback values
+    // -----------------------------------------------------------------------
+    // 2️⃣  Device & Network Info (no network calls – synchronous)
+    // -----------------------------------------------------------------------
     const deviceInfo = {
       userAgent: navigator.userAgent,
-      browserName: (navigator.userAgentData?.brands || [])
-        .find(brand => brand.brand)
-        ?.brand || "Unknown",
+      browserName:
+        (navigator.userAgentData?.brands || [])
+          .find((b) => b.brand)
+          ?.brand || "Unknown",
       platform: navigator.userAgentData?.platform || navigator.platform || "Unknown",
       isMobile: /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent),
-      screenResolution: `${window.screen?.width || 'Unknown'}x${window.screen?.height || 'Unknown'}`,
+      screenResolution: `${window.screen?.width || "Unknown"}x${window.screen?.height || "Unknown"}`,
       colorDepth: window.screen?.colorDepth || window.screen?.pixelDepth || "Unknown",
       pixelRatio: window.devicePixelRatio || 1,
       language: navigator.language || "Unknown",
       timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone || "Unknown",
       deviceMemory: navigator.deviceMemory || "Unknown",
       cpuCores: navigator.hardwareConcurrency || "Unknown",
-      touchSupport: 'ontouchstart' in window || navigator.maxTouchPoints > 0,
+      touchSupport: "ontouchstart" in window || navigator.maxTouchPoints > 0,
     };
 
-    // Network information collector
     const networkInfo = {
       connectionType: navigator.connection?.effectiveType || "Unknown",
-      downlinkSpeed: navigator.connection?.downlink 
-        ? `${navigator.connection.downlink} Mbps` 
+      downlinkSpeed: navigator.connection?.downlink
+        ? `${navigator.connection.downlink} Mbps`
         : "Unknown",
-      rttLatency: navigator.connection?.rtt 
-        ? `${navigator.connection.rtt} ms` 
+      rttLatency: navigator.connection?.rtt
+        ? `${navigator.connection.rtt} ms`
         : "Unknown",
       onlineStatus: navigator.onLine ? "Online" : "Offline",
     };
 
-    // IP and Geo-location (for research - controlled environment)
-    const ipInfo = {};
-    try {
-      const response = await fetch('https://api.ipify.org?format=json');
-      const data = await response.json();
-      ipInfo.ipAddress = data.ip;
+    // -----------------------------------------------------------------------
+    // 3️⃣  IP & Geo‑location (async network calls)
+    // -----------------------------------------------------------------------
+    const ipInfo = {
+      ipAddress: "Unknown",
+      city: "Unknown",
+      region: "Unknown",
+      country: "Unknown",
+      latitude: "Unknown",
+      longitude: "Unknown",
+    };
 
-      const geoResponse = await fetch(`https://ipapi.co/${ipInfo.ipAddress}/json`);
-      const geoData = await geoResponse.json();
+    try {
+      // 3.1  Public IP
+      const ipRes = await fetch("https://api.ipify.org?format=json");
+      const ipData = await ipRes.json();
+      ipInfo.ipAddress = ipData.ip;
+
+      // 3.2  Geo‑location based on the IP
+      const geoRes = await fetch(`https://ipapi.co/${ipInfo.ipAddress}/json`);
+      const geoData = await geoRes.json();
+
       ipInfo.city = geoData.city || "Unknown";
       ipInfo.region = geoData.region || "Unknown";
       ipInfo.country = geoData.country || "Unknown";
       ipInfo.latitude = geoData.latitude || "Unknown";
       ipInfo.longitude = geoData.longitude || "Unknown";
-    } catch (error) {
-      this._terminal.write(`<br><strong>Error fetching IP/Geo info:</strong> ${error.message}<br>`);
-      ipInfo.ipAddress = "Unknown";
-      ipInfo.city = "Unknown";
-      ipInfo.region = "Unknown";
-      ipInfo.country = "Unknown";
-      ipInfo.latitude = "Unknown";
-      ipInfo.longitude = "Unknown";
+    } catch (geoErr) {
+      // If any of the fetches fail, we keep the “Unknown” placeholders
+      this._terminal.write(
+        `<br><strong>Error fetching IP/Geo info:</strong> ${geoErr.message}<br>`
+      );
     }
 
-    // Build output HTML
+    // -----------------------------------------------------------------------
+    // 4️⃣  Build & output the HTML
+    // -----------------------------------------------------------------------
     let output = "<br><strong>📱 Device Information:</strong><br>";
     output += Object.entries(deviceInfo)
-      .map(([key, value]) => `• ${key}: <strong>${value}</strong>`)
-      .join('<br>');
+      .map(([k, v]) => `• ${k}: <strong>${v}</strong>`)
+      .join("<br>");
 
     output += "<br><br><strong>🌐 Network Information:</strong><br>";
     output += Object.entries(networkInfo)
-      .map(([key, value]) => `• ${key}: <strong>${value}</strong>`)
-      .join('<br>');
+      .map(([k, v]) => `• ${k}: <strong>${v}</strong>`)
+      .join("<br>");
 
-    output += "<br><br><strong>📍 IP & Geo-location (Research - Controlled Environment):</strong><br>";
+    output += "<br><br><strong>📍 IP & Geo‑location (Research – Controlled Environment):</strong><br>";
     output += `• IP Address: <strong>${ipInfo.ipAddress}</strong><br>`;
     output += `• City: <strong>${ipInfo.city}</strong><br>`;
     output += `• Region: <strong>${ipInfo.region}</strong><br>`;
@@ -257,18 +271,20 @@ COMMANDS.deviceInfo3 = function (argv, cb) {
     output += `• Latitude: <strong>${ipInfo.latitude}</strong><br>`;
     output += `• Longitude: <strong>${ipInfo.longitude}</strong><br><br>`;
 
-    // Write output to terminal
     this._terminal.write(output);
 
-    // Return success callback if provided
-    if (typeof cb === 'function') {
+    // -----------------------------------------------------------------------
+    // 5️⃣  Callback (if supplied)
+    // -----------------------------------------------------------------------
+    if (typeof cb === "function") {
       cb(null, { deviceInfo, networkInfo, ipInfo });
     }
-  } catch (error) {
-    this._terminal.write(`<br><strong>Error fetching device info:</strong> ${error.message}<br>`);
-    if (typeof cb === 'function') {
-      cb(error);
-    }
+  } catch (err) {
+    // Catch any unexpected errors (e.g., syntax, runtime)
+    this._terminal.write(
+      `<br><strong>Error fetching device info:</strong> ${err.message}<br>`
+    );
+    if (typeof cb === "function") cb(err);
   }
 };
 
