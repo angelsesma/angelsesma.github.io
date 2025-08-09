@@ -521,9 +521,10 @@ COMMANDS.raiz = function (argv, cb) {
          for (var i = 0; i < level; i++) str += "⛰    ";
          if (entry.type == "dir") str += '⛩';
          else str += '𓍊' 
-         term.write(str);
-         term.writeLink(entry, term.dirString(dir) + '/' + entry.name);
-         term.write('<br>');
+         if (entry.type != "log")
+            term.write(str);
+            term.writeLink(entry, term.dirString(dir) + '/' + entry.name);
+            term.write('<br>');
          if (entry.type === 'dir')
             writeTree(entry, level + 1);
       });

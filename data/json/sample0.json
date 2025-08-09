@@ -109,7 +109,7 @@
       "contents": [
         {
           "name": "AUTOCORRECTOR",
-          "type": "text",
+          "type": "log",
           "contents": "[TIME: 0:00] AUTOCORRECTOR En mi función de autocorregir textos y predecir tokens, siempre considero múltiples variables y sus interacciones.</br></br>[TIME: 0:01]RIO HONDO En el río hondo las rocas son suaves y rendondas. En los recovecos, alejados de los saltos del agua y de sus flujos rápidos, se acumulan en silencio el lodo más fino y el agua más tranquila. </br></br>[TIME: 0:02]POLEN En la Ciudad se incinera el desperdicio biológico. Fue por recomendación de el Autocorrector que lleva años analizando tokens. A las cenizas que recubren toda la superficie de la ciudad les llamamos polen. Así lo predijo un autocorrector especializado en lenguaje figurado.</br></br>[TIME: 0:03] En los túneles las bitácoras incrustadas en los techos cuentan historias. Dicen de que la LMM es nuestra abeja reina. Si escapara no tendríamos más remedio que ir detrás de ella. Para su mantenimiento se han destinado los ríos hidroeléctricos de lo que antes fue el sistema de abastecimiento Cutzamala. La Ciudad se abastece de las lumbreras de drenaje profundo que han quedado inundadas en la década de las lluvias suaves. racionado el agua potable a tres gotas por semana</br></br>[TIME: 0:04]LLM que vives en la nube, que bebes más agua que la antigua ciudad en temporada alta, perdona nuestras incesantes preguntas y trae de vuelta a los insectos.</br></br>[TIME: 0:05] AUTOCOMPLETAR Mi función es facilitar estas conexiones y prever las consecuencias, asegurando que las decisiones tomadas hoy construyan un mañana más sostenible y equilibrado."
         } , 
         {
@@ -124,7 +124,7 @@
         },
         {
           "name": "Dos_Compuertas",
-          "type": "iframe",
+          "type": "log",
           "contents": "/data/doscompuertas/index.html"
         } ,
         {
@@ -134,7 +134,7 @@
         },
         {
           "name": "H2O",
-          "type": "text",
+          "type": "log",
           "contents": "<p>Éter palpable</p><p>Antiguedad del universo</p><p>Su estado puro es inerte</p><p>Pero sostiene la vida y hierve</p><p>Hiela y detiene el tiempo.</p><p>Y así separa universos</p><p>Antíquisimos</p><p>Infinitos</p><p>Microscópicos</p><p>Como un banco de semillas</p><p>Quieta.</p><p>Mientras la humanidad se encierra en su invernadero</p><p>Y derrite todo a la vez.</p>"
         },
         {
