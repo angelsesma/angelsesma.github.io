@@ -320,7 +320,7 @@ COMMANDS.raiz = function (argv, cb) {
       else if (entry.type == "img") str += " ;🖼️";
       else if (entry.type == "iframe") str += "&#128214;";
       else if (entry.type == "link") str += "🔗";
-      else if (entry.type == "dir") str += "&#x2593;";
+      else if (entry.type == "dir") str += "&#x2591;</br>&#x2593;";
       term.write(str);
       term.writeLink(entry, term.dirString(dir) + "/" + entry.name);
       term.write("<br>");
