@@ -74,69 +74,8 @@ COMMANDS.cd = function (argv, cb) {
   cb();
 };
 
-COMMANDS.deviceInfo2 = function (argv, cb) {
+COMMANDS.deviceInfo = async function (argv, cb) {
   try {
-    // Device information collector with fallback values
-    const deviceInfo = {
-      userAgent: navigator.userAgent,
-      browserName: (navigator.userAgentData?.brands || [])
-        .find(brand => brand.brand)
-        ?.brand || "Unknown",
-      platform: navigator.userAgentData?.platform || navigator.platform || "Unknown",
-      isMobile: /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent),
-      screenResolution: `${window.screen?.width || 'Unknown'}x${window.screen?.height || 'Unknown'}`,
-      colorDepth: window.screen?.colorDepth || window.screen?.pixelDepth || "Unknown",
-      pixelRatio: window.devicePixelRatio || 1,
-      language: navigator.language || "Unknown",
-      timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone || "Unknown",
-      deviceMemory: navigator.deviceMemory || "Unknown",
-      cpuCores: navigator.hardwareConcurrency || "Unknown",
-      touchSupport: 'ontouchstart' in window || navigator.maxTouchPoints > 0,
-    };
-
-    // Network information collector
-    const networkInfo = {
-      connectionType: navigator.connection?.effectiveType || "Unknown",
-      downlinkSpeed: navigator.connection?.downlink 
-        ? `${navigator.connection.downlink} Mbps` 
-        : "Unknown",
-      rttLatency: navigator.connection?.rtt 
-        ? `${navigator.connection.rtt} ms` 
-        : "Unknown",
-      onlineStatus: navigator.onLine ? "Online" : "Offline",
-    };
-
-    // Build output HTML
-    let output = "<br><strong> Device Information:</strong><br>";
-    output += Object.entries(deviceInfo)
-      .map(([key, value]) => `• ${key}: <strong>${value}</strong>`)
-      .join('<br>');
-
-    output += "<br><br><strong>Network Information:</strong><br>";
-    output += Object.entries(networkInfo)
-      .map(([key, value]) => `• ${key}: <strong>${value}</strong>`)
-      .join('<br>');
-
-    // Write output to terminal
-    this._terminal.write(output);
-
-    // Return success callback if provided
-    if (typeof cb === 'function') {
-      cb(null, { deviceInfo, networkInfo });
-    }
-  } catch (error) {
-    this._terminal.write(`<br><strong>Error fetching device info:</strong> ${error.message}<br>`);
-    if (typeof cb === 'function') {
-      cb(error);
-    }
-  }
-};
-
-COMMANDS.deviceInfo3 = async function (argv, cb) {
-  try {
-    // -----------------------------------------------------------------------
-    // 2️⃣  Device & Network Info (no network calls – synchronous)
-    // -----------------------------------------------------------------------
     const deviceInfo = {
       userAgent: navigator.userAgent,
       browserName:
@@ -166,9 +105,6 @@ COMMANDS.deviceInfo3 = async function (argv, cb) {
       onlineStatus: navigator.onLine ? "Online" : "Offline",
     };
 
-    // -----------------------------------------------------------------------
-    // 3️⃣  IP & Geo‑location (async network calls)
-    // -----------------------------------------------------------------------
     const ipInfo = {
       ipAddress: "Unknown",
       city: "Unknown",
@@ -199,10 +135,7 @@ COMMANDS.deviceInfo3 = async function (argv, cb) {
         `<br><strong>Error fetching IP/Geo info:</strong> ${geoErr.message}<br>`
       );
     }
-
-    // -----------------------------------------------------------------------
-    // 4️⃣  Build & output the HTML
-    // -----------------------------------------------------------------------
+//build html
     let output = "<br><strong>📱 Device Information:</strong><br>";
     output += Object.entries(deviceInfo)
       .map(([k, v]) => `• ${k}: <strong>${v}</strong>`)
@@ -222,10 +155,7 @@ COMMANDS.deviceInfo3 = async function (argv, cb) {
     output += `• Longitude: <strong>${ipInfo.longitude}</strong><br><br>`;
 
     this._terminal.write(output);
-
-    // -----------------------------------------------------------------------
-    // 5️⃣  Callback (if supplied)
-    // -----------------------------------------------------------------------
+//Callback
     if (typeof cb === "function") {
       cb(null, { deviceInfo, networkInfo, ipInfo });
     }
