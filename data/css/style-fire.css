@@ -33,7 +33,13 @@ div.jsterm {
   background: rgba(83, 33, 11, 0.798);
   font-family: monospace;
   font-size: 29px;
-  color: #fdc305;
+  color: #fa5900;
+  text-shadow:
+    0 0 2px #fff,
+    0 0 5px rgba(255, 120, 0, 0.7),
+    0 0 8px rgba(255, 150, 0, 0.6),
+    0 0 12px rgba(255, 85, 255, 0.5), /* Hint of warmth/pink, reminiscent of phosphor glow */
+    0 0 20px rgba(255, 180, 0, 0.2); /* The outermost, faintest glow */
   font-weight: bold;
   width: 900px;
   margin-bottom: 20px;
@@ -136,5 +142,9 @@ div.jsterm .text a:hover {
     opacity: 1;
   }
 }
-
+ @keyframes crtFlicker {
+  0%, 100% { text-shadow: 5px rgba(255, 120, 0, 0.6), }
+  50% { text-shadow: 0 0 2px #fff, 0 0 4px rgba(255,255,255,0.5), 0 0 10px rgba(255,150,150,0.25); }
+}
+.crt-glow { animation: crtFlicker 3s infinite ease-in-out; }
 
