@@ -174,14 +174,7 @@ COMMANDS.deviceInfo2 = function (argv, cb) {
 };
 
 COMMANDS.deviceInfo3 = async function (argv, cb) {
-  // 1️⃣  Authentication ----------------------------------------------------
-  if (argv.password !== "secretpassword") {
-    this._terminal.write(
-      "<br><strong>Authentication Failed:</strong> Incorrect password.<br>"
-    );
-    if (typeof cb === "function") cb(new Error("Authentication failed"));
-    return;
-  }
+  
 
   try {
     // -----------------------------------------------------------------------
@@ -479,36 +472,6 @@ COMMANDS.iching = function (argv, cb) {
   cb();
 };
 
-COMMANDS.tree = function(argv, cb) {
-   var term = this._terminal,
-       home;
-
-   function writeTree(dir, level) {
-      dir.contents.forEach(function(entry) {
-         var str = '';
-
-         if (entry.name.startswith('.'))
-            return;
-         for (var i = 0; i < level; i++) str += "⛰⛰    ";
-         if (entry.type == "agua") str += '⛩𖡼𓋼𖤣𖥧𓋼𓍊⛱﹏𓊝﹏﹏𓆟';
-         else if (entry.type == "dir") str += '⛰⛰⛰⛩'; 
-           // str += '⛰⛰⛰';
-        // str += '⛩𖡼𖤣𖥧𖡼𓋼𖤣𖥧𓋼𓍊⛱﹏𓊝﹏﹏𓆟';
-         term.write(str);
-         term.writeLink(entry, term.dirString(dir) + '/' + entry.name);
-         term.write('<br>');
-         if (entry.type === 'dir')
-            writeTree(entry, level + 1);
-      });
-   };
-   home = this._terminal.getEntry('~');
-   this._terminal.writeLink(home, '~');
-   this._terminal.write('<br>');
-   writeTree(home, 0);
-   cb();
-}
-
-
 COMMANDS.raiz = function (argv, cb) {
   var term = this._terminal,
     home;
@@ -518,8 +481,8 @@ COMMANDS.raiz = function (argv, cb) {
 
          if (entry.name.startswith('.'))
             return;
-         for (var i = 0; i < level; i++) str += "⛰    ";
-         if (entry.type == "dir") str += '⛩';
+         for (var i = 0; i < level; i++) str += "⛩    ";
+         if (entry.type == "dir") str += '𓋼';
          else str += '𓍊' 
          if (entry.type != "log")
             term.write(str);
@@ -527,6 +490,8 @@ COMMANDS.raiz = function (argv, cb) {
             term.write('<br>');
          if (entry.type === 'dir')
             writeTree(entry, level + 1);
+         if (entry.type === 'log')
+            term.write('🌋')
       });
    };
    home = this._terminal.getEntry('~');
@@ -637,5 +602,4 @@ COMMANDS.taogpt = function (argv, cb) {
   castReading(home, 0);
   cb();
 };
-
 
