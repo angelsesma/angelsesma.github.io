@@ -15,7 +15,7 @@ body {
 }
 
 div.jsterm a {
-  background: rgba(83, 33, 11, 0.798);
+  background: rgba(183, 93, 11, 0.398);
   color: #f66301;
   font-weight: bold;
   text-decoration: none;
@@ -83,7 +83,7 @@ div.jstern .link a:visited {
 div.jsterm .exec,
 div.jsterm .exec a,
 div.jstern .exec a:visited {
-  color: #770099;
+  color: #ff8833;
   font-weight: bold;
   font-size: 29px;
 }
@@ -97,7 +97,7 @@ div.jsterm .img a {
 
 div.jsterm .iframe,
 div.jsterm .iframe a {
-  color: brown;
+  color: orangered;
   font-weight: bold;
   font-size: 29px;
 }
