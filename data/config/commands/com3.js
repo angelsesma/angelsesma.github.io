@@ -74,47 +74,6 @@ COMMANDS.cd = function (argv, cb) {
   cb();
 };
 
-COMMANDS.deviceInfo = function (argv, cb) {
-  // Query device/browser/network info
-  const deviceInfo = {
-    userAgent: navigator.userAgent,
-    browserName: navigator.userAgentData?.brands?.[0]?.brand || "Unknown",
-    platform: navigator.userAgentData?.platform || navigator.platform,
-    isMobile: /Mobi|Android|iPhone/i.test(navigator.userAgent),
-    screenResolution: `${window.screen.width}x${window.screen.height}`,
-    colorDepth: window.screen.colorDepth,
-    pixelRatio: window.devicePixelRatio || 1,
-    language: navigator.language,
-    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-    deviceMemory: navigator.deviceMemory || "Unknown",
-    cpuCores: navigator.hardwareConcurrency || "Unknown",
-    touchSupport: 'ontouchstart' in window,
-  };
-
-  const networkInfo = {
-    connectionType: navigator.connection?.effectiveType || "Unknown",
-    downlinkSpeed: navigator.connection?.downlink || "Unknown",
-    rttLatency: navigator.connection?.rtt ? `${navigator.connection.rtt}ms` : "Unknown",
-    onlineStatus: navigator.onLine,
-  };
-
-  // Format Device Info
-  this._terminal.write("<br><strong>Device Info:</strong><br>");
-  for (const key in deviceInfo) {
-    this._terminal.write(`${key}: ${deviceInfo[key]}<br>`);
-  }
-
-  this._terminal.write("<br><strong>Network Info:</strong><br>");
-  for (const key in networkInfo) {
-    this._terminal.write(`${key}: ${networkInfo[key]}<br>`);
-  }
-
-  // Add a note about privacy
-  this._terminal.write("<br><em>Note: No personal data (IP, geolocation) is collected.</em><br><br>");
-
-  cb(); // Call the callback to signal completion
-};
-
 COMMANDS.deviceInfo2 = function (argv, cb) {
   try {
     // Device information collector with fallback values
@@ -148,12 +107,12 @@ COMMANDS.deviceInfo2 = function (argv, cb) {
     };
 
     // Build output HTML
-    let output = "<br><strong>📱 Device Information:</strong><br>";
+    let output = "<br><strong> Device Information:</strong><br>";
     output += Object.entries(deviceInfo)
       .map(([key, value]) => `• ${key}: <strong>${value}</strong>`)
       .join('<br>');
 
-    output += "<br><br><strong>🌐 Network Information:</strong><br>";
+    output += "<br><br><strong>Network Information:</strong><br>";
     output += Object.entries(networkInfo)
       .map(([key, value]) => `• ${key}: <strong>${value}</strong>`)
       .join('<br>');
@@ -174,8 +133,6 @@ COMMANDS.deviceInfo2 = function (argv, cb) {
 };
 
 COMMANDS.deviceInfo3 = async function (argv, cb) {
-  
-
   try {
     // -----------------------------------------------------------------------
     // 2️⃣  Device & Network Info (no network calls – synchronous)
@@ -473,6 +430,100 @@ COMMANDS.iching = function (argv, cb) {
 };
 
 COMMANDS.raiz = function (argv, cb) {
+  var term = this._terminal,
+    home;
+
+  function writeTree(dir, level) {
+    dir.contents.forEach(function (entry) {
+      var str = "";
+
+      if (entry.name.startswith(".")) return;
+      for (var i = 0; i < level; i++) str += "|    ";
+      if (entry.type == "agua") str += "|&mdash;🚰&mdash;  ";
+      else if (entry.type == "lava") str += "|&mdash;🌋&mdash;  ";
+      else if (entry.type == "bio") str += "|</br>|&mdash;📚&mdash;  ";
+      else if (entry.type == "text") str += "|&mdash;📓&mdash;  ";
+      else if (entry.type == "img") str += "|&mdash;🖼️&mdash; ";
+      else if (entry.type == "iframe") str += "|&mdash;📖&mdash;  ";
+      else if (entry.type == "eidogo") str += "|&mdash;🧮&mdash;  ";
+      else if (entry.type == "ninja") str += "|&mdash;🐈‍⬛&mdash;  ";
+      else if (entry.type == "exec") str += "|&mdash;📜&mdash;  ";
+      else if (entry.type == "link") str += "|&mdash;🔗&mdash;  ";
+      else if (entry.type == "dir") str += "|&mdash;&mdash;&mdash; ";
+
+      //str += "&angzarr;&mdash;";
+      term.write(str);
+      term.writeLink(entry, term.dirString(dir) + "/" + entry.name);
+      term.write("<br>");
+      if (entry.type === "dir") writeTree(entry, level + 1);
+    });
+  }
+  home = this._terminal.getEntry("~");
+
+  this._terminal.write("~<br>");
+  writeTree(home, 0);
+  cb();
+};
+
+COMMANDS.oso = function (argv, cb) {
+  var term = this._terminal,
+    home;
+
+  function randomNo(dir, level) {
+    var dict = {
+      0: "<br><h2>Ojos locos, todo loco.</h2><br>",
+      1: "<br><h2>Otro todo brotó, oro todo cobró.</h2><br>",
+      2: "<br><h2>Oso solo tomó oro, ojos borrosos.</h2><br>",
+      3: "<br><h2>Oso todo gozó. Todo sonó, ojos, otoños.</h2><br>",
+      4: "<br><h2>Todo loco, todo color oro.</h2><br>",
+      5: "<br><h2>Oso todo doloroso, todo sonó como oro.</h2><br>",
+      6: "<br><h2>Oso todo solo, todo loco. Ojos locos.</h2><br>",
+      7: "<br><h2>Borroso todo.</h2><br>",
+    };
+    term.write("<h2>Oso solo soñó, todo color oro.</h2>");
+    for (let i = 0; i < 4; i++) {
+      var str = dict[Math.floor(Math.random() * Object.keys(dict).length)];
+      term.write("<br>" + str);
+    }
+    term.write("<h2>Oso todo soñó, todo color oro.</h2>");
+  }
+  home = this._terminal.getEntry("~");
+
+  this._terminal.write("");
+  randomNo(home, 0);
+  cb();
+};
+COMMANDS.hongo = function (argv, cb) {
+  var term = this._terminal,
+    home;
+
+  function randomNo(dir, level) {
+    var dict = {
+      0: "<br><h2>Somos.</h2><br>",
+      1: "<br><h2>Ocho.</h2><br>",
+      2: "<br><h2>Lloro.</h2><br>",
+      3: "<br><h2>Mocos.</h2><br>",
+      4: "<br><h2>Fósforo.</h2><br>",
+      5: "<br><h2>Otro.</h2><br>",
+      6: "<br><h2>Porro</h2><br>",
+      7: "<br><h2>Sopor.</h2><br>",
+      8: "<br><h2>Sorbo, como los hongos, floto. <br>Con los ojos locos, soy mosco</h2><br>toso ronco, hondo, como olmo.<br> Tomo dos fotos, son oro</strong>"
+    };
+    term.write("<h2>Soy lodo.</h2>");
+    for (let i = 0; i < 4; i++) {
+      var str = dict[Math.floor(Math.random() * Object.keys(dict).length)];
+      term.write("<br>" + str);
+    }
+    term.write("<h2>Honro todo.</h2>");
+  }
+  home = this._terminal.getEntry("~");
+
+  this._terminal.write("");
+  randomNo(home, 0);
+  cb();
+};
+
+COMMANDS.tree = function (argv, cb) {
   var term = this._terminal,
     home;
   function writeTree(dir, level) {
