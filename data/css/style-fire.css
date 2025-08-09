@@ -16,7 +16,7 @@ body {
 
 div.jsterm a {
   background: rgba(183, 93, 11, 0.398);
-  color: #f66301;
+  color: orange;
   font-weight: bold;
   text-decoration: none;
   vertical-align: baseline;
@@ -35,8 +35,8 @@ div.jsterm {
   font-size: 29px;
   color: #ff9900;
   text-shadow:
-    0 0 5px rgba(255, 120, 0, 0.7),
-    0 0 8px rgba(255, 150, 0, 0.6);
+    0 0 5px rgba(255, 119, 0, 0.397),
+    0 0 8px rgba(255, 150, 0, 0.456);
   font-weight: bold;
   width: 900px;
   margin-bottom: 20px;
@@ -97,14 +97,14 @@ div.jsterm .img a {
 
 div.jsterm .iframe,
 div.jsterm .iframe a {
-  color: orangered;
+  color: orange;
   font-weight: bold;
   font-size: 29px;
 }
 
 div.jsterm .text,
 div.jsterm .text a {
-  color: orangered;
+  color: orange;
   font-size: 29px;
 }
 
@@ -139,9 +139,6 @@ div.jsterm .text a:hover {
     opacity: 1;
   }
 }
- @keyframes crtFlicker {
-  0%, 100% { text-shadow: 5px rgba(255, 120, 0, 0.6), }
-  50% { text-shadow: 0 0 2px #fff, 0 0 4px rgba(255,255,255,0.5), 0 0 10px rgba(255,150,150,0.25); }
-}
-.crt-glow { animation: crtFlicker 3s infinite ease-in-out; }
+
+
 
