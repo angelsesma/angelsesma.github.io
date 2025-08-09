@@ -165,8 +165,9 @@
           "name": "Prosopopeya",
           "type": "text",
           "contents": "</br>Soy la tierra fundida que hiberna en las profundidades.</br>En el fondo del lago se extienden generaciones de mi familia.</br>Nadie me espera, ni se prepara para mi visita. Quienes sueñan no temen que despierte.</br>Huelo a pluma chamuscada, azufre y hierro. Evaporo el agua que me calma.</br>Apenas salgo y ya busco el retorno al subsuelo, voy abriéndome paso entre milpas, acequias, presas, lumbreras y túneles.</br>Con burbujas rojas y negras voy palpando el suelo.</br>El aire también es rojo y negro, en él soy la ceniza que viaja cubriendo ciudades.</br>Desde varias chimeneas me transporto buscando algún hueco, excavando.</br>Para mi no hay desperdicios: Todo lo que no llegue a fundirse quedará incrustado, aglomerado en lodos incandescentes.</br>En el lago se formó un cráter y en el cráter ya se forma un lago.</br>"
-        },
-
+        }
+      ]
+    },
     {
       "name": "Traduccion",
       "type": "dir",
@@ -244,5 +245,4 @@
 
   ]
 }
-  ]
-}
+
