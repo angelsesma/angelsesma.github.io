@@ -75,7 +75,8 @@
       "contents": [
         {
           "name": "V1-HAENGMA",
-          "type": "text"
+          "type": "iframe",
+          "contents": "/data/baduk/zdb/index.html"
         } 
       ]
     },
