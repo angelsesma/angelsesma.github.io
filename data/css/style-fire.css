@@ -35,7 +35,6 @@ div.jsterm {
   font-size: 29px;
   color: #ff9900;
   text-shadow:
-    0 0 1px #fff,
     0 0 5px rgba(255, 120, 0, 0.7),
     0 0 8px rgba(255, 150, 0, 0.6);
   font-weight: bold;
