@@ -519,7 +519,7 @@
 
   var term = Object.create(Terminal);
   term.init(CONFIG, "/data/json/sample0.json", COMMANDS, function () {
-    term.enqueue("moonPhase").enqueue("raiz").begin();
+    term.enqueue("moonPhase").begin();
   });
 
   window.typeCommand = function (command) {
