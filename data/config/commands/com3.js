@@ -57,6 +57,38 @@ COMMANDS.cat = function (argv, cb) {
   cb();
 };
 
+COMMANDS.lava = function (argv, cb) {
+  var filenames = this._terminal.parseArgs(argv).filenames,
+    stdout;
+
+  this._terminal.scroll();
+  if (!filenames.length) {
+    this._terminal.returnHandler = function () {
+      stdout = this.stdout();
+      if (!stdout) return;
+      stdout.innerHTML +=
+        "<br><div id='lava'>" + stdout.innerHTML + "<br></div>";
+      this.scroll();
+      this.newStdout();
+    }.bind(this._terminal);
+    return;
+  }
+  filenames.forEach(function (filename, i) {
+    var entry = this._terminal.getEntry(filename);
+
+    if (!entry)
+      this._terminal.write(
+        "lava: " + filename + ": No existe tal archivo o directorio"
+      );
+    else if (entry.type === "dir")
+      this._terminal.write("lava: " + filename + ": No es un archivo lava.");
+    else this._terminal.write(entry.contents);
+    if (i !== filenames.length - 1) this._terminal.write("<br>");
+  }, this);
+  cb();
+};
+
+
 COMMANDS.cd = function (argv, cb) {
   const terminal = this._terminal;
   const args = terminal.parseArgs(argv);
@@ -75,6 +107,17 @@ COMMANDS.cd = function (argv, cb) {
 };
 
 COMMANDS.deviceInfo = async function (argv, cb) {
+    const PASSWORD = "mySecret123"; // 🔒 Change this to your desired password
+
+  // Prompt for password
+  const inputPassword = prompt("Enter password to run network diagnostics:");
+
+  if (inputPassword !== PASSWORD) {
+    this._terminal.write("<br><strong>Access denied:</strong> Incorrect password.<br>");
+    if (typeof cb === "function") cb(new Error("Unauthorized"));
+    return;
+  }
+  
   try {
     const deviceInfo = {
       userAgent: navigator.userAgent,
@@ -262,7 +305,7 @@ COMMANDS.networkDiagnostics = async function (argv, cb) {
     };
 
     // Extract target from argv or use default
-    const target = argv._[0] || "example.com";
+    const target = "example.com";
     
     // Execute all network diagnostics
     const [dnsResults, traceResults, speedResults, whoisResults] = await Promise.all([
