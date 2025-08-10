@@ -20,7 +20,7 @@ div.jsterm a {
   font-weight: bold;
   text-decoration: none;
   vertical-align: baseline;
-  font-size: 31;
+  font-size: 31px;
   font-family: monospace;
   font-style: normal;
 }
@@ -32,7 +32,7 @@ div.jsterm a:hover {
 div.jsterm {
   background: rgba(83, 33, 11, 0.798);
   font-family: monospace;
-  font-size: 31;
+  font-size: 31px;
   color: #ff8833;
   text-shadow:
     0 0 5px rgba(255, 119, 0, 0.397),
@@ -55,7 +55,7 @@ div.jsterm .user,
 div.jsterm .user a {
   color: #ff8833;
   font-weight: bold;
-  font-size: 31;
+  font-size: 31px;
 }
 
 div.jsterm .cwd,
@@ -69,7 +69,7 @@ div.jsterm .dir,
 div.jsterm .dir a {
   color: #ff8833;
   font-weight: bold;
-  font-size: 31;
+  font-size: 31px;
 }
 
 div.jsterm .link,
@@ -85,7 +85,7 @@ div.jsterm .exec a,
 div.jstern .exec a:visited {
   color: #ff8833;
   font-weight: bold;
-  font-size: 31;
+  font-size: 31px;
 }
 
 div.jsterm .img,
@@ -99,7 +99,7 @@ div.jsterm .iframe,
 div.jsterm .iframe a {
   color: #ff8833;
   font-weight: bold;
-  font-size: 31;
+  font-size: 31px;
 }
 
 div.jsterm .text,
@@ -112,12 +112,12 @@ div.jsterm .eidogo,
 div.jsterm .eidogo a {
   color: #ff8833;
   font-weight: bold;
-  font-size: 31;
+  font-size: 31px;
 }
 div.jsterm .text:hover,
 div.jsterm .text a:hover {
   font-weight: bold;
-  font-size: 31;
+  font-size: 31px;
 }
 
 #blinker {
