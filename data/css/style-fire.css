@@ -46,14 +46,14 @@ div.jsterm {
 
 div.jsterm .host,
 div.jsterm .host a {
-  color: #ff8800;
+  color: #ff8833;
   font-weight: bolder;
   font-size: 29px;
 }
 
 div.jsterm .user,
 div.jsterm .user a {
-  color: #ff8800;
+  color: #ff8833;
   font-weight: bold;
   font-size: 29px;
 }
@@ -67,7 +67,7 @@ div.jsterm .cwd a {
 
 div.jsterm .dir,
 div.jsterm .dir a {
-  color: orange;
+  color: #ff8833;
   font-weight: bold;
   font-size: 29px;
 }
@@ -75,7 +75,7 @@ div.jsterm .dir a {
 div.jsterm .link,
 div.jsterm .link a,
 div.jstern .link a:visited {
-  color: #090999;
+  color: #ff8833;
   font-weight: bold;
     font-size: 29px;
 }
@@ -90,14 +90,14 @@ div.jstern .exec a:visited {
 
 div.jsterm .img,
 div.jsterm .img a {
-  color: #428824;
+  color: #ff8833;
   font-weight: bold;
   font-size: 29px;
 }
 
 div.jsterm .iframe,
 div.jsterm .iframe a {
-  color: #ff8800;
+  color: #ff8833;
   font-weight: bold;
   font-size: 29px;
 }
@@ -110,7 +110,7 @@ div.jsterm .text a {
 
 div.jsterm .eidogo,
 div.jsterm .eidogo a {
-  color: gold;
+  color: #ff8833;
   font-weight: bold;
   font-size: 29px;
 }
