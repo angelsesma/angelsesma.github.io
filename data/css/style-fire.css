@@ -97,14 +97,14 @@ div.jsterm .img a {
 
 div.jsterm .iframe,
 div.jsterm .iframe a {
-  color: orange;
+  color: #ff8800;
   font-weight: bold;
   font-size: 29px;
 }
 
 div.jsterm .text,
 div.jsterm .text a {
-  color: orange;
+  color: #ff8833;
   font-size: 29px;
 }
 
