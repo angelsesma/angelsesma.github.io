@@ -57,6 +57,74 @@ COMMANDS.cat = function (argv, cb) {
   cb();
 };
 
+COMMANDS.moonPhase = async function (argv, cb) {
+  try {
+    // Get current date in YYYY-MM-DD format
+    const now = new Date();
+    const today = now.toISOString().split('T')[0];
+    
+    // Get moon phase data from free API
+    const response = await fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/moon?unitGroup=us&key=VRNNQH2W84XRWM84GNPRQADSM&contentType=json`);
+    const data = await response.json();
+    
+    if (!data || !data.days || data.days.length === 0) {
+      throw new Error('No moon data received from API');
+    }
+    
+    // Find today's moon data
+    const todayMoonData = data.days.find(day => day.datetime === today) || data.days[0];
+    
+    // Moon phase emoji mapping
+    const moonEmoji = {
+      'New Moon': '🌑',
+      'Waxing Crescent': '🌒',
+      'First Quarter': '🌓',
+      'Waxing Gibbous': '🌔',
+      'Full Moon': '🌕',
+      'Waning Gibbous': '🌖',
+      'Last Quarter': '🌗',
+      'Waning Crescent': '🌘'
+    };
+    
+    // Format the output
+    let output = `<br><strong>🌕 Moon Phase Information</strong><br>`;
+    output += `• Date: <strong>${todayMoonData.datetime}</strong><br>`;
+    output += `• Phase: <strong>${todayMoonData.moonphase}</strong> ${moonEmoji[todayMoonData.moonphase] || ''}<br>`;
+    output += `• Illumination: <strong>${Math.round(todayMoonData.moonphase * 100)}%</strong><br>`;
+    
+    // Additional interesting facts
+    if (todayMoonData.moonphase === 0) {
+      output += `• <em>New Moon - Time for new beginnings!</em><br>`;
+    } else if (todayMoonData.moonphase === 0.5) {
+      output += `• <em>Full Moon - Watch out for werewolves!</em><br>`;
+    }
+    
+    // Moon rise/set times if available
+    if (todayMoonData.moonrise) {
+      output += `• Moonrise: <strong>${new Date(todayMoonData.moonrise).toLocaleTimeString()}</strong><br>`;
+    }
+    if (todayMoonData.moonset) {
+      output += `• Moonset: <strong>${new Date(todayMoonData.moonset).toLocaleTimeString()}</strong><br>`;
+    }
+    
+    this._terminal.write(output);
+    
+    // Callback with data
+    if (typeof cb === 'function') {
+      cb(null, {
+        date: todayMoonData.datetime,
+        phase: todayMoonData.moonphase,
+        illumination: Math.round(todayMoonData.moonphase * 100),
+        moonrise: todayMoonData.moonrise,
+        moonset: todayMoonData.moonset
+      });
+    }
+  } catch (err) {
+    this._terminal.write(`<br><strong>Error fetching moon phase:</strong> ${err.message}<br>`);
+    if (typeof cb === 'function') cb(err);
+  }
+};
+
 COMMANDS.lava = function (argv, cb) {
   var filenames = this._terminal.parseArgs(argv).filenames,
     stdout;
