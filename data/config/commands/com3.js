@@ -70,7 +70,8 @@ COMMANDS.lava = function (argv, cb) {
     if (typeof cb === "function") cb(new Error("Unauthorized"));
     return;
   }
-  this._terminal.scroll();
+
+  else this._terminal.scroll();
   if (!filenames.length) {
     this._terminal.returnHandler = function () {
       stdout = this.stdout();
