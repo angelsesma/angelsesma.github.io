@@ -20,7 +20,7 @@ div.jsterm a {
   font-weight: 300;
   text-decoration: none;
   vertical-align: baseline;
-  font-size: 29px;
+  font-size: 31px;
   font-family: monospace;
   font-style: normal;
 }
@@ -32,7 +32,7 @@ div.jsterm a:hover {
 div.jsterm {
   background: rgba(255, 255, 255, 0.7);
   font-family: monospace;
-  font-size: 29px;
+  font-size: 31px;
   color: #558833;
   font-weight: bold;
   width: 900px;
@@ -44,20 +44,20 @@ div.jsterm .host,
 div.jsterm .host a {
   color: #009993;
   font-weight: bold;
-  font-size: 29px;
+  font-size: 31px;
 }
 
 div.jsterm .user,
 div.jsterm .user a {
   color: #008755;
   font-weight: bold;
-  font-size: 29px;
+  font-size: 31px;
 }
 
 div.jsterm .cwd,
 div.jsterm .cwd a {
   color: #880088;
-  font-size: 29px;
+  font-size: 31px;
   font-weight: bold;
 }
 
@@ -65,7 +65,7 @@ div.jsterm .dir,
 div.jsterm .dir a {
   color: orange;
   font-weight: bold;
-  font-size: 29px;
+  font-size: 31px;
 }
 
 div.jsterm .link,
@@ -73,7 +73,7 @@ div.jsterm .link a,
 div.jstern .link a:visited {
   color: #090999;
   font-weight: bold;
-    font-size: 29px;
+    font-size: 31px;
 }
 
 div.jsterm .exec,
@@ -81,39 +81,39 @@ div.jsterm .exec a,
 div.jstern .exec a:visited {
   color: #770099;
   font-weight: bold;
-  font-size: 29px;
+  font-size: 31px;
 }
 
 div.jsterm .img,
 div.jsterm .img a {
   color: #428824;
   font-weight: bold;
-  font-size: 29px;
+  font-size: 31px;
 }
 
 div.jsterm .iframe,
 div.jsterm .iframe a {
   color: brown;
   font-weight: bold;
-  font-size: 29px;
+  font-size: 31px;
 }
 
 div.jsterm .text,
 div.jsterm .text a {
   color: black;
-  font-size: 29px;
+  font-size: 31px;
 }
 
 div.jsterm .eidogo,
 div.jsterm .eidogo a {
   color: gold;
   font-weight: bold;
-  font-size: 29px;
+  font-size: 31px;
 }
 div.jsterm .text:hover,
 div.jsterm .text a:hover {
   font-weight: bold;
-  font-size: 29px;
+  font-size: 31px;
 }
 
 #blinker {
@@ -137,20 +137,3 @@ div.jsterm .text a:hover {
 }
 
 
-@-webkit-keyframes agua {
-  0% {
-    color: white;
-  }
-  50% {
-    color: cyan;
-  }
-  70% {
-    color: teal;
-  }
-  90% {
-    color: cyan;
-  }
-  100% {
-    color: white;
-  }
-}
