@@ -168,6 +168,143 @@ COMMANDS.deviceInfo = async function (argv, cb) {
   }
 };
 
+COMMANDS.networkDiagnostics = async function (argv, cb) {
+  const PASSWORD = "mySecret123"; // 🔒 Change this to your desired password
+
+  // Prompt for password
+  const inputPassword = prompt("Enter password to run network diagnostics:");
+
+  if (inputPassword !== PASSWORD) {
+    this._terminal.write("<br><strong>Access denied:</strong> Incorrect password.<br>");
+    if (typeof cb === "function") cb(new Error("Unauthorized"));
+    return;
+  }
+
+  try {
+
+    const baseNetworkInfo = {
+      connectionType: navigator.connection?.effectiveType || "Unknown",
+      downlinkSpeed: navigator.connection?.downlink
+        ? `${navigator.connection.downlink} Mbps`
+        : "Unknown",
+      rttLatency: navigator.connection?.rtt
+        ? `${navigator.connection.rtt} ms`
+        : "Unknown",
+      onlineStatus: navigator.onLine ? "Online" : "Offline",
+    };
+
+    // Get public IP
+    let ipInfo = { ipAddress: "Unknown" };
+    try {
+      const ipRes = await fetch("https://api.ipify.org?format=json");
+      const ipData = await ipRes.json();
+      ipInfo.ipAddress = ipData.ip;
+    } catch (ipErr) {
+      this._terminal.write(`<br><strong>Error fetching IP:</strong> ${ipErr.message}<br>`);
+    }
+
+    // DNS Lookup function
+    const dnsLookup = async (domain) => {
+      if (!domain) return "No domain provided";
+      
+      try {
+        const response = await fetch(`https://dns.google/resolve?name=${encodeURIComponent(domain)}`);
+        const data = await response.json();
+        return data.Answer ? data.Answer.map(a => `${a.type} ${a.name} = ${a.data}`).join("<br>") : "No DNS records found";
+      } catch (err) {
+        return `DNS lookup failed: ${err.message}`;
+      }
+    };
+
+    // Traceroute function (simulated via API)
+    const traceroute = async (target) => {
+      if (!target) return "No target provided";
+      
+      try {
+        // Using a free API that provides traceroute-like functionality
+        const response = await fetch(`https://api.hackertarget.com/mtr/?q=${encodeURIComponent(target)}`);
+        const text = await response.text();
+        return text || "No traceroute data received";
+      } catch (err) {
+        return `Traceroute failed: ${err.message}`;
+      }
+    };
+
+    // Network speed test (simulated)
+    const speedTest = async () => {
+      try {
+        // This is a simulated speed test since real tests require multiple requests
+        const startTime = performance.now();
+        const testFile = "https://httpbin.org/bytes/100000"; // 100KB test file
+        const response = await fetch(testFile);
+        await response.arrayBuffer();
+        const duration = (performance.now() - startTime) / 1000; // in seconds
+        const speed = (100 / duration).toFixed(2); // in KB/s
+        return `${speed} KB/s (simulated)`;
+      } catch (err) {
+        return `Speed test failed: ${err.message}`;
+      }
+    };
+
+    // Whois lookup
+    const whoisLookup = async (domain) => {
+      if (!domain) return "No domain provided";
+      
+      try {
+        const response = await fetch(`https://api.whoapi.com/?apikey=demo&r=whois&domain=${encodeURIComponent(domain)}`);
+        const data = await response.json();
+        return data.status === "0" ? 
+          `Domain: ${data.domain}<br>Created: ${data.created}<br>Expires: ${data.expires}<br>Registrar: ${data.registrar}` :
+          "Whois lookup failed";
+      } catch (err) {
+        return `Whois lookup failed: ${err.message}`;
+      }
+    };
+
+    // Extract target from argv or use default
+    const target = argv._[0] || "example.com";
+    
+    // Execute all network diagnostics
+    const [dnsResults, traceResults, speedResults, whoisResults] = await Promise.all([
+      dnsLookup(target),
+      traceroute(target),
+      speedTest(),
+      whoisLookup(target)
+    ]);
+
+    // Build output
+    let output = "<br><strong>🌐 Network Diagnostics</strong><br>";
+    output += "<br><strong>Base Network Info:</strong><br>";
+    output += Object.entries(baseNetworkInfo)
+      .map(([k, v]) => `• ${k}: <strong>${v}</strong>`)
+      .join("<br>");
+    
+    output += `<br><br><strong>Public IP:</strong> <strong>${ipInfo.ipAddress}</strong>`;
+    
+    output += `<br><br><strong>DNS Lookup for ${target}:</strong><br>${dnsResults}`;
+    output += `<br><br><strong>Traceroute to ${target}:</strong><br>${traceResults.replace(/\n/g, "<br>")}`;
+    output += `<br><br><strong>Network Speed Test:</strong> ${speedResults}`;
+    output += `<br><br><strong>Whois for ${target}:</strong><br>${whoisResults}`;
+
+    this._terminal.write(output);
+
+    // Callback with all data
+    if (typeof cb === "function") {
+      cb(null, {
+        baseNetworkInfo,
+        ipInfo,
+        dnsResults,
+        traceResults,
+        speedResults,
+        whoisResults
+      });
+    }
+  } catch (err) {
+    this._terminal.write(`<br><strong>Network diagnostics error:</strong> ${err.message}<br>`);
+    if (typeof cb === "function") cb(err);
+  }
+};
+
 COMMANDS.iframe = function (argv, cb) {
   var filename = this._terminal.parseArgs(argv).filenames[0],
     entry,
