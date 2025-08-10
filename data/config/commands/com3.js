@@ -60,7 +60,16 @@ COMMANDS.cat = function (argv, cb) {
 COMMANDS.lava = function (argv, cb) {
   var filenames = this._terminal.parseArgs(argv).filenames,
     stdout;
+     const PASSWORD = "mySecret123"; // 🔒 Change this to your desired password
 
+  // Prompt for password
+  const inputPassword = prompt("Enter password to run network diagnostics:");
+
+  if (inputPassword !== PASSWORD) {
+    this._terminal.write("<br><strong>Access denied:</strong> Incorrect password.<br>");
+    if (typeof cb === "function") cb(new Error("Unauthorized"));
+    return;
+  }
   this._terminal.scroll();
   if (!filenames.length) {
     this._terminal.returnHandler = function () {
