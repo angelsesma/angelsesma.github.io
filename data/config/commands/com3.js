@@ -57,6 +57,28 @@ COMMANDS.cat = function (argv, cb) {
   cb();
 };
 
+COMMANDS.exec = function (argv, cb) {
+  var filename = this._terminal.parseArgs(argv).filenames[0],
+    entry,
+    eidogos;
+
+  if (!filename) {
+    this._terminal.write("exec: se requiere unarchivo ejecutable");
+    cb();
+    return;
+  }
+
+  entry = this._terminal.getEntry(filename);
+  if (!entry || entry.type !== "exec") {
+    this._terminal.write(
+      "exec: el archivo " + filename + " no es un archivo de tipo ejecutable."
+    );
+  } else {
+    this._terminal.write(entry.contents);
+  }
+  cb();
+};
+
 COMMANDS.moonPhase = async function (argv, cb) {
   try {
     // Get current date in YYYY-MM-DD format
@@ -654,6 +676,14 @@ COMMANDS.raiz = function (argv, cb) {
 };
 
 COMMANDS.oso = function (argv, cb) {
+  const PASSWORD = "mySecret123";
+  const inputPassword = prompt("Enter password to run network diagnostics:");
+  if (inputPassword !== PASSWORD) {
+    this._terminal.write("<br><strong>Access denied:</strong> Incorrect password.<br>");
+    if (typeof cb === "function") cb(new Error("Unauthorized"));
+    return;
+  }
+  else
   var term = this._terminal,
     home;
 
@@ -682,6 +712,15 @@ COMMANDS.oso = function (argv, cb) {
   cb();
 };
 COMMANDS.hongo = function (argv, cb) {
+    const PASSWORD = "mySecret123";
+  const inputPassword = prompt("Enter password to run network diagnostics:");
+  if (inputPassword !== PASSWORD) {
+    this._terminal.write("<br><strong>Access denied:</strong> Incorrect password.<br>");
+    if (typeof cb === "function") cb(new Error("Unauthorized"));
+    return;
+  }
+  else
+
   var term = this._terminal,
     home;
 
