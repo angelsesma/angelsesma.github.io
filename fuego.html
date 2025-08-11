@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>天浮き</title>
+    <meta name="description" content="天浮き" />
+    <link type="text/css" rel="stylesheet" href="/data/css/style-fire.css" />
+    <script src="https://unpkg.com/hydra-synth"></script>
+  </head>
+  <body>
+    <!--github.com/clarkduvall/jsterm-->
+    <script type="text/javascript" src="/data/config/commands/comIV.js"></script>
+    <script type="text/javascript" src="/data/config/config.js"></script>
+    <script type="text/javascript" src="/data/config/js/jsterm1.js"></script>
+   
+    <canvas id="myCanvas">
+
+      <script>
+      // hydra.ojack.xyz
+      var hydra = new Hydra({
+        canvas: document.getElementById("myCanvas"),
+        detectAudio: true,
+      });
+      A = window.innerWidth / window.innerHeight;
+
+      noise()
+	.color(() => 3.467 + a.fft[2] * 0.345, 0.265, 0.002)
+	.modulate(noise(() => a.fft[1] * 0.266))
+	.scale(() => a.fft[2] + 10.723)
+	.layer(src(o0)
+		.mask(osc(8)
+			.modulateRotate(osc(), 194.21, 0.448))
+		.scale(() => a.fft[2] * 3.774)
+		.luma(0.486, 0.025))
+	.blend(o0)
+	.out(o0);
+osc()
+	.modulate(noise(() => a.fft[3] + 2.089))
+	.color(0.207, 0.061, 0.073)
+	.out(o1);
+src(o0)
+	.modulate(o1)
+	.layer(src(o1)
+		.mask(o1)
+		.saturate(9.75))
+	.modulateRotate(o1)
+	.rotate(({
+		time
+	}) => time % 179.556 * 0.098)
+	.out(o2);
+render(o2);
+
+      setResolution(window.innerWidth * 1, window.innerHeight * 1);
+    </script>
+</canvas>
+   
+   <script>
+    /// Keyboard (Touch devices)
+document.addEventListener('DOMContentLoaded', function() {
+  if ('ontouchstart' in window) {
+    const commandInput = document.querySelector('.command input, .command textarea');
+    
+    if (commandInput) {
+      commandInput.focus();
+      setTimeout(() => commandInput.focus(), 100);
+    }
+  }
+});
+</script>
+</body>
+</html>
+
