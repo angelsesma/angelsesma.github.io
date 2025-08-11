@@ -1,23 +1,3 @@
-import collection from "firebase/firestore"
-import addDoc from "firebase/firestore"; 
-import  initializeApp  from "firebase/app";
-import  getFirestore  from "firebase/firestore";
-
-const firebaseConfig = {
-apiKey: "AIzaSyCtmrtKQU3gXI3ra8s0T_AZuywUzlfF73U",
-authDomain: "fyah-34b6d.firebaseapp.com",
-databaseURL: "https://fyah-34b6d-default-rtdb.firebaseio.com",
-projectId: "fyah-34b6d",
-storageBucket: "fyah-34b6d.firebasestorage.app",
-messagingSenderId: "827019784578",
-appId: "1:827019784578:web:84d063df51529a045b1f9b",
-measurementId: "G-160YP0KNYR"
-};
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-// Initialize Cloud Firestore and get a reference to the service
-const db = getFirestore(app)
-
 var COMMANDS = COMMANDS || {};
 
 COMMANDS.hola = function (argv, cb) {
