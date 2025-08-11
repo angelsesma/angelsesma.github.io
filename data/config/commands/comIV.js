@@ -1,4 +1,5 @@
-import { collection, addDoc } from "firebase/firestore"; 
+import collection from "firebase/firestore"
+import addDoc from "firebase/firestore"; 
 import  initializeApp  from "firebase/app";
 import  getFirestore  from "firebase/firestore";
 
