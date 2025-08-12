@@ -67,7 +67,7 @@ COMMANDS.exec = function (argv, cb) {
   cb();
 };
 
-COMMANDS.moonPhase = async function (argv, cb) {
+COMMANDS.date= async function (argv, cb) {
   try {
     // Get current date in YYYY-MM-DD format
     const now = new Date();
