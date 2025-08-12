@@ -515,7 +515,7 @@
   String.prototype.startswith = function (s) {
     return this.indexOf(s) == 0;
   };
-  const jsonUrl = 'https://storage.cloud.google.com/nucita/json/sample0.json';
+  const jsonUrl = 'https://storage.googleapis.com/nucita/json/sample0.json';
 
         fetch(jsonUrl)
             .then(response => {
