@@ -97,9 +97,9 @@ COMMANDS.date= async function (argv, cb) {
     };
     
     // output
-    let output = `Welcome / Bienvenidx`;
-    output += `• Date: <strong>${todayMoonData.datetime}</strong><br>`;
-    output += `• Phase: <strong>${todayMoonData.moonphase}</strong> ${moonEmoji[todayMoonData.moonphase] || ''}<br>`;
+    let output = `Bienvenidx`;
+    output += `Fecha: <strong>${todayMoonData.datetime}</strong><br>`;
+    output += `Fase lunar: <strong>${todayMoonData.moonphase}</strong> ${moonEmoji[todayMoonData.moonphase] || ''}<br>`;
     
     
     // Moon rise/set times if available
