@@ -97,7 +97,7 @@ COMMANDS.fecha= async function (argv, cb) {
     };
     
     // output
-    let output = `Bienvenidx`<br>;
+    let output = `Bienvenidx<br>`;
     output += `Fecha: <strong>${todayMoonData.datetime}</strong><br>`;
     output += `Fase lunar: <strong>${todayMoonData.moonphase}</strong> ${moonEmoji[todayMoonData.moonphase] || ''}<br>`;
     
