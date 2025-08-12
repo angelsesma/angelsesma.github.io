@@ -1,15 +1,3 @@
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 var COMMANDS = COMMANDS || {};
 
 COMMANDS.hola = function (argv, cb) {
@@ -63,7 +51,7 @@ COMMANDS.exec = function (argv, cb) {
     eidogos;
 
   if (!filename) {
-    this._terminal.write("exec: se requiere unarchivo ejecutable");
+    this._terminal.write("exec: se requiere un archivo ejecutable");
     cb();
     return;
   }
@@ -108,18 +96,11 @@ COMMANDS.moonPhase = async function (argv, cb) {
       'Waning Crescent': '🌘'
     };
     
-    // Format the output
-    let output = `<br><strong>🌕 Moon Phase Information</strong><br>`;
+    // output
+    let output = `Welcome / Bienvenidx`;
     output += `• Date: <strong>${todayMoonData.datetime}</strong><br>`;
     output += `• Phase: <strong>${todayMoonData.moonphase}</strong> ${moonEmoji[todayMoonData.moonphase] || ''}<br>`;
-    output += `• Illumination: <strong>${Math.round(todayMoonData.moonphase * 100)}%</strong><br>`;
     
-    // Additional interesting facts
-    if (todayMoonData.moonphase === 0) {
-      output += `• <em>New Moon - Time for new beginnings!</em><br>`;
-    } else if (todayMoonData.moonphase === 0.5) {
-      output += `• <em>Full Moon - Watch out for werewolves!</em><br>`;
-    }
     
     // Moon rise/set times if available
     if (todayMoonData.moonrise) {
@@ -204,111 +185,6 @@ COMMANDS.cd = function (argv, cb) {
   }
 
   cb();
-};
-
-COMMANDS.deviceInfo = async function (argv, cb) {
-    const PASSWORD = "mySecret123"; // 🔒 Change this to your desired password
-
-  // Prompt for password
-  const inputPassword = prompt("Enter password:");
-
-  if (inputPassword !== PASSWORD) {
-    this._terminal.write("<br><strong>Access denied:</strong> Incorrect password.<br>");
-    if (typeof cb === "function") cb(new Error("Unauthorized"));
-    return;
-  }
-  
-  try {
-    const deviceInfo = {
-      userAgent: navigator.userAgent,
-      browserName:
-        (navigator.userAgentData?.brands || [])
-          .find((b) => b.brand)
-          ?.brand || "Unknown",
-      platform: navigator.userAgentData?.platform || navigator.platform || "Unknown",
-      isMobile: /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent),
-      screenResolution: `${window.screen?.width || "Unknown"}x${window.screen?.height || "Unknown"}`,
-      colorDepth: window.screen?.colorDepth || window.screen?.pixelDepth || "Unknown",
-      pixelRatio: window.devicePixelRatio || 1,
-      language: navigator.language || "Unknown",
-      timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone || "Unknown",
-      deviceMemory: navigator.deviceMemory || "Unknown",
-      cpuCores: navigator.hardwareConcurrency || "Unknown",
-      touchSupport: "ontouchstart" in window || navigator.maxTouchPoints > 0,
-    };
-
-    const networkInfo = {
-      connectionType: navigator.connection?.effectiveType || "Unknown",
-      downlinkSpeed: navigator.connection?.downlink
-        ? `${navigator.connection.downlink} Mbps`
-        : "Unknown",
-      rttLatency: navigator.connection?.rtt
-        ? `${navigator.connection.rtt} ms`
-        : "Unknown",
-      onlineStatus: navigator.onLine ? "Online" : "Offline",
-    };
-
-    const ipInfo = {
-      ipAddress: "Unknown",
-      city: "Unknown",
-      region: "Unknown",
-      country: "Unknown",
-      latitude: "Unknown",
-      longitude: "Unknown",
-    };
-
-    try {
-      // 3.1  Public IP
-      const ipRes = await fetch("https://api.ipify.org?format=json");
-      const ipData = await ipRes.json();
-      ipInfo.ipAddress = ipData.ip;
-
-      // 3.2  Geo‑location based on the IP
-      const geoRes = await fetch(`https://ipapi.co/${ipInfo.ipAddress}/json`);
-      const geoData = await geoRes.json();
-
-      ipInfo.city = geoData.city || "Unknown";
-      ipInfo.region = geoData.region || "Unknown";
-      ipInfo.country = geoData.country || "Unknown";
-      ipInfo.latitude = geoData.latitude || "Unknown";
-      ipInfo.longitude = geoData.longitude || "Unknown";
-    } catch (geoErr) {
-      // If any of the fetches fail, we keep the “Unknown” placeholders
-      this._terminal.write(
-        `<br><strong>Error fetching IP/Geo info:</strong> ${geoErr.message}<br>`
-      );
-    }
-//build html
-    let output = "<br><strong>📱 Device Information:</strong><br>";
-    output += Object.entries(deviceInfo)
-      .map(([k, v]) => `• ${k}: <strong>${v}</strong>`)
-      .join("<br>");
-
-    output += "<br><br><strong>🌐 Network Information:</strong><br>";
-    output += Object.entries(networkInfo)
-      .map(([k, v]) => `• ${k}: <strong>${v}</strong>`)
-      .join("<br>");
-
-    output += "<br><br><strong>📍 IP & Geo‑location (Research – Controlled Environment):</strong><br>";
-    output += `• IP Address: <strong>${ipInfo.ipAddress}</strong><br>`;
-    output += `• City: <strong>${ipInfo.city}</strong><br>`;
-    output += `• Region: <strong>${ipInfo.region}</strong><br>`;
-    output += `• Country: <strong>${ipInfo.country}</strong><br>`;
-    output += `• Latitude: <strong>${ipInfo.latitude}</strong><br>`;
-    output += `• Longitude: <strong>${ipInfo.longitude}</strong><br><br>`;
-
-    this._terminal.write(output);
-//Callback
-    if (typeof cb === "function") {
-      cb(null, { deviceInfo, networkInfo, ipInfo });
-    }
-  } catch (err) {
-    // Catch any unexpected errors (e.g., syntax, runtime)
-    this._terminal.write(
-      `<br><strong>Error fetching device info:</strong> ${err.message}<br>`
-    );
-    if (typeof cb === "function") cb(err);
-  }
 };
 
 COMMANDS.iframe = function (argv, cb) {
@@ -524,7 +400,6 @@ COMMANDS.raiz = function (argv, cb) {
       else if (entry.type == "link") str += "|&mdash;🔗";
       else if (entry.type == "dir") str += "|&mdash;&mdash;&mdash; ";
 
-      //str += "&angzarr;&mdash;";
       term.write(str);
       term.writeLink(entry, term.dirString(dir) + "/" + entry.name);
       term.write("<br>");
