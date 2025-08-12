@@ -370,8 +370,9 @@
         if (stdout) {
           blinker = document.createElement("span");
           blinker.id = "blinker";
+          blinker.innerHTML = "🔥";
           //blinker.innerHTML = "&#x2588";
-          blinker.innerHTML = "𖠞";
+          //blinker.innerHTML = "𖠞";
           stdout.parentNode.appendChild(blinker);
         }
       }
@@ -519,7 +520,7 @@
 
   var term = Object.create(Terminal);
   term.init(CONFIG, "/data/json/sample0.json", COMMANDS, function () {
-    term.enqueue("date").enqueue("hola").begin();
+    term.enqueue("fecha").enqueue("hola").begin();
   });
 
   window.typeCommand = function (command) {

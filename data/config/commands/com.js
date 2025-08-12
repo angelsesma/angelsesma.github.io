@@ -67,7 +67,7 @@ COMMANDS.exec = function (argv, cb) {
   cb();
 };
 
-COMMANDS.date= async function (argv, cb) {
+COMMANDS.fecha= async function (argv, cb) {
   try {
     // Get current date in YYYY-MM-DD format
     const now = new Date();
@@ -97,7 +97,7 @@ COMMANDS.date= async function (argv, cb) {
     };
     
     // output
-    let output = `Bienvenidx`;
+    let output = `Bienvenidx`<br>;
     output += `Fecha: <strong>${todayMoonData.datetime}</strong><br>`;
     output += `Fase lunar: <strong>${todayMoonData.moonphase}</strong> ${moonEmoji[todayMoonData.moonphase] || ''}<br>`;
     
@@ -232,8 +232,7 @@ COMMANDS.ls = function (argv, cb) {
       if ("description" in e) this.write(" - " + e.description);
       this.write("<br>");
     } else {
-      // Make all entries the same width like real ls. End with a normal
-      // space so the line breaks only after entries.
+      
       this.write(Array(maxLen - e.name.length + 2).join("&nbsp") + " ");
     }
   }.bind(this._terminal);

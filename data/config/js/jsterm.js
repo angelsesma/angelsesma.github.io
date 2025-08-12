@@ -511,13 +511,27 @@
       this._historyIndex = -1;
     },
   };
-
+  
   String.prototype.startswith = function (s) {
     return this.indexOf(s) == 0;
   };
+  const jsonUrl = 'https://storage.cloud.google.com/nucita/sample0.json';
 
+        fetch(jsonUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('jsonData').textContent = JSON.stringify(data, null, 2);
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
   var term = Object.create(Terminal);
-  term.init(CONFIG, "/data/json/sample.json", COMMANDS, function () {
+  term.init(CONFIG, jsonData, COMMANDS, function () {
     term.enqueue("taogpt").enqueue("raiz").begin();
   });
 
