@@ -534,17 +534,9 @@
                 .catch(error => {
                     console.error('There was a problem with the fetch operation:', error);
                 });
-        }
-
-        // Function to process the fetched data
-       
-            // Example: Log the data to the console
-            console.log('Processing data:', data);
-            // You can perform other operations with the data here
         
 
-        // Call the fetchData function to initiate the process
-        fetchData();
+        
   var term = Object.create(Terminal);
   term.init(CONFIG, data, COMMANDS, function () {
     term.enqueue("taogpt").enqueue("raiz").begin();
@@ -553,4 +545,4 @@
   window.typeCommand = function (command) {
     term.typeCommand(command);
   };
-)();
+})();
