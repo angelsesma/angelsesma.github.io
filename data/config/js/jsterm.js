@@ -531,7 +531,7 @@
                 console.error('There was a problem with the fetch operation:', error);
             });
   var term = Object.create(Terminal);
-  term.init(CONFIG, jsonData, COMMANDS, function () {
+  term.init(CONFIG, data, COMMANDS, function () {
     term.enqueue("taogpt").enqueue("raiz").begin();
   });
 
