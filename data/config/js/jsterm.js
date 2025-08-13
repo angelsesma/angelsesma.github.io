@@ -525,7 +525,7 @@
                 return response.json();
             })
             .then(data => {
-                document.getElementById('jsonData').textContent = JSON.stringify(data, null, 2);
+                ancill = JSON.stringify(data, null, 2);
             })
             .catch(error => {
                 console.error('There was a problem with the fetch operation:', error);
