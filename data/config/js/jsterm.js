@@ -536,11 +536,11 @@
         }
 
         // Function to process the fetched data
-        function processData(data) {
+       
             // Example: Log the data to the console
             console.log('Processing data:', data);
             // You can perform other operations with the data here
-        }
+        
 
         // Call the fetchData function to initiate the process
         fetchData();
