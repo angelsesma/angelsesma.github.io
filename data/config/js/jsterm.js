@@ -525,9 +525,6 @@
                 return response.json();
             })
             .then(data => {
-                    // Call another function and pass the data
-                    processData(data);
-                    // Display the data
                     console.log('Processing data:', data);
                     //document.getElementById('jsonData').textContent = JSON.stringify(data, null, 2);
                 })
