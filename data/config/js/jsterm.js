@@ -525,11 +525,25 @@
                 return response.json();
             })
             .then(data => {
-                ancill = JSON.stringify(data, null, 2);
-            })
-            .catch(error => {
-                console.error('There was a problem with the fetch operation:', error);
-            });
+                    // Call another function and pass the data
+                    processData(data);
+                    // Display the data
+                    //document.getElementById('jsonData').textContent = JSON.stringify(data, null, 2);
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                });
+        }
+
+        // Function to process the fetched data
+        function processData(data) {
+            // Example: Log the data to the console
+            console.log('Processing data:', data);
+            // You can perform other operations with the data here
+        }
+
+        // Call the fetchData function to initiate the process
+        fetchData();
   var term = Object.create(Terminal);
   term.init(CONFIG, data, COMMANDS, function () {
     term.enqueue("taogpt").enqueue("raiz").begin();
