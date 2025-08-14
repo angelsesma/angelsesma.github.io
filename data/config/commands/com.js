@@ -199,7 +199,7 @@ COMMANDS.iframe = function (argv, cb) {
   }
 
   entry = this._terminal.getEntry(filename);
-  if (!entry || entry.type !== "iframe", "lava") {
+  if (!entry || entry.type !== "iframe") {
     this._terminal.write(
       "iframe: el archivo " + filename + " no es un archivo de tipo iframe."
     );
