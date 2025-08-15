@@ -631,10 +631,133 @@ const synthEngine = (() => {
 })()};
 
 
-// --- The CLI Command Definition ---
+/*****************************************************************
+ *  Keyboard Synth – CLI command
+ *  Usage inside the terminal:  synth
+ *****************************************************************/
+COMMANDS.synth2 = async function (argv, cb) {
+  /* ----------------------------------------------------------------
+   * 1) UI framework – a tiny HTML snippet injected into the terminal
+   * ---------------------------------------------------------------- */
+  const html = /*html*/ `
+    <style>
+      .synth-wrapper { font-family: monospace; line-height:1.4; }
+      .synth-title   { font-weight:bold; }
+      .synth-keys k  { display:inline-block; width:1.5em; text-align:center;
+                       border:1px solid #888; margin:1px; border-radius:3px;
+                       background:#222; color:#ddd; }
+      .synth-keys k.on { background:#0c0; color:#000; }
+      .wave-select   { margin:4px 0; }
+    </style>
 
-// Assuming your command object is named 'COMMANDS'
-// e.g., var COMMANDS = {};
+    <div class="synth-wrapper">
+      <div class="synth-title">🎹 Keyboard Synth (press A-K &amp; Z-M)</div>
+      <label>Waveform:
+        <select id="waveform" class="wave-select">
+          <option value="sine">Sine</option>
+          <option value="square">Square</option>
+          <option value="sawtooth">Saw</option>
+          <option value="triangle">Triangle</option>
+        </select>
+      </label>
+      <div class="synth-keys">
+        <k id="KeyA">A</k><k id="KeyS">S</k><k id="KeyD">D</k><k id="KeyF">F</k><k id="KeyG">G</k>
+        <k id="KeyH">H</k><k id="KeyJ">J</k><k id="KeyK">K</k>
+        <br>
+        <k id="KeyZ">Z</k><k id="KeyX">X</k><k id="KeyC">C</k><k id="KeyV">V</k><k id="KeyB">B</k>
+        <k id="KeyN">N</k><k id="KeyM">M</k>
+      </div>
+      <small>Click anywhere and start typing.  <em>ESC</em> closes synth.</small>
+    </div>
+  `;
+  // inject UI
+  this._terminal.write(`<br>${html}`);
+
+  /* ---------------------------------------------------------------
+   * 2) Audio setup (Web-Audio API)
+   * --------------------------------------------------------------- */
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  const ctx = new AudioCtx();
+
+  // Envelope parameters (quick attack / gentle release)
+  const env = { attack: 0.02, release: 0.3 };
+
+  // Currently pressed keys => active oscillator nodes
+  const activeNotes = new Map();
+
+  // Keycode -> frequency map (A-K = white keys C4–C5, Z-M = a lower octave)
+  const SEMITONE = Math.pow(2, 1 / 12);
+  const note = (midi) => 440 * Math.pow(SEMITONE, midi - 69); // midi-to-freq
+  const KEYMAP = {
+    KeyA: 60, KeyS: 62, KeyD: 64, KeyF: 65, KeyG: 67, KeyH: 69, KeyJ: 71, KeyK: 72,
+    KeyZ: 48, KeyX: 50, KeyC: 52, KeyV: 53, KeyB: 55, KeyN: 57, KeyM: 59
+  };
+
+  /* ---------------------------------------------------------------
+   * 3) Helper – start & stop a note
+   * --------------------------------------------------------------- */
+  const startNote = (code) => {
+    if (!KEYMAP[code] || activeNotes.has(code)) return;
+
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = document.getElementById('waveform').value;
+    osc.frequency.value = note(KEYMAP[code]);
+    osc.connect(gain).connect(ctx.destination);
+
+    // simple attack
+    gain.gain.setValueAtTime(0, ctx.currentTime);
+    gain.gain.linearRampToValueAtTime(0.8, ctx.currentTime + env.attack);
+
+    osc.start();
+    activeNotes.set(code, { osc, gain });
+
+    document.getElementById(code)?.classList.add('on');
+  };
+
+  const stopNote = (code) => {
+    const pair = activeNotes.get(code);
+    if (!pair) return;
+    const { osc, gain } = pair;
+    // release
+    gain.gain.cancelScheduledValues(ctx.currentTime);
+    gain.gain.setValueAtTime(gain.gain.value, ctx.currentTime);
+    gain.gain.linearRampToValueAtTime(0, ctx.currentTime + env.release);
+    osc.stop(ctx.currentTime + env.release + 0.05);
+    activeNotes.delete(code);
+
+    document.getElementById(code)?.classList.remove('on');
+  };
+
+  /* ---------------------------------------------------------------
+   * 4) Event listeners
+   * --------------------------------------------------------------- */
+  const downHandler = (e) => {
+    // If ESC -> cleanup
+    if (e.code === 'Escape') return destroy();
+
+    startNote(e.code);
+  };
+  const upHandler = (e) => stopNote(e.code);
+
+  window.addEventListener('keydown', downHandler);
+  window.addEventListener('keyup', upHandler);
+
+  /* ---------------------------------------------------------------
+   * 5) Cleanup (called when ESC pressed or terminal cleared)
+   * --------------------------------------------------------------- */
+  const destroy = () => {
+    window.removeEventListener('keydown', downHandler);
+    window.removeEventListener('keyup', upHandler);
+    activeNotes.forEach((_, code) => stopNote(code));
+    // visually remove the UI from terminal
+    this._terminal.write(`<br><em>Synth closed.</em><br>`);
+    if (typeof cb === 'function') cb();
+  };
+
+  // optional: return destroy so your CLI can call it when needed
+  return destroy;
+};
 
 COMMANDS.synth = async function (argv, cb) {
     const instrument = argv[1] ? argv[1].toLowerCase() : 'help';
