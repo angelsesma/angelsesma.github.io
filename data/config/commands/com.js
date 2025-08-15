@@ -487,7 +487,7 @@ COMMANDS.tree = function (argv, cb) {
          if (entry.name.startswith('.'))
             return;
          for (var i = 0; i < level; i++) str += "⛩    ";
-         if (entry.type == "dir") str += '𓋼';
+         if (entry.type == "dir") str += '⛩  𓋼';
          else str += '𓍊' 
          if (entry.type != "log")
             term.write(str);
@@ -495,8 +495,7 @@ COMMANDS.tree = function (argv, cb) {
             term.write('<br>');
          if (entry.type === 'dir')
             writeTree(entry, level + 1);
-         if (entry.type === 'log')
-            term.write('🌋')
+         
       });
    };
    home = this._terminal.getEntry('~');
