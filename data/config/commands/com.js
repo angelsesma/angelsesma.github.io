@@ -771,7 +771,7 @@ COMMANDS.synth2 = async function (argv, cb) {
     <style>
       .synth-wrapper { font-family: monospace; line-height:1.4; }
       .synth-title   { font-weight:bold; }
-      .synth-keys k  { display:inline-block; width:1.5em; text-align:center;
+      .synth-keys k  { display:inline-block; width:1.0em; text-align:left;
                        border:1px solid #888; margin:1px; border-radius:3px;
                        background:#222; color:#ddd; }
       .synth-keys k.on { background:#0c0; color:#000; }
@@ -801,11 +801,9 @@ COMMANDS.synth2 = async function (argv, cb) {
       <div class="synth-keys">
         <k id="KeyQ">Q</k><k id="KeyW">W</k><k id="KeyE">E</k><k id="KeyR">R</k><k id="KeyT">T</k><k id="KeyY">Y</k><k id="KeyU">U</k>
         <br>
-        <k id="KeyA">A</k><k id="KeyS">S</k><k id="KeyD">D</k><k id="KeyF">F</k><k id="KeyG">G</k>
-        <k id="KeyH">H</k><k id="KeyJ">J</k><k id="KeyK">K</k>
+        <k id="KeyA">A</k><k id="KeyS">S</k><k id="KeyD">D</k><k id="KeyF">F</k><k id="KeyG">G</k><k id="KeyH">H</k><k id="KeyJ">J</k><k id="KeyK">K</k>
         <br>
-        <k id="KeyZ">Z</k><k id="KeyX">X</k><k id="KeyC">C</k><k id="KeyV">V</k><k id="KeyB">B</k>
-        <k id="KeyN">N</k><k id="KeyM">M</k>
+        <k id="KeyZ">Z</k><k id="KeyX">X</k><k id="KeyC">C</k><k id="KeyV">V</k><k id="KeyB">B</k><k id="KeyN">N</k><k id="KeyM">M</k>
       </div>
       <small>Click anywhere and start typing.  <em>ESC</em> closes synth.</small>
       <small>Number keys 1-5 enable/disable filters: 1=Lowpass, 2=Highpass, 3=Bandpass, 4=Notch, 5=All</small>
@@ -846,7 +844,7 @@ COMMANDS.synth2 = async function (argv, cb) {
   const SEMITONE = Math.pow(2, 1 / 12);
   const note = (midi) => 440 * Math.pow(SEMITONE, midi - 69); // midi-to-freq
   const KEYMAP = {
-    KeyQ: 36, KeyW: 38, KeyE: 40, KeyR: 41, KeyT: 43, KeyY: 45, KeyU: 47,
+    KeyQ: 72, KeyW: 74, KeyE: 76, KeyR: 77, KeyT: 79, KeyY: 81, KeyU: 83, KeyI: 84,
     KeyA: 60, KeyS: 62, KeyD: 64, KeyF: 65, KeyG: 67, KeyH: 69, KeyJ: 71, KeyK: 72,
     KeyZ: 48, KeyX: 50, KeyC: 52, KeyV: 53, KeyB: 55, KeyN: 57, KeyM: 59
   };
