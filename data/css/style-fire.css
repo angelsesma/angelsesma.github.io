@@ -1,5 +1,5 @@
 body {
-  background: rgba(33, 33, 11, 0.798);
+  background: rgba(16, 16, 16, 0.98);
 }
 
 #myCanvas {
@@ -15,7 +15,7 @@ body {
 }
 
 div.jsterm a {
-  background: rgba(183, 93, 11, 0.398);
+  background: rgba(183, 93, 11, 0.198);
   color: #ff8833;
   font-weight: bold;
   text-decoration: none;
@@ -77,7 +77,7 @@ div.jsterm .link a,
 div.jstern .link a:visited {
   color: #ff8833;
   font-weight: bold;
-    font-size: 31;
+    font-size: 31px;
 }
 
 div.jsterm .exec,
@@ -92,7 +92,7 @@ div.jsterm .img,
 div.jsterm .img a {
   color: #ff8833;
   font-weight: bold;
-  font-size: 31;
+  font-size: 31px;
 }
 
 div.jsterm .iframe,
@@ -105,7 +105,7 @@ div.jsterm .iframe a {
 div.jsterm .text,
 div.jsterm .text a {
   color: #ff8833;
-  font-size: 31;
+  font-size: 31px;
 }
 
 div.jsterm .eidogo,
