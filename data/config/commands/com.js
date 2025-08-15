@@ -97,19 +97,9 @@ COMMANDS.fecha= async function (argv, cb) {
     };
     
     // output
-    let output = `Bienvenidx<br>`;
+    let output = `<br>`;
     output += `Fecha: <strong>${todayMoonData.datetime}</strong><br>`;
     output += `Fase lunar: <strong>${todayMoonData.moonphase}</strong> ${moonEmoji[todayMoonData.moonphase] || ''}<br>`;
-    
-    
-    // Moon rise/set times if available
-    if (todayMoonData.moonrise) {
-      output += `• Moonrise: <strong>${new Date(todayMoonData.moonrise).toLocaleTimeString()}</strong><br>`;
-    }
-    if (todayMoonData.moonset) {
-      output += `• Moonset: <strong>${new Date(todayMoonData.moonset).toLocaleTimeString()}</strong><br>`;
-    }
-    
     this._terminal.write(output);
     
     // Callback with data
@@ -516,6 +506,176 @@ COMMANDS.tree = function (argv, cb) {
    cb();
 }
 ;
+COMMANDS.synth = function (argv, cb) { 
+/**
+ * Keyboard Synthesizer for a web-based CLI.
+ * 
+ * This module uses the Web Audio API to turn keyboard strokes into musical notes.
+ * It's structured to plug into a command system like the one in the sample.
+ */
+
+// --- Synth State and Audio Engine (kept outside the command function) ---
+
+// Use a self-invoking function to create a private scope for the synth engine.
+const synthEngine = (() => {
+    let audioContext = null;
+    let activeOscillators = {}; // Stores currently playing notes { 'a': oscillator, 's': oscillator }
+    let currentWaveform = 'sine';
+    let isSynthActive = false;
+
+    // Mapping of keyboard keys to musical note frequencies (C4 Major Scale)
+    const keyToFrequency = {
+        // Bottom row (White keys)
+        'a': 261.63, // C4
+        's': 293.66, // D4
+        'd': 329.63, // E4
+        'f': 349.23, // F4
+        'g': 392.00, // G4
+        'h': 440.00, // A4 (concert pitch)
+        'j': 493.88, // B4
+        'k': 523.25, // C5
+        // Top row (Black keys)
+        'w': 277.18, // C#4
+        'e': 311.13, // D#4
+        't': 369.99, // F#4
+        'y': 415.30, // G#4
+        'u': 466.16, // A#4
+    };
+
+    // --- Core Audio Functions ---
+
+    function playNote(key) {
+        // 1. Ensure AudioContext is started (browsers require user interaction)
+        if (!audioContext) {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        
+        // 2. Prevent the same note from being triggered multiple times
+        if (activeOscillators[key]) {
+            return;
+        }
+
+        // 3. Create Oscillator and Gain nodes
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+
+        // 4. Configure the nodes
+        oscillator.type = currentWaveform;
+        oscillator.frequency.setValueAtTime(keyToFrequency[key], audioContext.currentTime);
+
+        // 5. Connect the audio graph: Oscillator -> Gain -> Destination (speakers)
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+
+        // 6. Start sound and store the oscillator
+        oscillator.start();
+        activeOscillators[key] = { oscillator, gainNode };
+    }
+
+    function stopNote(key) {
+        const note = activeOscillators[key];
+        if (note) {
+            // Fade out smoothly to prevent clicking sounds
+            note.gainNode.gain.exponentialRampToValueAtTime(0.00001, audioContext.currentTime + 0.05);
+            note.oscillator.stop(audioContext.currentTime + 0.05);
+            delete activeOscillators[key];
+        }
+    }
+
+    // --- Event Handlers ---
+
+    function handleKeyDown(event) {
+        // Don't play if a modifier key is pressed or if it's a repeated event
+        if (event.metaKey || event.ctrlKey || event.altKey || event.repeat) {
+            return;
+        }
+        
+        const key = event.key.toLowerCase();
+        if (keyToFrequency[key]) {
+            playNote(key);
+        }
+    }
+
+    function handleKeyUp(event) {
+        const key = event.key.toLowerCase();
+        if (keyToFrequency[key]) {
+            stopNote(key);
+        }
+    }
+
+    // --- Public Interface ---
+
+    return {
+        start: (waveform) => {
+            if (isSynthActive) {
+                // If already active, just switch the waveform
+                currentWaveform = waveform;
+                return; // No need to re-add listeners
+            }
+            currentWaveform = waveform;
+            window.addEventListener('keydown', handleKeyDown);
+            window.addEventListener('keyup', handleKeyUp);
+            isSynthActive = true;
+        },
+        stop: () => {
+            if (!isSynthActive) return;
+            window.removeEventListener('keydown', handleKeyDown);
+            window.removeEventListener('keyup', handleKeyUp);
+            // Stop any lingering notes
+            Object.keys(activeOscillators).forEach(key => stopNote(key));
+            isSynthActive = false;
+        },
+        getAvailableWaveforms: () => ['sine', 'square', 'sawtooth', 'triangle'],
+        getKeyMap: () => keyToFrequency,
+    };
+})()};
+
+
+// --- The CLI Command Definition ---
+
+// Assuming your command object is named 'COMMANDS'
+// e.g., var COMMANDS = {};
+
+COMMANDS.synth = async function (argv, cb) {
+    const instrument = argv[1] ? argv[1].toLowerCase() : 'help';
+    const availableWaveforms = synthEngine.getAvailableWaveforms();
+
+    if (availableWaveforms.includes(instrument)) {
+        // Start or change the synth
+        synthEngine.start(instrument);
+        let output = `<br>🎹 Synth activated with <strong>${instrument}</strong> waveform.<br>`;
+        output += `   Play notes with your keyboard (ASDFGHJK row and QWERTYUIOP row).<br>`;
+        output += `   Type <strong>synth off</strong> to stop.<br><br>`;
+        this._terminal.write(output);
+
+    } else if (instrument === 'off') {
+        // Stop the synth
+        synthEngine.stop();
+        this._terminal.write("<br>🎹 Synth deactivated.<br><br>");
+
+    } else {
+        // Show help message
+        const keyMap = synthEngine.getKeyMap();
+        const whiteKeys = "asdfghjk".split('').filter(k => keyMap[k]).join(', ');
+        const blackKeys = "wetyu".split('').filter(k => keyMap[k]).join(', ');
+        
+        let output = `<br><strong>Keyboard Synthesizer</strong><br><br>`;
+        output += `Usage: <strong>synth [waveform]</strong><br><br>`;
+        output += `Available waveforms:<br>`;
+        output += `  - <strong>sine</strong> (smooth, flute-like)<br>`;
+        output += `  - <strong>square</strong> (hollow, retro video game sound)<br>`;
+        output += `  - <strong>sawtooth</strong> (rich, classic synth sound)<br>`;
+        output += `  - <strong>triangle</strong> (soft, organ-like)<br><br>`;
+        output += `Other commands:<br>`;
+        output += `  - <strong>synth off</strong>   (deactivates the synth)<br>`;
+        output += `  - <strong>synth help</strong>  (shows this message)<br><br>`;
+        output += `Key mapping:<br>`;
+        output += `  - White Keys: <strong>${whiteKeys}</strong><br>`;
+        output += `  - Black Keys: <strong>${blackKeys}</strong><br><br>`;
+        this._terminal.write(output);
+    }
+    cb(); // Call the callback if your terminal framework requires it.
+};
 
 COMMANDS.taogpt = function (argv, cb) {
   var term = this._terminal,
