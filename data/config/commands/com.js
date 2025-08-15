@@ -635,7 +635,7 @@ const synthEngine = (() => {
  *  Keyboard Synth – CLI command
  *  Usage inside the terminal:  synth
  *****************************************************************/
-COMMANDS.synth2 = async function (argv, cb) {
+COMMANDS.synth = async function (argv, cb) {
   /* ----------------------------------------------------------------
    * 1) UI framework – a tiny HTML snippet injected into the terminal
    * ---------------------------------------------------------------- */
@@ -759,47 +759,205 @@ COMMANDS.synth2 = async function (argv, cb) {
   return destroy;
 };
 
-COMMANDS.synth = async function (argv, cb) {
-    const instrument = argv[1] ? argv[1].toLowerCase() : 'help';
-    const availableWaveforms = synthEngine.getAvailableWaveforms();
+/*****************************************************************
+ *  Keyboard Synth – CLI command
+ *  Usage inside the terminal:  synth
+ *****************************************************************/
+COMMANDS.synth2 = async function (argv, cb) {
+  /* ----------------------------------------------------------------
+   * 1) UI framework – a tiny HTML snippet injected into the terminal
+   * ---------------------------------------------------------------- */
+  const html = /*html*/ `
+    <style>
+      .synth-wrapper { font-family: monospace; line-height:1.4; }
+      .synth-title   { font-weight:bold; }
+      .synth-keys k  { display:inline-block; width:1.5em; text-align:center;
+                       border:1px solid #888; margin:1px; border-radius:3px;
+                       background:#222; color:#ddd; }
+      .synth-keys k.on { background:#0c0; color:#000; }
+      .wave-select   { margin:4px 0; }
+      .filter-select { margin:4px 0; }
+    </style>
 
-    if (availableWaveforms.includes(instrument)) {
-        // Start or change the synth
-        synthEngine.start(instrument);
-        let output = `<br>🎹 Synth activated with <strong>${instrument}</strong> waveform.<br>`;
-        output += `   Play notes with your keyboard (ASDFGHJK row and QWERTYUIOP row).<br>`;
-        output += `   Type <strong>synth off</strong> to stop.<br><br>`;
-        this._terminal.write(output);
+    <div class="synth-wrapper">
+      <div class="synth-title">🎹 Keyboard Synth (press Q-U &amp; A-K &amp; Z-M)</div>
+      <label>Waveform:
+        <select id="waveform" class="wave-select">
+          <option value="sine">Sine</option>
+          <option value="square">Square</option>
+          <option value="sawtooth">Saw</option>
+          <option value="triangle">Triangle</option>
+        </select>
+      </label>
+      <label>Filters:
+        <select id="filter" class="filter-select">
+          <option value="none">None</option>
+          <option value="lowpass">Lowpass</option>
+          <option value="highpass">Highpass</option>
+          <option value="bandpass">Bandpass</option>
+          <option value="notch">Notch</option>
+        </select>
+      </label>
+      <div class="synth-keys">
+        <k id="KeyQ">Q</k><k id="KeyW">W</k><k id="KeyE">E</k><k id="KeyR">R</k><k id="KeyT">T</k><k id="KeyY">Y</k><k id="KeyU">U</k>
+        <br>
+        <k id="KeyA">A</k><k id="KeyS">S</k><k id="KeyD">D</k><k id="KeyF">F</k><k id="KeyG">G</k>
+        <k id="KeyH">H</k><k id="KeyJ">J</k><k id="KeyK">K</k>
+        <br>
+        <k id="KeyZ">Z</k><k id="KeyX">X</k><k id="KeyC">C</k><k id="KeyV">V</k><k id="KeyB">B</k>
+        <k id="KeyN">N</k><k id="KeyM">M</k>
+      </div>
+      <small>Click anywhere and start typing.  <em>ESC</em> closes synth.</small>
+      <small>Number keys 1-5 enable/disable filters: 1=Lowpass, 2=Highpass, 3=Bandpass, 4=Notch, 5=All</small>
+    </div>
+  `;
+  // inject UI
+  this._terminal.write(`<br>${html}`);
 
-    } else if (instrument === 'off') {
-        // Stop the synth
-        synthEngine.stop();
-        this._terminal.write("<br>🎹 Synth deactivated.<br><br>");
+  /* ---------------------------------------------------------------
+   * 2) Audio setup (Web-Audio API)
+   * --------------------------------------------------------------- */
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  const ctx = new AudioCtx();
 
-    } else {
-        // Show help message
-        const keyMap = synthEngine.getKeyMap();
-        const whiteKeys = "asdfghjk".split('').filter(k => keyMap[k]).join(', ');
-        const blackKeys = "wetyu".split('').filter(k => keyMap[k]).join(', ');
-        
-        let output = `<br><strong>Keyboard Synthesizer</strong><br><br>`;
-        output += `Usage: <strong>synth [waveform]</strong><br><br>`;
-        output += `Available waveforms:<br>`;
-        output += `  - <strong>sine</strong> (smooth, flute-like)<br>`;
-        output += `  - <strong>square</strong> (hollow, retro video game sound)<br>`;
-        output += `  - <strong>sawtooth</strong> (rich, classic synth sound)<br>`;
-        output += `  - <strong>triangle</strong> (soft, organ-like)<br><br>`;
-        output += `Other commands:<br>`;
-        output += `  - <strong>synth off</strong>   (deactivates the synth)<br>`;
-        output += `  - <strong>synth help</strong>  (shows this message)<br><br>`;
-        output += `Key mapping:<br>`;
-        output += `  - White Keys: <strong>${whiteKeys}</strong><br>`;
-        output += `  - Black Keys: <strong>${blackKeys}</strong><br><br>`;
-        this._terminal.write(output);
+  // Envelope parameters (quick attack / gentle release)
+  const env = { attack: 0.02, release: 0.3 };
+
+  // Currently pressed keys => active oscillator nodes
+  const activeNotes = new Map();
+
+  // Filter parameters
+  const filters = {
+    lowpass: { type: 'lowpass', frequency: 1000 },
+    highpass: { type: 'highpass', frequency: 500 },
+    bandpass: { type: 'bandpass', frequency: 1000, Q: 10 },
+    notch: { type: 'notch', frequency: 1000, Q: 10 },
+  };
+
+  // Filter state
+  let filterState = {
+    lowpass: false,
+    highpass: false,
+    bandpass: false,
+    notch: false,
+  };
+
+  // Keycode -> frequency map (QWERTYU = white keys C2–C3, A-K = white keys C4–C5, Z-M = a lower octave)
+  const SEMITONE = Math.pow(2, 1 / 12);
+  const note = (midi) => 440 * Math.pow(SEMITONE, midi - 69); // midi-to-freq
+  const KEYMAP = {
+    KeyQ: 36, KeyW: 38, KeyE: 40, KeyR: 41, KeyT: 43, KeyY: 45, KeyU: 47,
+    KeyA: 60, KeyS: 62, KeyD: 64, KeyF: 65, KeyG: 67, KeyH: 69, KeyJ: 71, KeyK: 72,
+    KeyZ: 48, KeyX: 50, KeyC: 52, KeyV: 53, KeyB: 55, KeyN: 57, KeyM: 59
+  };
+
+  /* ---------------------------------------------------------------
+   * 3) Helper – start & stop a note
+   * --------------------------------------------------------------- */
+  const startNote = (code) => {
+    if (!KEYMAP[code] || activeNotes.has(code)) return;
+
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    const filter = ctx.createBiquadFilter();
+
+    osc.type = document.getElementById('waveform').value;
+    osc.frequency.value = note(KEYMAP[code]);
+    osc.connect(filter).connect(gain).connect(ctx.destination);
+
+    // Apply filters based on the current filter state
+    if (filterState.lowpass) {
+      filter.type = 'lowpass';
+      filter.frequency.value = filters.lowpass.frequency;
+    } else if (filterState.highpass) {
+      filter.type = 'highpass';
+      filter.frequency.value = filters.highpass.frequency;
+    } else if (filterState.bandpass) {
+      filter.type = 'bandpass';
+      filter.frequency.value = filters.bandpass.frequency;
+      filter.Q.value = filters.bandpass.Q;
+    } else if (filterState.notch) {
+      filter.type = 'notch';
+      filter.frequency.value = filters.notch.frequency;
+      filter.Q.value = filters.notch.Q;
     }
-    cb(); // Call the callback if your terminal framework requires it.
-};
 
+    // simple attack
+    gain.gain.setValueAtTime(0, ctx.currentTime);
+    gain.gain.linearRampToValueAtTime(0.8, ctx.currentTime + env.attack);
+
+    osc.start();
+    activeNotes.set(code, { osc, gain });
+
+    document.getElementById(code)?.classList.add('on');
+  };
+
+  const stopNote = (code) => {
+    const pair = activeNotes.get(code);
+    if (!pair) return;
+    const { osc, gain } = pair;
+    // release
+    gain.gain.cancelScheduledValues(ctx.currentTime);
+    gain.gain.setValueAtTime(gain.gain.value, ctx.currentTime);
+    gain.gain.linearRampToValueAtTime(0, ctx.currentTime + env.release);
+    osc.stop(ctx.currentTime + env.release + 0.05);
+    activeNotes.delete(code);
+
+    document.getElementById(code)?.classList.remove('on');
+  };
+
+  /* ---------------------------------------------------------------
+   * 4) Event listeners
+   * --------------------------------------------------------------- */
+  const downHandler = (e) => {
+    // If ESC -> cleanup
+    if (e.code === 'Escape') return destroy();
+
+    // Toggle filters with number keys
+    if (e.code.startsWith('Digit')) {
+      const filterKey = parseInt(e.code.slice(5), 10);
+      switch (filterKey) {
+        case 1:
+          filterState.lowpass = !filterState.lowpass;
+          break;
+        case 2:
+          filterState.highpass = !filterState.highpass;
+          break;
+        case 3:
+          filterState.bandpass = !filterState.bandpass;
+          break;
+        case 4:
+          filterState.notch = !filterState.notch;
+          break;
+        case 5:
+          filterState.lowpass = filterState.highpass = filterState.bandpass = filterState.notch = true;
+          break;
+      }
+      return;
+    }
+
+    startNote(e.code);
+  };
+  const upHandler = (e) => stopNote(e.code);
+
+  window.addEventListener('keydown', downHandler);
+  window.addEventListener('keyup', upHandler);
+
+  /* ---------------------------------------------------------------
+   * 5) Cleanup (called when ESC pressed or terminal cleared)
+   * --------------------------------------------------------------- */
+  const destroy = () => {
+    window.removeEventListener('keydown', downHandler);
+    window.removeEventListener('keyup', upHandler);
+    activeNotes.forEach((_, code) => stopNote(code));
+    // visually remove the UI from terminal
+    this._terminal.write(`<br><em>Synth closed.</em><br>`);
+    if (typeof cb === 'function') cb();
+  };
+
+  // optional: return destroy so your CLI can call it when needed
+  return destroy;
+};
 COMMANDS.taogpt = function (argv, cb) {
   var term = this._terminal,
     home;
