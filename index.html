@@ -1,191 +1,71 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>SESMA, Ángel</title>
-    <link rel="stylesheet" href="./style.css"/>
-    <script src="./script.js"></script>
+    <title>天浮き</title>
+    <meta name="description" content="天浮き" />
+    <link type="text/css" rel="stylesheet" href="/data/css/style-fire.css" />
+    <!--script src="https://unpkg.com/hydra-synth"></script-->
   </head>
   <body>
-    <!-- Navigation Bar -->
-    <nav>
-      <div id="home">
-        <!--div class="profile_name">
-          Ángel Sesma 
-          <div class="contact_info">
-          <img src="html_finalprojimages/envelope.png" alt="https://icons8.com/icon/124377/circled-envelope"/>
-          angelsesma[at]gmail[dot]com
+    <!--github.com/clarkduvall/jsterm-->
+    <script type="text/javascript" src="/data/config/commands/com.js"></script>
+    <script type="text/javascript" src="/data/config/config.js"></script>
+    <script type="text/javascript" src="/data/config/js/jsterm.js"></script>
    
-        </div>
-        <div style="clear:both;"></div>
-        <div class="contact_info">
-          <img src="html_finalprojimages/phone.png" alt="https://icons8.com/icon/124377/circled-envelope"/>
-          +13456764598
+    <canvas id="myCanvas">
 
-        </div>
-        </div-->
-        <div class="topdiv">
-          <!--a class="topmenu" href="#about-me">About Me</a-->
-          <a class="topmenu" href="#skills">Skills</a>
-          <a class="topmenu" href="#projects">Projects</a>
-          <a class="topmenu" href="#recommendations">Recommendations</a>
-       
+      <script>
+      // hydra.ojack.xyz
+      var hydra = new Hydra({
+        canvas: document.getElementById("myCanvas"),
+        detectAudio: true,
+      });
+      A = window.innerWidth / window.innerHeight;
 
-        </div>
-      </div>    
-    </nav>
+      noise()
+	.color(() => 3.467 + a.fft[2] * 0.345, 0.265, 0.002)
+	.modulate(noise(() => a.fft[1] * 0.266))
+	.scale(() => a.fft[2] + 10.723)
+	.layer(src(o0)
+		.mask(osc(8)
+			.modulateRotate(osc(), 194.21, 0.448))
+		.scale(() => a.fft[2] * 3.774)
+		.luma(0.486, 0.025))
+	.blend(o0)
+	.out(o0);
+osc()
+	.modulate(noise(() => a.fft[3] + 2.089))
+	.color(0.207, 0.061, 0.073)
+	.out(o1);
+src(o0)
+	.modulate(o1)
+	.layer(src(o1)
+		.mask(o1)
+		.saturate(9.75))
+	.modulateRotate(o1)
+	.rotate(({
+		time
+	}) => time % 179.556 * 0.098)
+	.out(o2);
+render(o2);
 
-    <!-- About Me -->
-    <section id="about-me" class="container">
-     
-
-      <div><img src="html_finalprojimages/yo.png" class="profile_image" width="190px" height="190px"/>
-          <h1>
-            Hi, I'm Ángel! 
-          </h1>
-          <p>
-            I'm a web developer with +12 years of experience in both application and presentation layers.
-            I've worked on applications and microservices deployed on Glitch, Huggingface, Google Cloud, Github, Labview, among many others. 
-            I have experience in Art, Automation, Design, Debugging, Electronics, F/X, Management, Manufacturing, Materials, Music, Pattern Recognition, Prompt Engineering, Security and Storytelling.
-            
-          </p>
-      </div>
-    </section>
-              
-    <!-- Skills -->
-    <section id="skills">
-      <h2>Skills</h2>
-      <div style="clear:both;"></div>
-
-      <div class="all_skills">
-        <div class="skill">
-          <img src="html_finalprojimages/html5.png"/>
-          <h6>HTML</h6>
-          <p>+10 years experience</p>
-        </div>  
-
-        <div class="skill">
-          <img src="html_finalprojimages/js.jpeg"/>
-          <h6>JavaScript</h6>
-          <p>+10 years experience</p>
-        </div> 
-
-        <div class="skill">
-          <img src="html_finalprojimages/python.png"/>
-          <h6>Python</h6>
-          <p>+8 years experience</p>
-        </div> 
-
-        <div class="skill">
-          <img src="html_finalprojimages/labview.png"/>
-          <h6>Labview</h6>
-          <p>+5 years experience</p>
-        </div>
-
-        <div class="skill">
-          <img src="html_finalprojimages/glitch.png"/>
-          <h6>Glitch</h6>
-          <p>+5 years experience</p>
-        </div>
-
-        <div class="skill">
-          <img src="html_finalprojimages/django.png"/>
-          <h6>Django</h6>
-          <p>+3 years experience</p>
-        </div> 
-
-        <div class="skill">
-          <img src="html_finalprojimages/github.png"/>
-          <h6>Github</h6>
-          <p>+3 years experience</p>
-        </div> 
+      setResolution(window.innerWidth * 1, window.innerHeight * 1);
+    </script>
+</canvas>
    
-      </div>
-    </section>
-          
-    <!-- Projects -->
-    <section class="projects" id="projects">
-      <h2>
-        Current Projects
-      </h2>
-      <div style="clear:both;"></div>
-
-        <div id="projects-container" class="projects-container">
-           <div class="project-card">
-            <h3>BadukVR</h3>
-            <ul>
-              <li>An interactive, minimalistic Virtual reality app for Baduk players! <a href="/data/baduk/app/index.html">Try a Demo</a></li>
-            </ul>
-          </div>
-          <hr>
-          <div class="project-card">
-            <h3>Candela</h3>
-            <ul>
-              <li>A pattern analysis tool that returns the most frequent moves in professional Wei-Qi game records available in <a href="https://github.com/angelsesma/candela/blob/main/CANDELA.md">Spanish</a> and<a href="https://github.com/angelsesma/candela/blob/main/README.md"> English</a></li>
-            </ul>
-          </div>
-          <hr>
-    </div>
-    </section>
-    <div style="clear:both;"></div>
-
-    <!-- Recommendations -->
-    <section id="recommendations">
-      <h2>Recommendations</h2>
-      <div style="clear:both;"></div>
-      <div class="all_recommendations" id="all_recommendations">
-        <div class="recommendation">
-          <span>&#8220;</span>
-          Ángel is a very quick learner and quickly grasps key concepts of Web development. 
-          He got a great attitude & is an excellent team player. 
-          He has a curious mind and asks the right question. 
-          He takes initiative within a team and has potentials to lead the team.
-          <span>&#8221;</span>
-        </div>
-        <div class="recommendation">
-          <span>&#8220;</span>
-          Working with Ángel has been an awesome experience. 
-          He is highly knowledgable and always goes the extra step to make sure everything is right. 
-          For any future projects that need his expertise I would definitely want to work with him again.
-          <span>&#8221;</span>
-        </div>
-        <div class="recommendation">
-          <span>&#8220;</span>
-          Angel excels as a strategic technology advisor, bringing a deep understanding of both current trends and future technologies. His ability to foresee the potential impact of emerging technologies on business operations is unparalleled. During our partnership, Angel provided insightful recommendations that not only addressed immediate needs but also positioned our organization for long-term success.  For instance, when advising on the adoption of a new cloud infrastructure, Angel conducted a thorough analysis of various cloud service providers. He presented a comprehensive report that included cost-benefit analyses, scalability options, and security considerations. His recommendations led to the selection of a cloud solution that not only met our current requirements but also offered flexibility for future growth. This strategic foresight has saved our organization significant time and resources. 
-          <span>&#8221;</span>
-        </div>
-        <div class="recommendation">
-            <span>&#8220;</span>
-             During our collaboration on various projects, I was repeatedly impressed by Angel's ability to dissect complex technical issues and devise effective solutions. Whether dealing with intricate backend systems or crafting seamless frontend experiences, Angel approaches challenges with a methodical and innovative mindset.  A notable example of this was during a project where we had to integrate a legacy system with a modern web application. Angel not only identified the key integration points but also suggested a novel approach to handle data synchronization that significantly reduced latency and improved overall performance. His ability to bridge old and new technologies while ensuring smooth operation is a testament to his expertise.  Angel's problem-solving skills are complemented by his clear communication and ability to explain technical concepts to non-technical stakeholders. This ensures that all team members, regardless of their technical background, are aligned and understand the project's direction and progress.<span>&#8221;</span>
-          </div>
-      </div>
-    </section>
-
-    <!-- Recommendation Form -->
-    <section id="contact">
-      <div class="flex_center">
-        <fieldset>
-          <legend class="introduction">Leave a Recommendation</legend>          
-          <input type="text" placeholder="Name (Optional)"> <br/>
-          <textarea id="new_recommendation" cols="500" rows="10" placeholder="Message"></textarea>
-          <div class="flex_center">
-            <button id="recommend_btn" onclick="addRecommendation()">Submit</button>
-          </div>
-        </fieldset>
-      </div>
-    </section>
-
-    <div class="iconbutton">
-      <a href="#home">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="white" width="63px">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 11.25l-3-3m0 0l-3 3m3-3v7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-      </a>
-    </div>
-
-    <div class="popup" id="popup" class="flex_center">
-      <img src="html_finalprojimages/checkmark--outline.svg"/>
-      <h3>Thank you for recommending me!</h3>
-      <button onclick="showPopup(false)">Ok</button>
-    </div>
-  </body>
+   <script>
+    /// Keyboard (Touch devices)
+document.addEventListener('DOMContentLoaded', function() {
+  if ('ontouchstart' in window) {
+    const commandInput = document.querySelector('.command input, .command textarea');
+    
+    if (commandInput) {
+      commandInput.focus();
+      setTimeout(() => commandInput.focus(), 100);
+    }
+  }
+});
+</script>
+</body>
 </html>
+
