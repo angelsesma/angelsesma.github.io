@@ -239,17 +239,6 @@
         }
         
       ]
-    },
-    {
-      "name": "Zine_de_baduk",
-      "type": "dir",
-      "contents": [
-        {
-          "name": "1_Haengma",
-          "type": "iframe",
-          "contents": "/data/baduk/zdb/index.html"
-        } 
-      ]
     }
 
   ]
