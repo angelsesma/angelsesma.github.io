@@ -518,7 +518,7 @@
 
         
   var term = Object.create(Terminal);
-  term.init(CONFIG, 'https://storage.googleapis.com/nucita/json/sample0.json', COMMANDS, function () {
+  term.init(CONFIG, 'https://storage.googleapis.com/nucita/json/sample1.json', COMMANDS, function () {
     term.enqueue("taogpt").enqueue("raiz").begin();
   });
 
