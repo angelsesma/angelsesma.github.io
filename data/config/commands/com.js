@@ -603,7 +603,7 @@ COMMANDS.deviceInfo = async function (argv, cb) {
     //country: geoData,
     //region: ipData
     //});
-    console.log(timestamp, "Document written with ID: ", docRef.id);
+   // console.log(timestamp, "Document written with ID: ", docRef.id);
     this._terminal.write(output);
 
 //Callback
