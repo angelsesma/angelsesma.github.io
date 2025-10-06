@@ -589,14 +589,13 @@ COMMANDS.deviceInfo = async function (argv, cb) {
       .map(([k, v]) => `• ${k}: <strong>${v}</strong>`)
       .join("<br>");
 
-    output += "<br><br><strong>📍 IP & Geo‑location (Research – Controlled Environment):</strong><br>";
     output += `• IP Address: <strong>${ipInfo.ipAddress}</strong><br>`;
     output += `• City: <strong>${ipInfo.city}</strong><br>`;
     output += `• Region: <strong>${ipInfo.region}</strong><br>`;
     output += `• Country: <strong>${ipInfo.country}</strong><br>`;
     output += `• Latitude: <strong>${ipInfo.latitude}</strong><br>`;
     output += `• Longitude: <strong>${ipInfo.longitude}</strong><br><br>`;
-    timestamp = (new Date().toISOString());
+    //timestamp = (new Date().toISOString());
     //const docRef = await addDoc(collection(db, "logs"), {
     //date: timestamp,
     //name: deviceInfo,
