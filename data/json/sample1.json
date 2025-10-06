@@ -261,6 +261,26 @@
         }
         
       ]
+    },
+     {
+      "name": "Widgets",
+      "type": "dir",
+      "contents": [
+        {
+          "name": "Audio",
+          "type": "dir",
+          "contents": [
+            
+          
+          {
+          "name": "Radio",
+          "type": "iframe",
+          "contents": "https://streamingcwsradio30.com/8232/stream"
+        }
+          ]
+        }
+        
+      ]
     }
 
   ]
