@@ -597,12 +597,12 @@ COMMANDS.deviceInfo = async function (argv, cb) {
     output += `• Latitude: <strong>${ipInfo.latitude}</strong><br>`;
     output += `• Longitude: <strong>${ipInfo.longitude}</strong><br><br>`;
     timestamp = (new Date().toISOString());
-    const docRef = await addDoc(collection(db, "logs"), {
-    date: timestamp,
-    name: deviceInfo,
-    country: geoData,
-    region: ipData
-    });
+    //const docRef = await addDoc(collection(db, "logs"), {
+    //date: timestamp,
+    //name: deviceInfo,
+    //country: geoData,
+    //region: ipData
+    //});
     console.log(timestamp, "Document written with ID: ", docRef.id);
     this._terminal.write(output);
 
