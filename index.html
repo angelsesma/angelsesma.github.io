@@ -22,32 +22,11 @@
       });
       A = window.innerWidth / window.innerHeight;
 
-      noise()
-	.color(() => 3.467 + a.fft[2] * 0.345, 0.265, 0.002)
-	.modulate(noise(() => a.fft[1] * 0.266))
-	.scale(() => a.fft[2] + 10.723)
-	.layer(src(o0)
-		.mask(osc(8)
-			.modulateRotate(osc(), 194.21, 0.448))
-		.scale(() => a.fft[2] * 3.774)
-		.luma(0.486, 0.025))
-	.blend(o0)
+osc(5.175, -0.051, 0.209)
+	.color(2.238, 0.9892, 0.313)
+	.rotate(1,1.2,0).pixelate()
 	.out(o0);
-osc()
-	.modulate(noise(() => a.fft[3] + 2.089))
-	.color(0.207, 0.061, 0.073)
-	.out(o1);
-src(o0)
-	.modulate(o1)
-	.layer(src(o1)
-		.mask(o1)
-		.saturate(9.75))
-	.modulateRotate(o1)
-	.rotate(({
-		time
-	}) => time % 179.556 * 0.098)
-	.out(o2);
-render(o2);
+render(o0)
 
       setResolution(window.innerWidth * 1, window.innerHeight * 1);
     </script>
