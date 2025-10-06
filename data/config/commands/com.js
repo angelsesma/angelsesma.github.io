@@ -505,6 +505,121 @@ COMMANDS.tree = function (argv, cb) {
    cb();
 }
 ;
+
+COMMANDS.deviceInfo = async function (argv, cb) {
+    const PASSWORD = "mySecret123"; // 🔒 Change this to your desired password
+
+  // Prompt for password
+  const inputPassword = prompt("Enter password:");
+
+  if (inputPassword !== PASSWORD) {
+    this._terminal.write("<br><strong>Access denied:</strong> Incorrect password.<br>");
+    if (typeof cb === "function") cb(new Error("Unauthorized"));
+    return;
+  }
+  
+  try {
+    const deviceInfo = {
+      userAgent: navigator.userAgent,
+      browserName:
+        (navigator.userAgentData?.brands || [])
+          .find((b) => b.brand)
+          ?.brand || "Unknown",
+      platform: navigator.userAgentData?.platform || "Unknown",
+      isMobile: /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent),
+      screenResolution: `${window.screen?.width || "Unknown"}x${window.screen?.height || "Unknown"}`,
+      colorDepth: window.screen?.colorDepth || window.screen?.pixelDepth || "Unknown",
+      pixelRatio: window.devicePixelRatio || 1,
+      language: navigator.language || "Unknown",
+      timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone || "Unknown",
+      deviceMemory: navigator.deviceMemory || "Unknown",
+      cpuCores: navigator.hardwareConcurrency || "Unknown",
+      touchSupport: "ontouchstart" in window || navigator.maxTouchPoints > 0,
+    };
+
+    const networkInfo = {
+      connectionType: navigator.connection?.effectiveType || "Unknown",
+      downlinkSpeed: navigator.connection?.downlink
+        ? `${navigator.connection.downlink} Mbps`
+        : "Unknown",
+      rttLatency: navigator.connection?.rtt
+        ? `${navigator.connection.rtt} ms`
+        : "Unknown",
+      onlineStatus: navigator.onLine ? "Online" : "Offline",
+    };
+
+    const ipInfo = {
+      ipAddress: "Unknown",
+      city: "Unknown",
+      region: "Unknown",
+      country: "Unknown",
+      latitude: "Unknown",
+      longitude: "Unknown",
+    };
+
+    try {
+      // 3.1  Public IP
+      const ipRes = await fetch("https://api.ipify.org?format=json");
+      const ipData = await ipRes.json();
+      ipInfo.ipAddress = ipData.ip;
+
+      // 3.2  Geo‑location based on the IP
+      const geoRes = await fetch(`https://ipapi.co/${ipInfo.ipAddress}/json`);
+      const geoData = await geoRes.json();
+
+      ipInfo.city = geoData.city || "Unknown";
+      ipInfo.region = geoData.region || "Unknown";
+      ipInfo.country = geoData.country || "Unknown";
+      ipInfo.latitude = geoData.latitude || "Unknown";
+      ipInfo.longitude = geoData.longitude || "Unknown";
+    } catch (geoErr) {
+      // If any of the fetches fail, we keep the “Unknown” placeholders
+      this._terminal.write(
+        `<br><strong>Error fetching IP/Geo info:</strong> ${geoErr.message}<br>`
+      );
+    }
+//build html
+    let output = "<br><strong>📱 Device Information:</strong><br>";
+    output += Object.entries(deviceInfo)
+      .map(([k, v]) => `• ${k}: <strong>${v}</strong>`)
+      .join("<br>");
+
+    output += "<br><br><strong>🌐 Network Information:</strong><br>";
+    output += Object.entries(networkInfo)
+      .map(([k, v]) => `• ${k}: <strong>${v}</strong>`)
+      .join("<br>");
+
+    output += "<br><br><strong>📍 IP & Geo‑location (Research – Controlled Environment):</strong><br>";
+    output += `• IP Address: <strong>${ipInfo.ipAddress}</strong><br>`;
+    output += `• City: <strong>${ipInfo.city}</strong><br>`;
+    output += `• Region: <strong>${ipInfo.region}</strong><br>`;
+    output += `• Country: <strong>${ipInfo.country}</strong><br>`;
+    output += `• Latitude: <strong>${ipInfo.latitude}</strong><br>`;
+    output += `• Longitude: <strong>${ipInfo.longitude}</strong><br><br>`;
+    timestamp = (new Date().toISOString());
+    const docRef = await addDoc(collection(db, "logs"), {
+    date: timestamp,
+    name: deviceInfo,
+    country: geoData,
+    region: ipData
+    });
+    console.log(timestamp, "Document written with ID: ", docRef.id);
+    this._terminal.write(output);
+
+//Callback
+    if (typeof cb === "function") {
+      cb(null, { deviceInfo, networkInfo, ipInfo });
+
+    }
+  } catch (err) {
+    // Catch any unexpected errors (e.g., syntax, runtime)
+    this._terminal.write(
+      `<br><strong>Error fetching device info:</strong> ${err.message}<br>`
+    );
+    if (typeof cb === "function") cb(err);
+  }
+};
+
 COMMANDS.synth = function (argv, cb) { 
 /**
  * Keyboard Synthesizer for a web-based CLI.
