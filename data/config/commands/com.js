@@ -2,7 +2,7 @@ var COMMANDS = COMMANDS || {};
 
 COMMANDS.hola = async function (argv, cb) {
   this._terminal.write(
-    "<strong>E</strong>ste sitio web que emula una línea de comandos: </br>" +
+    "<strong>E</strong>ste sitio web emula una línea de comandos </br>" +
     "Usa el comando <strong>hola</strong> seguido de la tecla enter para ver este mensaje</br>" +
     "Usa el comando <strong>raiz</strong> seguido de la tecla enter para ver el directorio de archivos</br>" +
     "Usa el comando <strong>iching</strong> seguido de la tecla enter para consultar el libro de los cambios</br>");
