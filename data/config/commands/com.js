@@ -486,9 +486,9 @@ COMMANDS.mapa = async function (argv, cb) {
 
          if (entry.name.startswith('.'))
             return;
-         for (var i = 0; i < level; i++) str += "⛩    ";
-         if (entry.type == "dir") str += '⛩  ';
-         else str += '_' 
+         for (var i = 0; i < level; i++) str += "⭆ ";
+         if (entry.type == "dir") str += '⇛ ';
+         else str += '⤇ ' 
          if (entry.type != "log")
             term.write(str);
             term.writeLink(entry, term.dirString(dir) + '/' + entry.name);
