@@ -123,21 +123,3 @@ div.jsterm .text a:hover {
   }
 }
 
-
-@-webkit-keyframes agua {
-  0% {
-    color: white;
-  }
-  50% {
-    color: cyan;
-  }
-  70% {
-    color: teal;
-  }
-  90% {
-    color: cyan;
-  }
-  100% {
-    color: white;
-  }
-}
