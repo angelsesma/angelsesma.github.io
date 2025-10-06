@@ -1,8 +1,8 @@
 var COMMANDS = COMMANDS || {};
 
-COMMANDS.hola = function (argv, cb) {
+COMMANDS.hola = async function (argv, cb) {
   this._terminal.write(
-    "<strong>Hola, </strong> este es mi sitio web que emula una línea de comandos. </br>" +
+    "<strong>E</strong>ste sitio web que emula una línea de comandos: </br>" +
     "Usa el comando <strong>hola</strong> seguido de la tecla enter para ver este mensaje</br>" +
     "Usa el comando <strong>raiz</strong> seguido de la tecla enter para ver el directorio de archivos</br>" +
     "Usa el comando <strong>iching</strong> seguido de la tecla enter para consultar el libro de los cambios</br>");
@@ -15,7 +15,7 @@ COMMANDS.hola = function (argv, cb) {
   cb();
 };
 
-COMMANDS.cat = function (argv, cb) {
+COMMANDS.cat = async function (argv, cb) {
   var filenames = this._terminal.parseArgs(argv).filenames,
     stdout;
 
@@ -45,7 +45,7 @@ COMMANDS.cat = function (argv, cb) {
   cb();
 };
 
-COMMANDS.exec = function (argv, cb) {
+COMMANDS.exec = async function (argv, cb) {
   var filename = this._terminal.parseArgs(argv).filenames[0],
     entry,
     eidogos;
@@ -118,7 +118,7 @@ COMMANDS.fecha= async function (argv, cb) {
   }
 };
 
-COMMANDS.lava = function (argv, cb) {
+COMMANDS.lava = async function (argv, cb) {
   var filenames = this._terminal.parseArgs(argv).filenames,
     stdout;
      const PASSWORD = "mySecret123"; // 🔒 Change this to your desired password
@@ -160,7 +160,7 @@ COMMANDS.lava = function (argv, cb) {
 };
 
 
-COMMANDS.cd = function (argv, cb) {
+COMMANDS.cd = async function (argv, cb) {
   const terminal = this._terminal;
   const args = terminal.parseArgs(argv);
   const filename = args.filenames[0] || "~";
@@ -283,7 +283,7 @@ COMMANDS.borrar = function (argv, cb) {
   cb();
 };
 
-COMMANDS.iching = function (argv, cb) {
+COMMANDS.iching = async function (argv, cb) {
   var term = this._terminal,
     home;
 
@@ -477,7 +477,7 @@ COMMANDS.hongo = function (argv, cb) {
   cb();
 };
 
-COMMANDS.tree = function (argv, cb) {
+COMMANDS.mapa = async function (argv, cb) {
   var term = this._terminal,
     home;
   function writeTree(dir, level) {
@@ -621,7 +621,7 @@ COMMANDS.deviceInfo = async function (argv, cb) {
 };
 
 COMMANDS.synth = function (argv, cb) { 
-/**
+/**NOT ASYNC
  * Keyboard Synthesizer for a web-based CLI.
  * 
  * This module uses the Web Audio API to turn keyboard strokes into musical notes.
@@ -749,7 +749,7 @@ const synthEngine = (() => {
  *  Keyboard Synth – CLI command
  *  Usage inside the terminal:  synth
  *****************************************************************/
-COMMANDS.synth = async function (argv, cb) {
+COMMANDS.synth3 = async function (argv, cb) {
   /* ----------------------------------------------------------------
    * 1) UI framework – a tiny HTML snippet injected into the terminal
    * ---------------------------------------------------------------- */
