@@ -32,6 +32,23 @@
               "contents": "/data/baduk/zdb/index.html"
             } 
           ]
+        },
+        {
+          "name": "Apps",
+          "type": "dir",
+          "contents": [
+            {
+              "name": "atari-go",
+              "type": "iframe",
+              "contents": "/data/baduk/atari/index1.html"
+            },
+             {
+              "name": "Go-VR",
+              "type": "iframe",
+              "contents": "/data/baduk/app/index.html"
+            } 
+          ] 
+          
         }
       ]
     },
