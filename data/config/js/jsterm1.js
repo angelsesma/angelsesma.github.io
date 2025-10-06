@@ -520,7 +520,7 @@
 
   var term = Object.create(Terminal);
   term.init(CONFIG, "/data/json/sample1.json", COMMANDS, function () {
-    term.enqueue("fecha").enqueue("hola").begin();
+    term.enqueue("mapa").enqueue("hola").begin();
   });
 
   window.typeCommand = function (command) {
