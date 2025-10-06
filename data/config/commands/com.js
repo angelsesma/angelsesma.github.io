@@ -4,7 +4,7 @@ COMMANDS.hola = async function (argv, cb) {
   this._terminal.write(
     "<strong>E</strong>ste sitio web emula una línea de comandos </br>" +
     "Usa el comando <strong>hola</strong> seguido de la tecla enter para ver este mensaje</br>" +
-    "Usa el comando <strong>raiz</strong> seguido de la tecla enter para ver el directorio de archivos</br>" +
+    "Usa el comando <strong>mapa</strong> seguido de la tecla enter para ver el directorio de archivos</br>" +
     "Usa el comando <strong>iching</strong> seguido de la tecla enter para consultar el libro de los cambios</br>");
 
   this._terminal.write("Comandos disponibles:<br>");
@@ -487,8 +487,8 @@ COMMANDS.mapa = async function (argv, cb) {
          if (entry.name.startswith('.'))
             return;
          for (var i = 0; i < level; i++) str += "⛩    ";
-         if (entry.type == "dir") str += '⛩  𓋼';
-         else str += '𓍊' 
+         if (entry.type == "dir") str += '⛩  ';
+         else str += '_' 
          if (entry.type != "log")
             term.write(str);
             term.writeLink(entry, term.dirString(dir) + '/' + entry.name);
@@ -611,7 +611,7 @@ COMMANDS.deviceInfo = async function (argv, cb) {
   }
 };
 
-COMMANDS.synth2 = async function (argv, cb) {
+COMMANDS.synth = async function (argv, cb) {
   const html = /*html*/ `
     <style>
       .synth-wrapper { font-family: monospace; line-height:1.4; }
