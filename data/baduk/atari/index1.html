@@ -12,6 +12,16 @@
     #info{margin-top:10px;font-size:1.1em;text-align:center}
     #turnBadge{display:inline-block;width:1em;height:1em;border-radius:50%;vertical-align:middle;margin-right:6px}
     #msg{margin-top:6px;font-size:.9em;color:#555}
+
+    .button {
+      display: inline-block;
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 18px;
+      background-color: #f1f1f1;
+      border: none;
+      cursor: pointer;
+    }
 </style>
 </head>
 <body>
@@ -21,6 +31,14 @@
   <span id="turnBadge"></span><span id="turnTxt">Black to move</span>
   <div id="msg">Arrow keys to move, Space to place, Shift to pass</div>
 </div>
+  <div id="buttonContainer">
+    <button class="button" id="upButton">Up</button>
+    <button class="button" id="rightButton">Right</button>
+    <button class="button" id="downButton">Down</button>
+    <button class="button" id="leftButton">Left</button>
+    <button class="button" id="spaceButton">Space</button>
+    <button class="button" id="shiftButton">Shift</button>
+  </div>
 
 <script>
 /* === SETUP === */
@@ -176,6 +194,37 @@ function passTurn(){
   drawBoard();
 }
 
+const upButton = document.getElementById('upButton');
+const rightButton = document.getElementById('rightButton');
+const downButton = document.getElementById('downButton');
+const leftButton = document.getElementById('leftButton');
+const spaceButton = document.getElementById('spaceButton');
+const shiftButton = document.getElementById('shiftButton');
+
+upButton.addEventListener('click', () => {
+  keydown('ArrowUp');
+});
+
+rightButton.addEventListener('click', () => {
+  keydown('ArrowRight');
+});
+
+downButton.addEventListener('click', () => {
+  keydown('ArrowDown');
+});
+
+leftButton.addEventListener('click', () => {
+  keydown('ArrowLeft');
+});
+
+spaceButton.addEventListener('click', () => {
+  keydown(' ');
+});
+
+shiftButton.addEventListener('click', () => {
+  keydown('Shift');
+});
+
 window.addEventListener('keydown',e=>{
   if(gameOver) return;
   switch(e.key){
@@ -194,6 +243,8 @@ window.addEventListener('keydown',e=>{
   e.preventDefault();
   drawBoard();
 });
+
+
 
 /* First paint */
 drawBoard();
