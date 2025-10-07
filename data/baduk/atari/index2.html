@@ -13,15 +13,7 @@
     #turnBadge{display:inline-block;width:1em;height:1em;border-radius:50%;vertical-align:middle;margin-right:6px}
     #msg{margin-top:6px;font-size:.9em;color:#555}
 
-    .button {
-      display: inline-block;
-      margin: 10px;
-      padding: 10px 20px;
-      font-size: 18px;
-      background-color: #f1f1f1;
-      border: none;
-      cursor: pointer;
-    }
+
 </style>
 </head>
 <body>
@@ -193,37 +185,6 @@ function passTurn(){
   nextTurn();
   drawBoard();
 }
-
-const upButton = document.getElementById('upButton');
-const rightButton = document.getElementById('rightButton');
-const downButton = document.getElementById('downButton');
-const leftButton = document.getElementById('leftButton');
-const spaceButton = document.getElementById('spaceButton');
-const shiftButton = document.getElementById('shiftButton');
-
-upButton.addEventListener('click', () => {
-  keydown('ArrowUp');
-});
-
-rightButton.addEventListener('click', () => {
-  keydown('ArrowRight');
-});
-
-downButton.addEventListener('click', () => {
-  keydown('ArrowDown');
-});
-
-leftButton.addEventListener('click', () => {
-  keydown('ArrowLeft');
-});
-
-spaceButton.addEventListener('click', () => {
-  keydown(' ');
-});
-
-shiftButton.addEventListener('click', () => {
-  keydown('Shift');
-});
 
 window.addEventListener('keydown',e=>{
   if(gameOver) return;
