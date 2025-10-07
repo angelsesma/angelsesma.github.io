@@ -260,7 +260,7 @@
           ]
         },
         {
-          "name": "Foto",
+          "name": "Fotografia",
           "type": "dir",
           "contents": [
             
@@ -279,7 +279,7 @@
             
           
           {
-          "name": "Produccion asociada",
+          "name": "Mi-Amigo-Bernardo",
           "type": "iframe",
           "contents": "https://www.imdb.com/title/tt38117863/"
         }
