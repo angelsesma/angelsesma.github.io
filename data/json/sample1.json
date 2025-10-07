@@ -300,8 +300,8 @@
           
           {
           "name": "Radio",
-          "type": "iframe",
-          "contents": "/data/radio/index.html"
+          "type": "exec",
+          "contents": "https://streamingcwsradio30.com/8232/stream"
         }
           ]
         }
