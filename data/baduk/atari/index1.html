@@ -2,43 +2,25 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>9×9 Atari-Go</title>
+<title>AtariGo!</title>
 <style>
     html,body{height:100%;margin:0;font-family:sans-serif;
               display:flex;flex-direction:column;align-items:center;justify-content:center;
-              background:#f7f7f7;}
-    canvas{background:#f1d9a5;border:4px solid #333;border-radius:8px;
+              background:#070707;}
+    canvas{background:#880800;border:4px solid #B82;border-radius:8px;
            box-shadow:0 0 20px rgba(0,0,0,.2);touch-action:none}
     #info{margin-top:10px;font-size:1.1em;text-align:center}
-    #turnBadge{display:inline-block;width:1em;height:1em;border-radius:50%;vertical-align:middle;margin-right:6px}
+    #turnBadge{display:inline-block;width:1em;height:1em;color:#555;border-radius:50%;vertical-align:middle;margin-right:6px}
     #msg{margin-top:6px;font-size:.9em;color:#555}
-
-    .button {
-      display: inline-block;
-      margin: 10px;
-      padding: 10px 20px;
-      font-size: 18px;
-      background-color: #f1f1f1;
-      border: none;
-      cursor: pointer;
-    }
 </style>
 </head>
 <body>
 
 <canvas id="board" width="450" height="450"></canvas>
 <div id="info">
-  <span id="turnBadge"></span><span id="turnTxt">Black to move</span>
-  <div id="msg">Arrow keys to move, Space to place, Shift to pass</div>
+  <span id="turnBadge"></span><span id="turnTxt">Negras por jugar</span>
+  <div id="msg">[Flechas] para mover, [Espacio] para tirar, [Shift] para pasar</div>
 </div>
-  <div id="buttonContainer">
-    <button class="button" id="upButton">Up</button>
-    <button class="button" id="rightButton">Right</button>
-    <button class="button" id="downButton">Down</button>
-    <button class="button" id="leftButton">Left</button>
-    <button class="button" id="spaceButton">Space</button>
-    <button class="button" id="shiftButton">Shift</button>
-  </div>
 
 <script>
 /* === SETUP === */
@@ -58,7 +40,7 @@ let gameOver = false;
 function drawBoard(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
 
-  ctx.strokeStyle="#000";
+  ctx.strokeStyle="#FAA900";
   ctx.lineWidth=1.5;
   ctx.beginPath();
   for(let i=0;i<SIZE;i++){          // verticals
@@ -73,7 +55,7 @@ function drawBoard(){
 
   /* Star-points on 9×9 (optional aesthetics) */
   const stars=[2,4,6];        // indices of star coords
-  ctx.fillStyle="#000";
+  ctx.fillStyle="#FFEE00";
   stars.forEach(ix=>{
     stars.forEach(iy=>{
       ctx.beginPath();
@@ -90,7 +72,7 @@ function drawBoard(){
 
   /* Cursor highlight */
   if(!gameOver){
-    ctx.strokeStyle = "rgba(0,0,255,.6)";
+    ctx.strokeStyle = "rgba(0,255,255,.7)";
     ctx.lineWidth = 2;
     ctx.beginPath();
     ctx.arc(GRID/2+cursor.x*GRID,GRID/2+cursor.y*GRID,R+4,0,2*Math.PI);
@@ -102,11 +84,11 @@ function drawStone(x,y,color){
         cy = GRID/2+y*GRID;
   const grd = ctx.createRadialGradient(cx-R/3,cy-R/3,2, cx,cy,R);
   if(color===1){                          // black
-    grd.addColorStop(0,"#666");
+    grd.addColorStop(0,"#630");
     grd.addColorStop(1,"#000");
   }else{                                  // white
-    grd.addColorStop(0,"#fff");
-    grd.addColorStop(.8,"#ddd");
+    grd.addColorStop(0,"#fc8");
+    grd.addColorStop(.8,"#d83");
     grd.addColorStop(1,"#bbb");
   }
   ctx.fillStyle=grd;
@@ -168,11 +150,11 @@ function tryPlay(x,y){
 
 function declareWinner(color,captured){
   gameOver=true;
-  updateInfo(color===1?"Black":"White",`wins by capturing ${captured} stone${captured>1?"s":""}!`);
+  updateInfo(color===1?"Negras":"Blancas",`ganan capturando ${captured} piedra${captured>1?"s":""}!`);
 }
 function nextTurn(){
   turn=3-turn;
-  updateInfo(turn===1?"Black":"White");
+  updateInfo(turn===1?"Negras":"Blancas");
 }
 
 /* === UI === */
@@ -181,75 +163,62 @@ const turnTxt=document.getElementById('turnTxt');
 const msg=document.getElementById('msg');
 
 function updateInfo(who,extra=""){
-  badge.style.background= (who==="Black")?"#000":"#fff";
-  badge.style.border= (who==="Black")?"2px solid #000":"2px solid #555";
-  turnTxt.textContent = gameOver? `${who} ${extra}` : `${who} to move`;
+  badge.style.background= (who==="Negras")?"#000":"#fff";
+  badge.style.border= (who==="Negras")?"2px solid #000":"2px solid #555";
+  turnTxt.textContent = gameOver? `${who} ${extra}` : `${who} por jugar`;
   if(extra && !gameOver) msg.textContent=extra;
 }
 
-function passTurn(){
-  if(gameOver) return;
-  msg.textContent=`${turn===1?"Black":"White"} passes.`;
-  nextTurn();
-  drawBoard();
-}
 
-const upButton = document.getElementById('upButton');
-const rightButton = document.getElementById('rightButton');
-const downButton = document.getElementById('downButton');
-const leftButton = document.getElementById('leftButton');
-const spaceButton = document.getElementById('spaceButton');
-const shiftButton = document.getElementById('shiftButton');
 
-upButton.addEventListener('click',{
-  cursor.y=Math.max(0,cursor.y-1);
-  drawBoard();
-}
-);
 
-rightButton.addEventListener('click', 
-  cursor.x=Math.min(SIZE-1,cursor.x+1)
-);
-
-downButton.addEventListener('click', 
-  cursor.y=Math.min(SIZE-1,cursor.y+1)
-);
-
-leftButton.addEventListener('click', 
-  cursor.x=Math.max(0,cursor.x-1)
-);
-
-spaceButton.addEventListener('click', 
-  tryPlay(cursor.x,cursor.y));
-
-shiftButton.addEventListener('click', 
-  passTurn()
-);
-
-window.addEventListener('keydown',e=>{
-  if(gameOver) return;
-  switch(e.key){
-    case "ArrowLeft":  cursor.x=Math.max(0,cursor.x-1);break;
-    case "ArrowRight": cursor.x=Math.min(SIZE-1,cursor.x+1);break;
-    case "ArrowUp":    cursor.y=Math.max(0,cursor.y-1);break;
-    case "ArrowDown":  cursor.y=Math.min(SIZE-1,cursor.y+1);break;
-    case " ": // Space
-      tryPlay(cursor.x,cursor.y);
-      break;
-    case "Shift":
-      passTurn();
-      break;
-    default:return; // ignore others
+/* === TOUCH/CLICK ON CANVAS === */
+function getGridPosition(clientX, clientY){
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = canvas.width / rect.width;
+  const scaleY = canvas.height / rect.height;
+  
+  const canvasX = (clientX - rect.left) * scaleX;
+  const canvasY = (clientY - rect.top) * scaleY;
+  
+  const gridX = Math.round((canvasX - GRID/2) / GRID);
+  const gridY = Math.round((canvasY - GRID/2) / GRID);
+  
+  if(gridX >= 0 && gridX < SIZE && gridY >= 0 && gridY < SIZE){
+    return {x: gridX, y: gridY};
   }
-  e.preventDefault();
-  drawBoard();
+  return null;
+}
+
+canvas.addEventListener('click', (e)=>{
+  if(gameOver) return;
+  
+  const pos = getGridPosition(e.clientX, e.clientY);
+  if(pos){
+    
+      tryPlay(pos.x, pos.y);
+  
+    drawBoard();
+  }
 });
 
+canvas.addEventListener('touchstart', (e)=>{
+  e.preventDefault();
+  if(gameOver) return;
+  
+  const touch = e.touches[0];
+  const pos = getGridPosition(touch.clientX, touch.clientY);
+  if(pos){
 
+      tryPlay(pos.x, pos.y);
+   
+    drawBoard();
+  }
+});
 
 /* First paint */
 drawBoard();
-updateInfo("Black");
+updateInfo("Negras");
 </script>
 </body>
 </html>
