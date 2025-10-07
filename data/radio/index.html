@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <meta name="description" content="天浮き" />
+    <link type="text/css" rel="stylesheet" href="/data/css/style-fire.css" />
+    <script src="https://unpkg.com/hydra-synth"></script>
+  </head>
+  <body><audio src="https://streamingcwsradio30.com/8232/stream"></audio>
+    <canvas id="myCanvas">
+
+      <script>
+      // hydra.ojack.xyz
+      var hydra = new Hydra({
+        canvas: document.getElementById("myCanvas"),
+        detectAudio: true,
+      });
+      A = window.innerWidth / window.innerHeight;
+
+osc(5.175, -0.051, 0.209)
+	.color(2.238, 0.9892, 0.313)
+	.rotate(1,1.2,0).pixelate()
+	.out(o0);
+render(o0)
+
+
+      setResolution(window.innerWidth * 1, window.innerHeight * 1);
+    </script>
+</canvas>
+   
+  </body>
+</html>
+

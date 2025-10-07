@@ -45,7 +45,7 @@
              {
               "name": "Go-VR",
               "type": "iframe",
-              "contents": "/data/baduk/app/index.html"
+              "contents": "/data/baduk/atari/vr.html"
             } 
           ] 
           
@@ -275,7 +275,7 @@
           {
           "name": "Radio",
           "type": "iframe",
-          "contents": "https://streamingcwsradio30.com/8232/stream"
+          "contents": "/data/radio/index.html"
         }
           ]
         }
