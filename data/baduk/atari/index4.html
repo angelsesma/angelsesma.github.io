@@ -2,45 +2,25 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>AtariGo!</title>
+<title>Atari-Go 9x9</title>
 <style>
     html,body{height:100%;margin:0;font-family:sans-serif;
               display:flex;flex-direction:column;align-items:center;justify-content:center;
-              background:#f7f7f7;}
-    canvas{background:#f1d9a5;border:4px solid #333;border-radius:8px;
-           box-shadow:0 0 20px rgba(0,0,0,.2);touch-action:none;cursor:pointer}
+              background:#080808;}
+    canvas{background:#880800;border:4px solid #B82;border-radius:8px;
+           box-shadow:0 0 20px rgba(0,0,0,.2);touch-action:none}
     #info{margin-top:10px;font-size:1.1em;text-align:center}
-    #turnBadge{display:inline-block;width:1em;height:1em;border-radius:50%;vertical-align:middle;margin-right:6px}
-    #msg{margin-top:6px;font-size:.9em;color:#555}
+    #turnTxt{width:1em;height:1em;color:#fff;border-radius:50%;vertical-align:middle;margin-right:6px}
     
-   
-
-    
-    @media (max-width: 500px) {
-        canvas{width:90vw;height:90vw}
-
-    }
+    #msg{margin-top:6px;font-size:.9em;color:#b30}
 </style>
 </head>
 <body>
 
 <canvas id="board" width="450" height="450"></canvas>
 <div id="info">
-  <span id="turnBadge"></span><span id="turnTxt">Black to move</span>
+  <span id="turnTxt">Negras juegan</span>
   <div id="msg"></div>
-</div>
-  
-<div id="controls">
- 
-
-  
-  <div id="actionButtons">
-
-
-  </div>
-  
- 
 </div>
 
 <script>
@@ -56,13 +36,12 @@ let board = Array.from({length:SIZE},_=>Array(SIZE).fill(0));
 let turn  = 1;           // 1 = black, 2 = white
 let cursor = {x:4,y:4};  // start in the middle
 let gameOver = false;
-let mode = 'direct';     // 'direct' or 'cursor'
 
 /* === DRAWING === */
 function drawBoard(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
 
-  ctx.strokeStyle="#000";
+  ctx.strokeStyle="#FAA900";
   ctx.lineWidth=1.5;
   ctx.beginPath();
   for(let i=0;i<SIZE;i++){          // verticals
@@ -77,7 +56,7 @@ function drawBoard(){
 
   /* Star-points on 9×9 (optional aesthetics) */
   const stars=[2,4,6];        // indices of star coords
-  ctx.fillStyle="#000";
+  ctx.fillStyle="#FFEE00";
   stars.forEach(ix=>{
     stars.forEach(iy=>{
       ctx.beginPath();
@@ -92,9 +71,15 @@ function drawBoard(){
       if(board[y][x])
         drawStone(x,y,board[y][x]);
 
-  
+  /* Cursor highlight */
+  if(!gameOver){
+    ctx.strokeStyle = "rgba(0,255,255,.7)";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(GRID/2+cursor.x*GRID,GRID/2+cursor.y*GRID,R+4,0,2*Math.PI);
+    ctx.stroke();
+  }
 }
-
 function drawStone(x,y,color){
   const cx = GRID/2+x*GRID,
         cy = GRID/2+y*GRID;
@@ -117,7 +102,6 @@ function drawStone(x,y,color){
 function neighbors(x,y){
   return [[x-1,y],[x+1,y],[x,y-1],[x,y+1]].filter(([a,b])=>a>=0&&a<SIZE&&b>=0&&b<SIZE);
 }
-
 function flood(x,y,color,group=new Set(),libs=new Set()){
   const key = y*SIZE+x;
   if(group.has(key)) return {group,libs};
@@ -128,7 +112,6 @@ function flood(x,y,color,group=new Set(),libs=new Set()){
   }
   return {group,libs};
 }
-
 function tryPlay(x,y){
   if(board[y][x]!==0) return false;       // already occupied
 
@@ -168,79 +151,52 @@ function tryPlay(x,y){
 
 function declareWinner(color,captured){
   gameOver=true;
-  updateInfo(color===1?"Black":"White",`wins by capturing ${captured} stone${captured>1?"s":""}!`);
+  updateInfo(color===1?"Negras":"Blancas",`ganan capturando ${captured} piedra${captured>1?"s":""}!`);
 }
-
 function nextTurn(){
   turn=3-turn;
-  updateInfo(turn===1?"Black":"White");
+  updateInfo(turn===1?"Negras":"Blancas");
 }
-
-
-/* === UI === */
-const badge=document.getElementById('turnBadge');
+//UI
 const turnTxt=document.getElementById('turnTxt');
 const msg=document.getElementById('msg');
 
 function updateInfo(who,extra=""){
-  badge.style.background= (who==="Black")?"#000":"#fff";
-  badge.style.border= (who==="Black")?"2px solid #000":"2px solid #555";
-  turnTxt.textContent = gameOver? `${who} ${extra}` : `${who} to move`;
+  badge.style.background= (who==="Negras")?"#000":"#fff";
+  badge.style.border= (who==="Negras")?"2px solid #000":"2px solid #555";
+  turnTxt.textContent = gameOver? `${who} ${extra}` : `${who} por jugar`;
   if(extra && !gameOver) msg.textContent=extra;
 }
 
-
-
-
-/* === TOUCH/CLICK ON CANVAS === */
-function getGridPosition(clientX, clientY){
-  const rect = canvas.getBoundingClientRect();
-  const scaleX = canvas.width / rect.width;
-  const scaleY = canvas.height / rect.height;
-  
-  const canvasX = (clientX - rect.left) * scaleX;
-  const canvasY = (clientY - rect.top) * scaleY;
-  
-  const gridX = Math.round((canvasX - GRID/2) / GRID);
-  const gridY = Math.round((canvasY - GRID/2) / GRID);
-  
-  if(gridX >= 0 && gridX < SIZE && gridY >= 0 && gridY < SIZE){
-    return {x: gridX, y: gridY};
-  }
-  return null;
+function passTurn(){
+  if(gameOver) return;
+  msg.textContent=`${turn===1?"Negras":"Blancas"} pasan.`;
+  nextTurn();
+  drawBoard();
 }
 
-canvas.addEventListener('click', (e)=>{
+window.addEventListener('keydown',e=>{
   if(gameOver) return;
-  
-  const pos = getGridPosition(e.clientX, e.clientY);
-  if(pos){
-    
-      tryPlay(pos.x, pos.y);
-  
-    drawBoard();
+  switch(e.key){
+    case "ArrowLeft":  cursor.x=Math.max(0,cursor.x-1);break;
+    case "ArrowRight": cursor.x=Math.min(SIZE-1,cursor.x+1);break;
+    case "ArrowUp":    cursor.y=Math.max(0,cursor.y-1);break;
+    case "ArrowDown":  cursor.y=Math.min(SIZE-1,cursor.y+1);break;
+    case " ": // Space
+      tryPlay(cursor.x,cursor.y);
+      break;
+    case "Shift":
+      passTurn();
+      break;
+    default:return; // ignore others
   }
-});
-
-canvas.addEventListener('touchstart', (e)=>{
   e.preventDefault();
-  if(gameOver) return;
-  
-  const touch = e.touches[0];
-  const pos = getGridPosition(touch.clientX, touch.clientY);
-  if(pos){
-
-      tryPlay(pos.x, pos.y);
-   
-    drawBoard();
-  }
+  drawBoard();
 });
-
-
 
 /* First paint */
 drawBoard();
-updateInfo("Black");
+updateInfo("Negras");
 </script>
 </body>
 </html>
