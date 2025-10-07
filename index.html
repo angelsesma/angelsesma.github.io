@@ -28,17 +28,17 @@
 //	.out(o0);
 //render(o0)
 
-osc(1.928, -0.165, 0.017)
-	.color(() => 2.568 + a.fft[2] * 0.102, 0.039, 0.002)
+osc(3.084, -0.078, 0.02)
+	.color(() => 2.568, 0.078, 0.002)
 	.modulate(noise())
 	.scale()
 	.layer(src(o0)
-		.mask(osc(0.221)
-			.modulateRotate(osc(), 2.138, 0.178))
+		.mask(osc(0.733)
+			.modulateRotate(osc(), 2.138, 0.213))
 		.scale(1.657)
-		.luma(0.007, 0.002))
+		.luma(0.007, 0.003))
 	.blend(o2)
-	.pixelate(12, 16.45, 17.319)
+	.pixelate(361, 2.61, 19.415)
 	.out(o3);
 render(o3);
 
