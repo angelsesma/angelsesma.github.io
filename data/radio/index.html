@@ -6,10 +6,11 @@
     <link type="text/css" rel="stylesheet" href="/data/css/style-fire.css" />
     <script src="https://unpkg.com/hydra-synth"></script>
   </head>
-  <body><audio src="https://streamingcwsradio30.com/8232/stream"></audio>
-    <canvas id="myCanvas">
+  <body><canvas id="myCanvas">
+    <audio src="https://streamingcwsradio30.com/8232/stream"></audio>
+    
 
-      <script>
+    <script>
       // hydra.ojack.xyz
       var hydra = new Hydra({
         canvas: document.getElementById("myCanvas"),
@@ -22,6 +23,8 @@ osc(5.175, -0.051, 0.209)
 	.rotate(1,1.2,0).pixelate()
 	.out(o0);
 render(o0)
+
+
 
 
       setResolution(window.innerWidth * 1, window.innerHeight * 1);
