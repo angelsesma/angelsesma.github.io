@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>9×9 Atari-Go</title>
+<style>
+    html,body{height:100%;margin:0;font-family:sans-serif;
+              display:flex;flex-direction:column;align-items:center;justify-content:center;
+              background:#f7f7f7;}
+    canvas{background:#880800;border:4px solid #B82;border-radius:8px;
+           box-shadow:0 0 20px rgba(0,0,0,.2);touch-action:none}
+    #info{margin-top:10px;font-size:1.1em;text-align:center}
+    #turnBadge{display:inline-block;width:1em;height:1em;border-radius:50%;vertical-align:middle;margin-right:6px}
+    #msg{margin-top:6px;font-size:.9em;color:#555}
+</style>
+</head>
+<body>
+
+<canvas id="board" width="450" height="450"></canvas>
+<div id="info">
+  <span id="turnBadge"></span><span id="turnTxt">Black to move</span>
+  <div id="msg">Arrow keys to move, Space to place, Shift to pass</div>
+</div>
+
+<script>
+/* === SETUP === */
+const SIZE = 9;                   // 9×9 board
+const GRID = 50;                  // pixel distance between lines
+const R    = 18;                  // stone radius
+const canvas = document.getElementById('board');
+const ctx    = canvas.getContext('2d');
+
+/* Board representation: 0 empty, 1 black, 2 white */
+let board = Array.from({length:SIZE},_=>Array(SIZE).fill(0));
+let turn  = 1;           // 1 = black, 2 = white
+let cursor = {x:4,y:4};  // start in the middle
+let gameOver = false;
+
+/* === DRAWING === */
+function drawBoard(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  ctx.strokeStyle="#FAA900";
+  ctx.lineWidth=1.5;
+  ctx.beginPath();
+  for(let i=0;i<SIZE;i++){          // verticals
+    ctx.moveTo(GRID/2+i*GRID,GRID/2);
+    ctx.lineTo(GRID/2+i*GRID,GRID/2+(SIZE-1)*GRID);
+  }
+  for(let i=0;i<SIZE;i++){          // horizontals
+    ctx.moveTo(GRID/2,GRID/2+i*GRID);
+    ctx.lineTo(GRID/2+(SIZE-1)*GRID,GRID/2+i*GRID);
+  }
+  ctx.stroke();
+
+  /* Star-points on 9×9 (optional aesthetics) */
+  const stars=[2,4,6];        // indices of star coords
+  ctx.fillStyle="#000";
+  stars.forEach(ix=>{
+    stars.forEach(iy=>{
+      ctx.beginPath();
+      ctx.arc(GRID/2+ix*GRID,GRID/2+iy*GRID,4,0,2*Math.PI);
+      ctx.fill();
+    })
+  });
+
+  /* Stones */
+  for(let y=0;y<SIZE;y++)
+    for(let x=0;x<SIZE;x++)
+      if(board[y][x])
+        drawStone(x,y,board[y][x]);
+
+  /* Cursor highlight */
+  if(!gameOver){
+    ctx.strokeStyle = "rgba(0,0,255,.6)";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(GRID/2+cursor.x*GRID,GRID/2+cursor.y*GRID,R+4,0,2*Math.PI);
+    ctx.stroke();
+  }
+}
+function drawStone(x,y,color){
+  const cx = GRID/2+x*GRID,
+        cy = GRID/2+y*GRID;
+  const grd = ctx.createRadialGradient(cx-R/3,cy-R/3,2, cx,cy,R);
+  if(color===1){                          // black
+    grd.addColorStop(0,"#630");
+    grd.addColorStop(1,"#000");
+  }else{                                  // white
+    grd.addColorStop(0,"#fc8");
+    grd.addColorStop(.8,"#d83");
+    grd.addColorStop(1,"#bbb");
+  }
+  ctx.fillStyle=grd;
+  ctx.beginPath();
+  ctx.arc(cx,cy,R,0,2*Math.PI);
+  ctx.fill();
+}
+
+/* === GAME LOGIC === */
+function neighbors(x,y){
+  return [[x-1,y],[x+1,y],[x,y-1],[x,y+1]].filter(([a,b])=>a>=0&&a<SIZE&&b>=0&&b<SIZE);
+}
+function flood(x,y,color,group=new Set(),libs=new Set()){
+  const key = y*SIZE+x;
+  if(group.has(key)) return {group,libs};
+  group.add(key);
+  for(const [nx,ny] of neighbors(x,y)){
+    if(board[ny][nx]===0) libs.add(ny*SIZE+nx);
+    else if(board[ny][nx]===color) flood(nx,ny,color,group,libs);
+  }
+  return {group,libs};
+}
+function tryPlay(x,y){
+  if(board[y][x]!==0) return false;       // already occupied
+
+  /* tentatively place */
+  board[y][x]=turn;
+
+  /* capture opponent groups with zero liberties */
+  let captured=0;
+  const opp = 3-turn;
+  for(const [nx,ny] of neighbors(x,y)){
+    if(board[ny][nx]===opp){
+      const {group,libs}=flood(nx,ny,opp);
+      if(libs.size===0){
+        for(const key of group){
+          const gx=key%SIZE, gy=Math.floor(key/SIZE);
+          board[gy][gx]=0;
+          captured++;
+        }
+      }
+    }
+  }
+
+  /* check for suicide (your own group dead) */
+  const {libs}=flood(x,y,turn);
+  if(libs.size===0 && captured===0){
+    board[y][x]=0;            // illegal – undo
+    return false;
+  }
+
+  if(captured>0){
+    declareWinner(turn,captured);
+  }else{
+    nextTurn();
+  }
+  return true;
+}
+
+function declareWinner(color,captured){
+  gameOver=true;
+  updateInfo(color===1?"Black":"White",`wins by capturing ${captured} stone${captured>1?"s":""}!`);
+}
+function nextTurn(){
+  turn=3-turn;
+  updateInfo(turn===1?"Black":"White");
+}
+
+/* === UI === */
+const badge=document.getElementById('turnBadge');
+const turnTxt=document.getElementById('turnTxt');
+const msg=document.getElementById('msg');
+
+function updateInfo(who,extra=""){
+  badge.style.background= (who==="Black")?"#000":"#fff";
+  badge.style.border= (who==="Black")?"2px solid #000":"2px solid #555";
+  turnTxt.textContent = gameOver? `${who} ${extra}` : `${who} to move`;
+  if(extra && !gameOver) msg.textContent=extra;
+}
+
+function passTurn(){
+  if(gameOver) return;
+  msg.textContent=`${turn===1?"Black":"White"} passes.`;
+  nextTurn();
+  drawBoard();
+}
+
+window.addEventListener('keydown',e=>{
+  if(gameOver) return;
+  switch(e.key){
+    case "ArrowLeft":  cursor.x=Math.max(0,cursor.x-1);break;
+    case "ArrowRight": cursor.x=Math.min(SIZE-1,cursor.x+1);break;
+    case "ArrowUp":    cursor.y=Math.max(0,cursor.y-1);break;
+    case "ArrowDown":  cursor.y=Math.min(SIZE-1,cursor.y+1);break;
+    case " ": // Space
+      tryPlay(cursor.x,cursor.y);
+      break;
+    case "Shift":
+      passTurn();
+      break;
+    default:return; // ignore others
+  }
+  e.preventDefault();
+  drawBoard();
+});
+
+/* First paint */
+drawBoard();
+updateInfo("Black");
+</script>
+</body>
+</html>
