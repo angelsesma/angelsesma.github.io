@@ -100,11 +100,11 @@ function drawStone(x,y,color){
         cy = GRID/2+y*GRID;
   const grd = ctx.createRadialGradient(cx-R/3,cy-R/3,2, cx,cy,R);
   if(color===1){                          // black
-    grd.addColorStop(0,"#630");
+    grd.addColorStop(0,"#666");
     grd.addColorStop(1,"#000");
   }else{                                  // white
-    grd.addColorStop(0,"#fc8");
-    grd.addColorStop(.8,"#d83");
+    grd.addColorStop(0,"#fff");
+    grd.addColorStop(.8,"#ddd");
     grd.addColorStop(1,"#bbb");
   }
   ctx.fillStyle=grd;
