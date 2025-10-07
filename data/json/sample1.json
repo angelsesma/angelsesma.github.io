@@ -267,7 +267,7 @@
           
           {
           "name": "Damnificados",
-          "type": "iframe",
+          "type": "exec",
           "contents": "https://www.imdb.com/title/tt12368072/"
         }
           ]
@@ -280,7 +280,7 @@
           
           {
           "name": "Mi-Amigo-Bernardo",
-          "type": "iframe",
+          "type": "exec",
           "contents": "https://www.imdb.com/title/tt38117863/"
         }
           ]
