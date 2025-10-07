@@ -367,7 +367,7 @@ COMMANDS.iching = async function (argv, cb) {
   cb();
 };
 
-COMMANDS.raiz = function (argv, cb) {
+COMMANDS.mapa = function (argv, cb) {
   var term = this._terminal,
     home;
 
@@ -477,7 +477,7 @@ COMMANDS.hongo = function (argv, cb) {
   cb();
 };
 
-COMMANDS.mapa = async function (argv, cb) {
+COMMANDS.raiz = async function (argv, cb) {
   var term = this._terminal,
     home;
   function writeTree(dir, level) {
