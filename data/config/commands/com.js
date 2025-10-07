@@ -486,9 +486,9 @@ COMMANDS.raiz = async function (argv, cb) {
 
          if (entry.name.startswith('.'))
             return;
-         for (var i = 0; i < level; i++) str += "⭆";
+         for (var i = 0; i < level; i++) str += "⭆  ";
          if (entry.type == "dir") str += '⤇';
-         else str += '⇛' 
+         else str += '_' 
          if (entry.type != "log")
             term.write(str);
             term.writeLink(entry, term.dirString(dir) + '/' + entry.name);
