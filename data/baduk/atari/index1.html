@@ -9,7 +9,7 @@
               background:#070707;}
     canvas{background:#880800;border:4px solid #B82;border-radius:8px;
            box-shadow:0 0 20px rgba(0,0,0,.2);touch-action:none}
-    #info{margin-top:10px;font-size:1.1em;text-align:center}
+    #info{margin-top:10px;font-size:1.1em;;color:#555;text-align:center}
     #turnBadge{display:inline-block;width:1em;height:1em;color:#555;border-radius:50%;vertical-align:middle;margin-right:6px}
     #msg{margin-top:6px;font-size:.9em;color:#555}
 </style>
@@ -70,14 +70,7 @@ function drawBoard(){
       if(board[y][x])
         drawStone(x,y,board[y][x]);
 
-  /* Cursor highlight */
-  if(!gameOver){
-    ctx.strokeStyle = "rgba(0,255,255,.7)";
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.arc(GRID/2+cursor.x*GRID,GRID/2+cursor.y*GRID,R+4,0,2*Math.PI);
-    ctx.stroke();
-  }
+ 
 }
 function drawStone(x,y,color){
   const cx = GRID/2+x*GRID,
