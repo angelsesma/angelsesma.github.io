@@ -18,7 +18,7 @@
 
 <canvas id="board" width="450" height="450"></canvas>
 <div id="info">
-  <span id="turnBadge"></span><span id="turnTxt">Negras por jugar</span>
+  <!--span id="turnBadge"></span><span id="turnTxt">Negras por jugar</span-->
   <div id="msg"></div>
 </div>
 
@@ -151,14 +151,14 @@ function nextTurn(){
 }
 
 /* === UI === */
-const badge=document.getElementById('turnBadge');
-const turnTxt=document.getElementById('turnTxt');
+//const badge=document.getElementById('turnBadge');
+//const turnTxt=document.getElementById('turnTxt');
 const msg=document.getElementById('msg');
 
 function updateInfo(who,extra=""){
   badge.style.background= (who==="Negras")?"#000":"#fff";
   badge.style.border= (who==="Negras")?"2px solid #000":"2px solid #555";
-  turnTxt.textContent = gameOver? `${who} ${extra}` : `${who} por jugar`;
+  //turnTxt.textContent = gameOver? `${who} ${extra}` : `${who} por jugar`;
   if(extra && !gameOver) msg.textContent=extra;
 }
 
