@@ -40,12 +40,12 @@
             {
               "name": "atari-go",
               "type": "iframe",
-              "contents": "/data/baduk/atari/index1.html"
+              "contents": "/data/baduk/atari/index.html"
             },
              {
               "name": "Go-VR",
               "type": "iframe",
-              "contents": "/data/baduk/atari/vr.html"
+              "contents": "/data/baduk/app/index.html"
             } 
           ] 
           
