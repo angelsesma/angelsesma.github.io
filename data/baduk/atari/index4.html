@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>9×9 Atari-Go</title>
+<title>AtariGo!</title>
 <style>
     html,body{height:100%;margin:0;font-family:sans-serif;
               display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -14,37 +14,12 @@
     #turnBadge{display:inline-block;width:1em;height:1em;border-radius:50%;vertical-align:middle;margin-right:6px}
     #msg{margin-top:6px;font-size:.9em;color:#555}
     
-    #controls{margin-top:15px;display:flex;flex-direction:column;align-items:center;gap:10px}
-    
-    #buttonContainer{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;width:200px}
-    
-    .button{padding:12px;font-size:14px;border:2px solid #333;border-radius:5px;
-            background:#fff;cursor:pointer;transition:all .2s;font-weight:500;
-            user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}
-    .button:hover{background:#e0e0e0;transform:scale(1.05)}
-    .button:active{background:#ccc;transform:scale(0.95)}
-    
-    #upButton{grid-column:2}
-    #leftButton{grid-column:1;grid-row:2}
-    #rightButton{grid-column:3;grid-row:2}
-    #downButton{grid-column:2;grid-row:3}
-    
-    #actionButtons{display:flex;gap:10px;margin-top:5px}
-    #placeButton{background:#4CAF50;color:white;border-color:#45a049;padding:12px 20px}
-    #placeButton:hover{background:#45a049}
-    #passButton{background:#ff9800;color:white;border-color:#e68900;padding:12px 20px}
-    #passButton:hover{background:#e68900}
-    #resetButton{background:#f44336;color:white;border-color:#da190b;padding:12px 20px}
-    #resetButton:hover{background:#da190b}
-    
-    #modeToggle{margin-top:10px;padding:8px 15px;background:#2196F3;color:white;
-                border:none;border-radius:5px;cursor:pointer;font-size:14px}
-    #modeToggle:hover{background:#1976D2}
+   
+
     
     @media (max-width: 500px) {
         canvas{width:90vw;height:90vw}
-        #buttonContainer{width:180px}
-        .button{padding:10px;font-size:12px}
+
     }
 </style>
 </head>
@@ -53,24 +28,19 @@
 <canvas id="board" width="450" height="450"></canvas>
 <div id="info">
   <span id="turnBadge"></span><span id="turnTxt">Black to move</span>
-  <div id="msg">Click/tap board to place stones or use controls below</div>
+  <div id="msg"></div>
 </div>
-
-<div id="controls">
-  <!--button id="modeToggle">Mode: Direct Place</button-->
   
-  <!--div id="buttonContainer">
-    <button class="button" id="upButton">↑</button>
-    <button class="button" id="leftButton">←</button>
-    <button class="button" id="rightButton">→</button>
-    <button class="button" id="downButton">↓</button>
-  </div-->
+<div id="controls">
+ 
+
   
   <div id="actionButtons">
-    <!--button class="button" id="placeButton">Place Stone</button-->
-    <button class="button" id="passButton">Pass Turn</button>
-    <button class="button" id="resetButton">Reset</button>
+
+
   </div>
+  
+ 
 </div>
 
 <script>
@@ -122,14 +92,7 @@ function drawBoard(){
       if(board[y][x])
         drawStone(x,y,board[y][x]);
 
-  /* Cursor highlight (only in cursor mode) */
-  if(!gameOver && mode === 'cursor'){
-    ctx.strokeStyle = "rgba(0,0,255,.6)";
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.arc(GRID/2+cursor.x*GRID,GRID/2+cursor.y*GRID,R+4,0,2*Math.PI);
-    ctx.stroke();
-  }
+  
 }
 
 function drawStone(x,y,color){
@@ -213,17 +176,6 @@ function nextTurn(){
   updateInfo(turn===1?"Black":"White");
 }
 
-function resetGame(){
-  board = Array.from({length:SIZE},_=>Array(SIZE).fill(0));
-  turn = 1;
-  cursor = {x:4,y:4};
-  gameOver = false;
-  updateInfo("Black");
-  msg.textContent = mode === 'direct' ? 
-    "Click/tap board to place stones or use controls below" : 
-    "Use arrows to move cursor, then click Place Stone";
-  drawBoard();
-}
 
 /* === UI === */
 const badge=document.getElementById('turnBadge');
@@ -237,72 +189,8 @@ function updateInfo(who,extra=""){
   if(extra && !gameOver) msg.textContent=extra;
 }
 
-function passTurn(){
-  if(gameOver) return;
-  msg.textContent=`${turn===1?"Black":"White"} passes.`;
-  nextTurn();
-  drawBoard();
-}
 
-/* === BUTTON CONTROLS === */
-document.getElementById('upButton').addEventListener('click', ()=>{
-  if(gameOver || mode !== 'cursor') return;
-  cursor.y = Math.max(0, cursor.y-1);
-  drawBoard();
-});
 
-document.getElementById('downButton').addEventListener('click', ()=>{
-  if(gameOver || mode !== 'cursor') return;
-  cursor.y = Math.min(SIZE-1, cursor.y+1);
-  drawBoard();
-});
-
-document.getElementById('leftButton').addEventListener('click', ()=>{
-  if(gameOver || mode !== 'cursor') return;
-  cursor.x = Math.max(0, cursor.x-1);
-  drawBoard();
-});
-
-document.getElementById('rightButton').addEventListener('click', ()=>{
-  if(gameOver || mode !== 'cursor') return;
-  cursor.x = Math.min(SIZE-1, cursor.x+1);
-  drawBoard();
-});
-
-document.getElementById('placeButton').addEventListener('click', ()=>{
-  if(gameOver || mode !== 'cursor') return;
-  tryPlay(cursor.x, cursor.y);
-  drawBoard();
-});
-
-document.getElementById('passButton').addEventListener('click', ()=>{
-  passTurn();
-});
-
-document.getElementById('resetButton').addEventListener('click', ()=>{
-  resetGame();
-});
-
-document.getElementById('modeToggle').addEventListener('click', ()=>{
-  mode = mode === 'direct' ? 'cursor' : 'direct';
-  document.getElementById('modeToggle').textContent = `Mode: ${mode === 'direct' ? 'Direct Place' : 'Cursor Move'}`;
-  
-  // Show/hide appropriate controls
-  const arrowButtons = document.getElementById('buttonContainer');
-  const placeButton = document.getElementById('placeButton');
-  
-  if(mode === 'direct'){
-    arrowButtons.style.display = 'none';
-    placeButton.style.display = 'none';
-    msg.textContent = "Click/tap board to place stones";
-  } else {
-    arrowButtons.style.display = 'grid';
-    placeButton.style.display = 'block';
-    msg.textContent = "Use arrows to move cursor, then click Place Stone";
-  }
-  
-  drawBoard();
-});
 
 /* === TOUCH/CLICK ON CANVAS === */
 function getGridPosition(clientX, clientY){
@@ -327,12 +215,9 @@ canvas.addEventListener('click', (e)=>{
   
   const pos = getGridPosition(e.clientX, e.clientY);
   if(pos){
-    if(mode === 'direct'){
+    
       tryPlay(pos.x, pos.y);
-    } else {
-      cursor.x = pos.x;
-      cursor.y = pos.y;
-    }
+  
     drawBoard();
   }
 });
@@ -344,51 +229,14 @@ canvas.addEventListener('touchstart', (e)=>{
   const touch = e.touches[0];
   const pos = getGridPosition(touch.clientX, touch.clientY);
   if(pos){
-    if(mode === 'direct'){
+
       tryPlay(pos.x, pos.y);
-    } else {
-      cursor.x = pos.x;
-      cursor.y = pos.y;
-    }
+   
     drawBoard();
   }
 });
 
-/* === KEYBOARD CONTROLS === */
-window.addEventListener('keydown',e=>{
-  if(gameOver) return;
-  switch(e.key){
-    case "ArrowLeft":  
-      if(mode === 'cursor') cursor.x=Math.max(0,cursor.x-1);
-      break;
-    case "ArrowRight": 
-      if(mode === 'cursor') cursor.x=Math.min(SIZE-1,cursor.x+1);
-      break;
-    case "ArrowUp":    
-      if(mode === 'cursor') cursor.y=Math.max(0,cursor.y-1);
-      break;
-    case "ArrowDown":  
-      if(mode === 'cursor') cursor.y=Math.min(SIZE-1,cursor.y+1);
-      break;
-    case " ": // Space
-      if(mode === 'cursor') tryPlay(cursor.x,cursor.y);
-      break;
-    case "Shift":
-      passTurn();
-      break;
-    case "r": case "R":
-      resetGame();
-      break;
-    default:return; // ignore others
-  }
-  e.preventDefault();
-  drawBoard();
-});
 
-/* === INITIALIZATION === */
-// Start in direct mode (hide cursor controls)
-document.getElementById('buttonContainer').style.display = 'none';
-document.getElementById('placeButton').style.display = 'none';
 
 /* First paint */
 drawBoard();

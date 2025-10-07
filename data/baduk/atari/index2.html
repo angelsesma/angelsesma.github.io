@@ -2,18 +2,50 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>9×9 Atari-Go</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>AtariGo!</title>
 <style>
     html,body{height:100%;margin:0;font-family:sans-serif;
               display:flex;flex-direction:column;align-items:center;justify-content:center;
               background:#f7f7f7;}
     canvas{background:#f1d9a5;border:4px solid #333;border-radius:8px;
-           box-shadow:0 0 20px rgba(0,0,0,.2);touch-action:none}
+           box-shadow:0 0 20px rgba(0,0,0,.2);touch-action:none;cursor:pointer}
     #info{margin-top:10px;font-size:1.1em;text-align:center}
     #turnBadge{display:inline-block;width:1em;height:1em;border-radius:50%;vertical-align:middle;margin-right:6px}
     #msg{margin-top:6px;font-size:.9em;color:#555}
-
-
+    
+    #controls{margin-top:15px;display:flex;flex-direction:column;align-items:center;gap:10px}
+    
+    #buttonContainer{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;width:200px}
+    
+    .button{padding:12px;font-size:14px;border:2px solid #333;border-radius:5px;
+            background:#fff;cursor:pointer;transition:all .2s;font-weight:500;
+            user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}
+    .button:hover{background:#e0e0e0;transform:scale(1.05)}
+    .button:active{background:#ccc;transform:scale(0.95)}
+    
+    #upButton{grid-column:2}
+    #leftButton{grid-column:1;grid-row:2}
+    #rightButton{grid-column:3;grid-row:2}
+    #downButton{grid-column:2;grid-row:3}
+    
+    #actionButtons{display:flex;gap:10px;margin-top:5px}
+    #placeButton{background:#4CAF50;color:white;border-color:#45a049;padding:12px 20px}
+    #placeButton:hover{background:#45a049}
+    #passButton{background:#ff9800;color:white;border-color:#e68900;padding:12px 20px}
+    #passButton:hover{background:#e68900}
+    #resetButton{background:#f44336;color:white;border-color:#da190b;padding:12px 20px}
+    #resetButton:hover{background:#da190b}
+    
+    #modeToggle{margin-top:10px;padding:8px 15px;background:#2196F3;color:white;
+                border:none;border-radius:5px;cursor:pointer;font-size:14px}
+    #modeToggle:hover{background:#1976D2}
+    
+    @media (max-width: 500px) {
+        canvas{width:90vw;height:90vw}
+        #buttonContainer{width:180px}
+        .button{padding:10px;font-size:12px}
+    }
 </style>
 </head>
 <body>
@@ -21,16 +53,21 @@
 <canvas id="board" width="450" height="450"></canvas>
 <div id="info">
   <span id="turnBadge"></span><span id="turnTxt">Black to move</span>
-  <div id="msg">Arrow keys to move, Space to place, Shift to pass</div>
+  <div id="msg">Tap board to place stones</div>
 </div>
-  <div id="buttonContainer">
-    <button class="button" id="upButton">Up</button>
-    <button class="button" id="rightButton">Right</button>
-    <button class="button" id="downButton">Down</button>
-    <button class="button" id="leftButton">Left</button>
-    <button class="button" id="spaceButton">Space</button>
-    <button class="button" id="shiftButton">Shift</button>
+  
+<div id="controls">
+ 
+
+  
+  <div id="actionButtons">
+
+    <button class="button" id="passButton">Pass Turn</button>
+    <button class="button" id="resetButton">Reset</button>
   </div>
+  
+ 
+</div>
 
 <script>
 /* === SETUP === */
@@ -45,6 +82,7 @@ let board = Array.from({length:SIZE},_=>Array(SIZE).fill(0));
 let turn  = 1;           // 1 = black, 2 = white
 let cursor = {x:4,y:4};  // start in the middle
 let gameOver = false;
+let mode = 'direct';     // 'direct' or 'cursor'
 
 /* === DRAWING === */
 function drawBoard(){
@@ -80,15 +118,9 @@ function drawBoard(){
       if(board[y][x])
         drawStone(x,y,board[y][x]);
 
-  /* Cursor highlight */
-  if(!gameOver){
-    ctx.strokeStyle = "rgba(0,0,255,.6)";
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.arc(GRID/2+cursor.x*GRID,GRID/2+cursor.y*GRID,R+4,0,2*Math.PI);
-    ctx.stroke();
-  }
+  
 }
+
 function drawStone(x,y,color){
   const cx = GRID/2+x*GRID,
         cy = GRID/2+y*GRID;
@@ -111,6 +143,7 @@ function drawStone(x,y,color){
 function neighbors(x,y){
   return [[x-1,y],[x+1,y],[x,y-1],[x,y+1]].filter(([a,b])=>a>=0&&a<SIZE&&b>=0&&b<SIZE);
 }
+
 function flood(x,y,color,group=new Set(),libs=new Set()){
   const key = y*SIZE+x;
   if(group.has(key)) return {group,libs};
@@ -121,6 +154,7 @@ function flood(x,y,color,group=new Set(),libs=new Set()){
   }
   return {group,libs};
 }
+
 function tryPlay(x,y){
   if(board[y][x]!==0) return false;       // already occupied
 
@@ -162,9 +196,20 @@ function declareWinner(color,captured){
   gameOver=true;
   updateInfo(color===1?"Black":"White",`wins by capturing ${captured} stone${captured>1?"s":""}!`);
 }
+
 function nextTurn(){
   turn=3-turn;
   updateInfo(turn===1?"Black":"White");
+}
+
+function resetGame(){
+  board = Array.from({length:SIZE},_=>Array(SIZE).fill(0));
+  turn = 1;
+  cursor = {x:4,y:4};
+  gameOver = false;
+  updateInfo("Black");
+ 
+  drawBoard();
 }
 
 /* === UI === */
@@ -186,23 +231,59 @@ function passTurn(){
   drawBoard();
 }
 
-window.addEventListener('keydown',e=>{
-  if(gameOver) return;
-  switch(e.key){
-    case "ArrowLeft":  cursor.x=Math.max(0,cursor.x-1);break;
-    case "ArrowRight": cursor.x=Math.min(SIZE-1,cursor.x+1);break;
-    case "ArrowUp":    cursor.y=Math.max(0,cursor.y-1);break;
-    case "ArrowDown":  cursor.y=Math.min(SIZE-1,cursor.y+1);break;
-    case " ": // Space
-      tryPlay(cursor.x,cursor.y);
-      break;
-    case "Shift":
-      passTurn();
-      break;
-    default:return; // ignore others
+
+
+document.getElementById('passButton').addEventListener('click', ()=>{
+  passTurn();
+});
+
+document.getElementById('resetButton').addEventListener('click', ()=>{
+  resetGame();
+});
+
+
+/* === TOUCH/CLICK ON CANVAS === */
+function getGridPosition(clientX, clientY){
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = canvas.width / rect.width;
+  const scaleY = canvas.height / rect.height;
+  
+  const canvasX = (clientX - rect.left) * scaleX;
+  const canvasY = (clientY - rect.top) * scaleY;
+  
+  const gridX = Math.round((canvasX - GRID/2) / GRID);
+  const gridY = Math.round((canvasY - GRID/2) / GRID);
+  
+  if(gridX >= 0 && gridX < SIZE && gridY >= 0 && gridY < SIZE){
+    return {x: gridX, y: gridY};
   }
+  return null;
+}
+
+canvas.addEventListener('click', (e)=>{
+  if(gameOver) return;
+  
+  const pos = getGridPosition(e.clientX, e.clientY);
+  if(pos){
+    
+      tryPlay(pos.x, pos.y);
+  
+    drawBoard();
+  }
+});
+
+canvas.addEventListener('touchstart', (e)=>{
   e.preventDefault();
-  drawBoard();
+  if(gameOver) return;
+  
+  const touch = e.touches[0];
+  const pos = getGridPosition(touch.clientX, touch.clientY);
+  if(pos){
+
+      tryPlay(pos.x, pos.y);
+   
+    drawBoard();
+  }
 });
 
 
