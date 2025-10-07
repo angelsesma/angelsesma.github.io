@@ -201,8 +201,10 @@ const leftButton = document.getElementById('leftButton');
 const spaceButton = document.getElementById('spaceButton');
 const shiftButton = document.getElementById('shiftButton');
 
-upButton.addEventListener('click',
-  cursor.y=Math.max(0,cursor.y-1)
+upButton.addEventListener('click',{
+  cursor.y=Math.max(0,cursor.y-1);
+  drawBoard();
+}
 );
 
 rightButton.addEventListener('click', 
