@@ -11,6 +11,8 @@
            box-shadow:0 0 20px rgba(0,0,0,.2);touch-action:none}
     #info{margin-top:10px;font-size:1.1em;text-align:center}
     #turnBadge{display:inline-block;width:1em;height:1em;color:#555;border-radius:50%;vertical-align:middle;margin-right:6px}
+    #turnTxt{display:inline-block;width:1em;height:1em;color:#555;border-radius:50%;vertical-align:middle;margin-right:6px}
+    
     #msg{margin-top:6px;font-size:.9em;color:#555}
 </style>
 </head>
@@ -18,8 +20,8 @@
 
 <canvas id="board" width="450" height="450"></canvas>
 <div id="info">
-  <span id="turnBadge"></span><span id="turnTxt">Black to move</span>
-  <div id="msg">Arrow keys to move, Space to place, Shift to pass</div>
+  <span id="turnBadge"></span><span id="turnTxt">Negras por jugar</span>
+  <div id="msg">[Flechas] para mover, [Espacio] para tirar, [Shift] para pasar</div>
 </div>
 
 <script>
@@ -150,11 +152,11 @@ function tryPlay(x,y){
 
 function declareWinner(color,captured){
   gameOver=true;
-  updateInfo(color===1?"Black":"White",`wins by capturing ${captured} stone${captured>1?"s":""}!`);
+  updateInfo(color===1?"Negras":"Blancas",`ganan capturando ${captured} piedra${captured>1?"s":""}!`);
 }
 function nextTurn(){
   turn=3-turn;
-  updateInfo(turn===1?"Black":"White");
+  updateInfo(turn===1?"Negras":"Blancas");
 }
 
 /* === UI === */
@@ -163,15 +165,15 @@ const turnTxt=document.getElementById('turnTxt');
 const msg=document.getElementById('msg');
 
 function updateInfo(who,extra=""){
-  badge.style.background= (who==="Black")?"#000":"#fff";
-  badge.style.border= (who==="Black")?"2px solid #000":"2px solid #555";
-  turnTxt.textContent = gameOver? `${who} ${extra}` : `${who} to move`;
+  badge.style.background= (who==="Negras")?"#000":"#fff";
+  badge.style.border= (who==="Negras")?"2px solid #000":"2px solid #555";
+  turnTxt.textContent = gameOver? `${who} ${extra}` : `${who} por jugar`;
   if(extra && !gameOver) msg.textContent=extra;
 }
 
 function passTurn(){
   if(gameOver) return;
-  msg.textContent=`${turn===1?"Black":"White"} passes.`;
+  msg.textContent=`${turn===1?"Negras":"Blancas"} pasan.`;
   nextTurn();
   drawBoard();
 }
@@ -197,7 +199,7 @@ window.addEventListener('keydown',e=>{
 
 /* First paint */
 drawBoard();
-updateInfo("Black");
+updateInfo("Negras");
 </script>
 </body>
 </html>
