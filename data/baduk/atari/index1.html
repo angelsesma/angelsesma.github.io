@@ -201,29 +201,28 @@ const leftButton = document.getElementById('leftButton');
 const spaceButton = document.getElementById('spaceButton');
 const shiftButton = document.getElementById('shiftButton');
 
-upButton.addEventListener('click', () => {
-  cursor.y=Math.max(0,cursor.y-1);
-});
+upButton.addEventListener('click',
+  cursor.y=Math.max(0,cursor.y-1)
+);
 
-rightButton.addEventListener('click', () => {
-  cursor.x=Math.min(SIZE-1,cursor.x+1);
-});
+rightButton.addEventListener('click', 
+  cursor.x=Math.min(SIZE-1,cursor.x+1)
+);
 
-downButton.addEventListener('click', () => {
-  cursor.y=Math.min(SIZE-1,cursor.y+1);
-});
+downButton.addEventListener('click', 
+  cursor.y=Math.min(SIZE-1,cursor.y+1)
+);
 
-leftButton.addEventListener('click', () => {
-  cursor.x=Math.max(0,cursor.x-1);
-});
+leftButton.addEventListener('click', 
+  cursor.x=Math.max(0,cursor.x-1)
+);
 
-spaceButton.addEventListener('click', () => {
-  tryPlay(cursor.x,cursor.y);;
-});
+spaceButton.addEventListener('click', 
+  tryPlay(cursor.x,cursor.y));
 
-shiftButton.addEventListener('click', () => {
-  passTurn();
-});
+shiftButton.addEventListener('click', 
+  passTurn()
+);
 
 window.addEventListener('keydown',e=>{
   if(gameOver) return;
