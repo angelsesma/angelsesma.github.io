@@ -18,7 +18,7 @@
       // hydra.ojack.xyz
       var hydra = new Hydra({
         canvas: document.getElementById("myCanvas"),
-        detectAudio: true,
+        //detectAudio: true,
       });
       A = window.innerWidth / window.innerHeight;
 
@@ -37,7 +37,7 @@ osc(3.084, -0.078, 0.02)
 			.modulateRotate(osc(), 2.138, 0.213))
 		.scale(1.657)
 		.luma(0.007, 0.003))
-	.blend(o2)
+	.blend(o1)
 	.pixelate(361, 2.61, 19.415)
 	.out(o3);
 render();
