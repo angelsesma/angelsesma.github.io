@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>3D Atari Go</title>
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        #info {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: white;
+            background-color: rgba(0,0,0,0.5);
+            padding: 10px;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+        }
+
+         #gameUI {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: rgba(0,0,0,0.7);
+        padding: 15px;
+        border-radius: 10px;
+        color: white;
+        font-family: Arial, sans-serif;
+        text-align: center;
+    }
+    #gameUI button {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 8px 16px;
+        margin: 0 5px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 14px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    #gameUI button:hover {
+        background-color: #45a049;
+    }
+    </style>
+</head>
+<body>
+    <a-scene>
+        <!-- Camera -->
+        <a-entity position="0 5 10" rotation="-30 0 0">
+            <a-camera></a-camera>
+        </a-entity>
+
+        <!-- Lighting -->
+        <a-light type="ambient" color="#444"></a-light>
+        <a-light type="directional" intensity="0.8" position="-1 1 0"></a-light>
+        <a-light type="directional" intensity="0.5" position="1 1 0"></a-light>
+
+        <!-- Game box -->
+        <a-box id="gameBox" position="0 0 0" width="5" height="5" depth="5" color="#8B4513" roughness="0.8" metalness="0.2">
+            <!-- We'll add the game board to this box -->
+        </a-box>
+
+        <!-- Sky -->
+        <a-sky color="#87CEEB"></a-sky>
+    </a-scene>
+
+    <div id="info">
+        <h2>Atari Go (Capture Go)</h2>
+        <p>Current player: <span id="currentPlayer">Black</span></p>
+        <p>Black stones captured: <span id="blackCaptured">0</span></p>
+        <p>White stones captured: <span id="whiteCaptured">0</span></p>
+        <button id="resetButton">Reset Game</button>
+    </div>
+
+
+<script>
+    // Game state
+    const BOARD_SIZE = 9;
+    let board = Array(BOARD_SIZE).fill().map(() => Array(BOARD_SIZE).fill(null));
+    let currentPlayer = 'black';
+    let blackCaptured = 0;
+    let whiteCaptured = 0;
+    let gameActive = true;
+
+    // DOM elements
+    const currentPlayerElement = document.getElementById('currentPlayer');
+    const blackCapturedElement = document.getElementById('blackCaptured');
+    const whiteCapturedElement = document.getElementById('whiteCaptured');
+    const resetButton = document.getElementById('resetButton');
+    const gameBox = document.getElementById('gameBox');
+
+    // Initialize the game
+    function initGame() {
+        // Clear the board
+        board = Array(BOARD_SIZE).fill().map(() => Array(BOARD_SIZE).fill(null));
+        currentPlayer = 'black';
+        blackCaptured = 0;
+        whiteCaptured = 0;
+        gameActive = true;
+
+        // Update UI
+        currentPlayerElement.textContent = 'Black';
+        blackCapturedElement.textContent = '0';
+        whiteCapturedElement.textContent = '0';
+
+        // Clear any existing stones
+        const existingStones = document.querySelectorAll('.stone');
+        existingStones.forEach(stone => stone.parentNode.removeChild(stone));
+
+        // Create the grid lines on the box
+        createGridLines();
+    }
+
+    // Create grid lines on the box
+    function createGridLines() {
+        // Remove existing grid lines if any
+        const existingLines = document.querySelectorAll('.grid-line');
+        existingLines.forEach(line => line.parentNode.removeChild(line));
+
+        // Create grid lines for each face of the box
+        const faces = ['front', 'back', 'left', 'right', 'top', 'bottom'];
+        const boxSize = 5;
+        const spacing = boxSize / (BOARD_SIZE - 1);
+
+        faces.forEach(face => {
+            // Skip the bottom face since it's not visible
+            if (face === 'bottom') return;
+
+            for (let i = 0; i < BOARD_SIZE; i++) {
+                // Horizontal lines
+                const horizontalLine = document.createElement('a-entity');
+                horizontalLine.setAttribute('geometry', {
+                    primitive: 'box',
+                    width: boxSize,
+                    height: 0.02,
+                    depth: 0.02
+                });
+                horizontalLine.setAttribute('material', 'color', '#000');
+                horizontalLine.setAttribute('class', 'grid-line');
+
+                // Vertical lines
+                const verticalLine = document.createElement('a-entity');
+                verticalLine.setAttribute('geometry', {
+                    primitive: 'box',
+                    width: 0.02,
+                    height: boxSize,
+                    depth: 0.02
+                });
+                verticalLine.setAttribute('material', 'color', '#000');
+                verticalLine.setAttribute('class', 'grid-line');
+
+                // Position based on face
+                const offset = (i - (BOARD_SIZE - 1)/2) * spacing;
+                const halfSize = boxSize / 2;
+
+                switch(face) {
+                    case 'front':
+                        horizontalLine.setAttribute('position', `0 ${offset} ${halfSize}`);
+                        verticalLine.setAttribute('position', `${offset} 0 ${halfSize}`);
+                        verticalLine.setAttribute('rotation', '0 90 0');
+                        break;
+                    case 'back':
+                        horizontalLine.setAttribute('position', `0 ${offset} -${halfSize}`);
+                        verticalLine.setAttribute('position', `${offset} 0 -${halfSize}`);
+                        verticalLine.setAttribute('rotation', '0 90 0');
+                        break;
+                    case 'left':
+                        horizontalLine.setAttribute('position', `-${halfSize} ${offset} 0`);
+                        verticalLine.setAttribute('position', `-${halfSize} 0 ${offset}`);
+                        break;
+                    case 'right':
+                        horizontalLine.setAttribute('position', `${halfSize} ${offset} 0`);
+                        verticalLine.setAttribute('position', `${halfSize} 0 ${offset}`);
+                        break;
+                    case 'top':
+                        horizontalLine.setAttribute('position', `${offset} ${halfSize} 0`);
+                        verticalLine.setAttribute('position', `0 ${halfSize} ${offset}`);
+                        verticalLine.setAttribute('rotation', '90 0 0');
+                        break;
+                }
+
+                gameBox.appendChild(horizontalLine);
+                gameBox.appendChild(verticalLine);
+            }
+        });
+    }
+    const placeSound = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-arcade-game-jump-coin-2164.mp3');
+    placeSound.volume = 0.3;
+    // Place a stone on the board
+    function placeStone(x, y, face) {
+        if (!gameActive || board[x][y] !== null) return false;
+
+        // Create the stone
+        const stone = document.createElement('a-sphere');
+        stone.setAttribute('radius', '0.2');
+        stone.setAttribute('color', currentPlayer === 'black' ? '#000' : '#FFF');
+        stone.setAttribute('class', 'stone');
+        stone.setAttribute('position', getPositionForCell(x, y, face));
+
+        // Add shadow
+        stone.setAttribute('shadow', 'cast: true; receive: false');
+
+        // Add to the scene
+        gameBox.appendChild(stone);
+        placeSound.currentTime = 0;
+        placeSound.play();
+        // Update the board state
+        board[x][y] = currentPlayer;
+
+        // Check for captures
+        const captured = checkCaptures(x, y);
+
+        // Switch player
+        currentPlayer = currentPlayer === 'black' ? 'white' : 'black';
+        currentPlayerElement.textContent = currentPlayer === 'black' ? 'Black' : 'White';
+
+
+        
+        return true;
+    }
+    document.getElementById('passButton').addEventListener('click', function() {
+    if (!gameActive) return;
+
+    // Switch player without placing a stone
+    currentPlayer = currentPlayer === 'black' ? 'white' : 'black';
+    currentPlayerElement.textContent = currentPlayer === 'black' ? 'Black' : 'White';
+
+    // Check if the game is over after two consecutive passes
+    // You would need to implement this logic
+    });
+
+    // Update score display
+    function updateScoreDisplay() {
+        document.getElementById('blackScore').textContent = calculateScore('black');
+        document.getElementById('whiteScore').textContent = calculateScore('white');
+    }
+
+// Call this after each move
+updateScoreDisplay();
+    // Get position for a cell on a specific face
+    function getPositionForCell(x, y, face) {
+        const boxSize = 5;
+        const spacing = boxSize / (BOARD_SIZE - 1);
+        const halfSize = boxSize / 2;
+
+        const offsetX = (x - (BOARD_SIZE - 1)/2) * spacing;
+        const offsetY = (y - (BOARD_SIZE - 1)/2) * spacing;
+
+        switch(face) {
+            case 'front':
+                return `${offsetX} ${offsetY} ${halfSize}`;
+            case 'back':
+                return `${offsetX} ${offsetY} -${halfSize}`;
+            case 'left':
+                return `-${halfSize} ${offsetY} ${offsetX}`;
+            case 'right':
+                return `${halfSize} ${offsetY} ${offsetX}`;
+            case 'top':
+                return `${offsetX} ${halfSize} ${offsetY}`;
+            default:
+                return '0 0 0';
+        }
+    }
+
+    // Check for captures after a move
+    function checkCaptures(x, y) {
+        const opponent = currentPlayer === 'black' ? 'white' : 'black';
+        const directions = [[-1, 0], [1, 0], [0, -1], [0, 1]];
+
+        // Check adjacent groups for liberties
+        for (const [dx, dy] of directions) {
+            const nx = x + dx;
+            const ny = y + dy;
+
+            if (nx >= 0 && nx < BOARD_SIZE && ny >= 0 && ny < BOARD_SIZE && board[nx][ny] === opponent) {
+                const group = findGroup(nx, ny);
+                if (countLiberties(group) === 0) {
+                    // Capture the group
+                    group.forEach(([gx, gy]) => {
+                        board[gx][gy] = null;
+                        // Remove the stone from the scene
+                        const stones = document.querySelectorAll('.stone');
+                        stones.forEach(stone => {
+                            const pos = stone.getAttribute('position');
+                            const stoneX = Math.round((pos.x / (5 / (BOARD_SIZE - 1))) + (BOARD_SIZE - 1)/2);
+                            const stoneY = Math.round((pos.y / (5 / (BOARD_SIZE - 1))) + (BOARD_SIZE - 1)/2);
+                            if (stoneX === gx && stoneY === gy) {
+                                stone.parentNode.removeChild(stone);
+                            }
+                        });
+                    });
+
+                    // Update captured count
+                    if (opponent === 'black') {
+                        blackCaptured++;
+                        blackCapturedElement.textContent = blackCaptured;
+                    } else {
+                        whiteCaptured++;
+                        whiteCapturedElement.textContent = whiteCaptured;
+                    }
+                }
+            }
+        }
+    }
+
+    // Find all connected stones of the same color
+    function findGroup(x, y) {
+        const color = board[x][y];
+        const visited = Array(BOARD_SIZE).fill().map(() => Array(BOARD_SIZE).fill(false));
+        const group = [];
+        const stack = [[x, y]];
+
+        while (stack.length > 0) {
+            const [cx, cy] = stack.pop();
+
+            if (cx < 0 || cx >= BOARD_SIZE || cy < 0 || cy >= BOARD_SIZE || board[cx][cy] !== color || visited[cx][cy]) {
+                continue;
+            }
+
+            visited[cx][cy] = true;
+            group.push([cx, cy]);
+
+            // Add adjacent cells to stack
+            stack.push([cx - 1, cy]);
+            stack.push([cx + 1, cy]);
+            stack.push([cx, cy - 1]);
+            stack.push([cx, cy + 1]);
+        }
+
+        return group;
+    }
+
+    // Count liberties for a group
+    function countLiberties(group) {
+        const directions = [[-1, 0], [1, 0], [0, -1], [0, 1]];
+        const liberties = new Set();
+
+        for (const [x, y] of group) {
+            for (const [dx, dy] of directions) {
+                const nx = x + dx;
+                const ny = y + dy;
+
+                if (nx >= 0 && nx < BOARD_SIZE && ny >= 0 && ny < BOARD_SIZE && board[nx][ny] === null) {
+                    liberties.add(`${nx},${ny}`);
+                }
+            }
+        }
+
+        return liberties.size;
+    }
+
+    // Handle box click
+    gameBox.addEventListener('click', function(event) {
+        if (!gameActive) return;
+
+        // Get the intersection point
+        const intersection = event.detail.intersection;
+
+        // Determine which face was clicked and the cell coordinates
+        const boxSize = 5;
+        const halfSize = boxSize / 2;
+        const spacing = boxSize / (BOARD_SIZE - 1);
+
+        let face, x, y;
+
+        // Determine face based on normal
+        const normal = intersection.face.normal;
+        if (Math.abs(normal.x) > 0.5) {
+            face = normal.x > 0 ? 'right' : 'left';
+            x = Math.round((intersection.point.z / spacing) + (BOARD_SIZE - 1)/2);
+            y = Math.round((intersection.point.y / spacing) + (BOARD_SIZE - 1)/2);
+        } else if (Math.abs(normal.y) > 0.5) {
+            face = normal.y > 0 ? 'top' : 'bottom';
+            x = Math.round((intersection.point.x / spacing) + (BOARD_SIZE - 1)/2);
+            y = Math.round((intersection.point.z / spacing) + (BOARD_SIZE - 1)/2);
+        } else {
+            face = normal.z > 0 ? 'front' : 'back';
+            x = Math.round((intersection.point.x / spacing) + (BOARD_SIZE - 1)/2);
+            y = Math.round((intersection.point.y / spacing) + (BOARD_SIZE - 1)/2);
+        }
+
+        // Validate coordinates
+        if (x >= 0 && x < BOARD_SIZE && y >= 0 && y < BOARD_SIZE) {
+            placeStone(x, y, face);
+        }
+    });
+
+    // Add to the existing script
+
+// Track the last move for Ko rule
+let lastMove = null;
+
+// Modified placeStone function to include Ko rule
+function placeStone(x, y, face) {
+    if (!gameActive || board[x][y] !== null) return false;
+
+    // Check Ko rule
+    if (lastMove && lastMove.x === x && lastMove.y === y && lastMove.face === face) {
+        // Check if this would be an immediate recapture
+        const tempBoard = JSON.parse(JSON.stringify(board));
+        tempBoard[x][y] = currentPlayer;
+
+        // Check if this would capture exactly one stone
+        const captured = checkCapturesForKo(x, y, tempBoard);
+        if (captured.length === 1 && captured[0][0] === lastMove.x && captured[0][1] === lastMove.y) {
+            return false; // Ko violation
+        }
+    }
+
+    // Create the stone
+    const stone = document.createElement('a-sphere');
+    stone.setAttribute('radius', '0.2');
+    stone.setAttribute('color', currentPlayer === 'black' ? '#000' : '#FFF');
+    stone.setAttribute('class', 'stone');
+    stone.setAttribute('position', getPositionForCell(x, y, face));
+
+    // Highlight the last move
+    if (currentPlayer === 'black') {
+        stone.setAttribute('material', 'color', '#222');
+    } else {
+        stone.setAttribute('material', 'color', '#EEE');
+    }
+
+    // Add shadow
+    stone.setAttribute('shadow', 'cast: true; receive: false');
+
+    // Add to the scene
+    gameBox.appendChild(stone);
+
+    // Update the board state
+    board[x][y] = currentPlayer;
+
+    // Store the last move
+    lastMove = {x, y, face};
+
+    // Check for captures
+    const captured = checkCaptures(x, y);
+
+    // Check if the game is over
+    if (isGameOver()) {
+        gameActive = false;
+        setTimeout(() => {
+            alert(`Game Over! Final score: Black ${calculateScore('black')} - White ${calculateScore('white')}`);
+        }, 100);
+    }
+
+    // Switch player
+    currentPlayer = currentPlayer === 'black' ? 'white' : 'black';
+    currentPlayerElement.textContent = currentPlayer === 'black' ? 'Black' : 'White';
+
+    return true;
+}
+
+// Modified checkCaptures for Ko rule
+function checkCapturesForKo(x, y, tempBoard) {
+    const opponent = tempBoard[x][y] === 'black' ? 'white' : 'black';
+    const directions = [[-1, 0], [1, 0], [0, -1], [0, 1]];
+    const capturedGroups = [];
+
+    for (const [dx, dy] of directions) {
+        const nx = x + dx;
+        const ny = y + dy;
+
+        if (nx >= 0 && nx < BOARD_SIZE && ny >= 0 && ny < BOARD_SIZE && tempBoard[nx][ny] === opponent) {
+            const group = findGroup(nx, ny, tempBoard);
+            if (countLiberties(group, tempBoard) === 0) {
+                capturedGroups.push(...group);
+            }
+        }
+    }
+
+    return capturedGroups;
+}
+
+// Helper functions for Ko rule
+function findGroup(x, y, tempBoard) {
+    const color = tempBoard[x][y];
+    const visited = Array(BOARD_SIZE).fill().map(() => Array(BOARD_SIZE).fill(false));
+    const group = [];
+    const stack = [[x, y]];
+
+    while (stack.length > 0) {
+        const [cx, cy] = stack.pop();
+
+        if (cx < 0 || cx >= BOARD_SIZE || cy < 0 || cy >= BOARD_SIZE ||
+            tempBoard[cx][cy] !== color || visited[cx][cy]) {
+            continue;
+        }
+
+        visited[cx][cy] = true;
+        group.push([cx, cy]);
+
+        stack.push([cx - 1, cy]);
+        stack.push([cx + 1, cy]);
+        stack.push([cx, cy - 1]);
+        stack.push([cx, cy + 1]);
+    }
+
+    return group;
+}
+
+function countLiberties(group, tempBoard) {
+    const directions = [[-1, 0], [1, 0], [0, -1], [0, 1]];
+    const liberties = new Set();
+
+    for (const [x, y] of group) {
+        for (const [dx, dy] of directions) {
+            const nx = x + dx;
+            const ny = y + dy;
+
+            if (nx >= 0 && nx < BOARD_SIZE && ny >= 0 && ny < BOARD_SIZE && tempBoard[nx][ny] === null) {
+                liberties.add(`${nx},${ny}`);
+            }
+        }
+    }
+
+    return liberties.size;
+}
+
+// Check if the game is over
+function isGameOver() {
+    // Simple implementation: check if there are two consecutive passes
+    // In a real game, you'd need more sophisticated logic
+    return false;
+}
+
+// Calculate score
+function calculateScore(color) {
+    let score = 0;
+
+    // Count stones
+    for (let x = 0; x < BOARD_SIZE; x++) {
+        for (let y = 0; y < BOARD_SIZE; y++) {
+            if (board[x][y] === color) {
+                score++;
+            }
+        }
+    }
+
+    // Add captured stones
+    if (color === 'black') {
+        score += whiteCaptured;
+    } else {
+        score += blackCaptured;
+    }
+
+    return score;
+    }
+    resetButton.addEventListener('click', initGame);
+
+    initGame();
+</script>
+<div id="gameUI">
+    <p>Atari Go (Capture Go) - 9x9 Board</p>
+    <button id="passButton">Pass</button>
+    <button id="resetButton">Reset Game</button>
+    <p>Current player: <span id="currentPlayer">Black</span></p>
+    <p>Black: <span id="blackScore">0</span> | White: <span id="whiteScore">0</span></p>
+</div>    
+</body>
+</html>
