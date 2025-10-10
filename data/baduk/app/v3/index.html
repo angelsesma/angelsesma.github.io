@@ -39,7 +39,7 @@
                      preset: yavapai; 
                      seed: 2;
                      ground: canyon;
-                     groundYScale: 2;
+                     groundYScale: .7;
                      skyType: atmosphere; 
                      lightPosition: 0 1;
                      groundTexture: walkernoise;
@@ -74,7 +74,7 @@
 <script>
     // --- GAME STATE ---
     const BOARD_SIZE = 5;
-    let currentPlayer = 'white';
+    let currentPlayer = 'Black';
     let boardState = Array(BOARD_SIZE).fill().map(() => Array(BOARD_SIZE).fill(null));
     let captures = { white: 0, black: 0 };
 
