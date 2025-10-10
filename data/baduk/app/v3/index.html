@@ -17,15 +17,15 @@
     </style>
 </head>
 <body>
-    <a-scene background="color: #E0F7FA" cursor="rayOrigin: mouse">
+    <a-scene cursor="rayOrigin: mouse">
 
         <!-- Lighting -->
         <a-light type="ambient" intensity="0.6"></a-light>
-        <a-light type="directional" position="0 5 0" intensity="0.8" shadow></a-light>
+        <!--a-light type="directional" position="0 5 0" intensity="0.8" shadow></a-light-->
 
         <!-- A-Frame Room Environment -->
         <!-- Floor -->
-        <a-plane position="0 0 -4" rotation="-90 0 0" width="10" height="10" color="#BCAAA4" shadow></a-plane>
+        <!--a-plane position="0 0 -4" rotation="-90 0 0" width="10" height="10" color="#BCAAA4" shadow></a-plane-->
         <!-- Back Wall -->
         <!--e position="0 3 -9" rotation="0 0 0" width="10" height="6" color="#D7CCC8"></a-plane-->
         <!-- Left Slanted Wall -->
@@ -67,13 +67,13 @@
         <a-entity id="board" position="0 0.8 -4"></a-entity>
 
         <!-- Camera -->
-        <a-camera position="0 1.6 1" look-controls="pointerLockEnabled: false"></a-camera>
+        <a-camera position="0 3.6 1" look-controls="pointerLockEnabled: false"></a-camera>
 
     </a-scene>
 
 <script>
     // --- GAME STATE ---
-    const BOARD_SIZE = 5;
+    const BOARD_SIZE = 9;
     let currentPlayer = 'Black';
     let boardState = Array(BOARD_SIZE).fill().map(() => Array(BOARD_SIZE).fill(null));
     let captures = { white: 0, black: 0 };
@@ -127,11 +127,11 @@
     // Component to create a 3D stone
     AFRAME.registerComponent('stone', {
         schema: {
-            color: { type: 'string', default: 'white' }
+            color: { type: 'string', default: 'black' }
         },
         init: function () {
             this.el.setAttribute('geometry', 'primitive: cylinder; radius: 0.45; height: 0.2');
-            this.el.setAttribute('material', `color: ${this.data.color}; roughness: 0.5; metalness: 0.1`);
+            this.el.setAttribute('material', 'color: ${this.data.color}; roughness: 0.5; metalness: 0.1');
             this.el.setAttribute('rotation', '-90 0 0');
             this.el.setAttribute('shadow', 'cast: true; receive: true');
         }
@@ -152,7 +152,7 @@
         // Create and add the 3D stone to the scene
         const tile = document.querySelector(`a-plane[data-x='${x}'][data-z='${z}']`);
         const stoneEntity = document.createElement('a-entity');
-        stoneEntity.setAttribute('stone', `color: ${currentPlayer}`);
+        stoneEntity.setAttribute('stone', 'color: ${currentPlayer}');
         stoneEntity.setAttribute('position', '0 0.15 0');
         tile.appendChild(stoneEntity);
 
@@ -160,12 +160,12 @@
         checkCaptures(x, z, currentPlayer);
 
         // Switch player
-        currentPlayer = (currentPlayer === 'white') ? 'black' : 'white';
+        currentPlayer = (currentPlayer === 'black') ? 'white' : 'black';
         updateUI();
     }
 
     function checkCaptures(lastX, lastZ, lastPlayerColor) {
-        const opponentColor = (lastPlayerColor === 'white') ? 'black' : 'white';
+        const opponentColor = (lastPlayerColor === 'black') ? 'white' : 'black';
         const neighbors = getNeighbors(lastX, lastZ);
 
         neighbors.forEach(([nx, nz]) => {
@@ -229,7 +229,7 @@
 
     function captureGroup(group) {
         const capturedColor = boardState[group[0][0]][group[0][1]];
-        const capturer = (capturedColor === 'white') ? 'black' : 'white';
+        const capturer = (capturedColor === 'black') ? 'white' : 'black';
         captures[capturer] += group.length;
 
         group.forEach(([x, z]) => {
