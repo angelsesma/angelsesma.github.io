@@ -6,6 +6,8 @@
     <title>3D Atari Go in A-Frame</title>
     <!-- A-Frame Library -->
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-environment-component@1.1.0/dist/aframe-environment-component.min.js"></script>
+    
     <style>
         /* Basic styling for the page background */
         body {
@@ -23,16 +25,39 @@
 
         <!-- A-Frame Room Environment -->
         <!-- Floor -->
-        <a-plane position="0 0 -4" rotation="-90 0 0" width="10" height="10" color="#BCAAA4" shadow></a-plane>
+        <!--a-plane position="0 0 -4" rotation="-90 0 0" width="10" height="10" color="#BCAAA4" shadow></a-plane-->
         <!-- Back Wall -->
-        <a-plane position="0 3 -9" rotation="0 0 0" width="10" height="6" color="#D7CCC8"></a-plane>
+        <!--e position="0 3 -9" rotation="0 0 0" width="10" height="6" color="#D7CCC8"></a-plane-->
         <!-- Left Slanted Wall -->
-        <a-plane position="-5 3 -4" rotation="0 90 0" width="10" height="6" color="#D7CCC8"></a-plane>
+        <!-- a-plane position="-5 3 -4" rotation="0 90 0" width="10" height="6" color="#D7CCC8"></a-plane-->
         <!-- Right Slanted Wall -->
-        <a-plane position="5 3 -4" rotation="0 -90 0" width="10" height="6" color="#D7CCC8"></a-plane>
+        <!--a-plane position="5 3 -4" rotation="0 -90 0" width="10" height="6" color="#D7CCC8"></a-plane-->
         <!-- Ceiling -->
-        <a-plane position="0 6 -4" rotation="90 0 0" width="10" height="10" color="#EFEBE9"></a-plane>
-
+        <!--a-plane position="0 6 -4" rotation="90 0 0" width="10" height="10" color="#EFEBE9"></a-plane-->
+        <a-entity
+        environment="
+                     preset: yavapai; 
+                     seed: 2;
+                     ground: canyon;
+                     groundYScale: 2;
+                     skyType: atmosphere; 
+                     lightPosition: 0 1;
+                     groundTexture: walkernoise;
+                     groundColor: #AAAAAA;
+                     groundColor2: #FFFFFF;
+                     dressingColor: #FF8808;
+                     lighting: distant; 
+                     fog: 0.0088; 
+                     playArea: 0.88; 
+                     grid: none;
+                     gridColor: #aff;
+                     dressingUniformScale: False;
+                     dressingColor: white;
+                     dressingScale: 5;
+                     dressingAmount: 200;
+                     dressingOnPlayArea: 0;
+                     "
+      ></a-entity>
         <!-- UI Text for Game Status -->
         <a-text id="turn-indicator" value="White's Turn" position="-3 2.5 -3.5" width="3" color="black" align="left"></a-text>
         <a-text id="score-white" value="White Captures: 0" position="-3 2 -3.5" width="3" color="black" align="left"></a-text>
