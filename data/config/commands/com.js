@@ -378,16 +378,14 @@ COMMANDS.mapa = function (argv, cb) {
       if (entry.name.startswith(".")) return;
       for (var i = 0; i < level; i++) str += "|    ";
       if (entry.type == "agua") str += "|&mdash;🚰";
-      else if (entry.type == "lava") str += "|&mdash;🌋";
       else if (entry.type == "bio") str += "|&mdash;📚";
       else if (entry.type == "text") str += "|&mdash;📓";
       else if (entry.type == "img") str += "|&mdash;🖼️";
-      else if (entry.type == "iframe") str += "|&mdash;📖";
+      else if (entry.type == "iframe") str += "|&mdash;🖼️";
       else if (entry.type == "eidogo") str += "|&mdash;🧮";
-      else if (entry.type == "ninja") str += "|&mdash;🐈‍⬛";
-      else if (entry.type == "exec") str += "|&mdash;📜";
+      else if (entry.type == "exec") str += "|&mdash;🔗";
       else if (entry.type == "link") str += "|&mdash;🔗";
-      else if (entry.type == "dir") str += "|&mdash;&mdash;&mdash; ";
+      else if (entry.type == "dir") str += "|&mdash;&mdash;&mdash;";
 
       term.write(str);
       term.writeLink(entry, term.dirString(dir) + "/" + entry.name);
