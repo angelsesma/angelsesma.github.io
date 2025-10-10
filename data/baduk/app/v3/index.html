@@ -74,7 +74,7 @@
 <script>
     // --- GAME STATE ---
     const BOARD_SIZE = 9;
-    let currentPlayer = 'Black';
+    let currentPlayer = 'black';
     let boardState = Array(BOARD_SIZE).fill().map(() => Array(BOARD_SIZE).fill(null));
     let captures = { white: 0, black: 0 };
 
@@ -130,7 +130,7 @@
             color: { type: 'string', default: 'black' }
         },
         init: function () {
-            this.el.setAttribute('geometry', 'primitive: cylinder; radius: 0.45; height: 0.2');
+            this.el.setAttribute('geometry', 'primitive: sphere; radius: 0.45; height: 0.2');
             this.el.setAttribute('material', 'color: ${this.data.color}; roughness: 0.5; metalness: 0.1');
             this.el.setAttribute('rotation', '-90 0 0');
             this.el.setAttribute('shadow', 'cast: true; receive: true');
