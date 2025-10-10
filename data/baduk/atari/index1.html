@@ -2,32 +2,24 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>AtariGo!</title>
+<title>Atari-Go 9x9</title>
 <style>
     html,body{height:100%;margin:0;font-family:sans-serif;
               display:flex;flex-direction:column;align-items:center;justify-content:center;
-              background:#f7f7f7;}
-    canvas{background:#f1d9a5;border:4px solid #333;border-radius:8px;
-           box-shadow:0 0 20px rgba(0,0,0,.2);touch-action:none;cursor:pointer}
-    #info{margin-top:10px;font-size:1.1em;text-align:center}
-    #turnBadge{display:inline-block;width:1em;height:1em;border-radius:50%;vertical-align:middle;margin-right:6px}
-    #msg{margin-top:6px;font-size:.9em;color:#555}
+              background:#080808;}
+    canvas{background:#d13902;border:4px solid #dd9506;border-radius:8px;
+           box-shadow:0 0 20px rgba(0,0,0,.2);touch-action:none}
+           #info{margin-top:10px;font-size:1.1em;text-align:center}
+    #turnTxt{width:1em;height:1em;color:#fb5;border-radius:50%;vertical-align:middle;margin-right:6px}
     
-   
-
-    
-    @media (max-width: 500px) {
-        canvas{width:90vw;height:90vw}
-
-    }
+    #msg{margin-top:6px;font-size:.9em;color:#b30}
 </style>
 </head>
 <body>
 
 <canvas id="board" width="450" height="450"></canvas>
 <div id="info">
-  <span id="turnBadge"></span><span id="turnTxt">Black to move</span>
+  <span id="turnTxt">Black to move</span>
   <div id="msg"></div>
 </div>
   
@@ -62,7 +54,7 @@ let mode = 'direct';     // 'direct' or 'cursor'
 function drawBoard(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
 
-  ctx.strokeStyle="#000";
+  ctx.strokeStyle="#DD9506";
   ctx.lineWidth=1.5;
   ctx.beginPath();
   for(let i=0;i<SIZE;i++){          // verticals
@@ -77,7 +69,7 @@ function drawBoard(){
 
   /* Star-points on 9×9 (optional aesthetics) */
   const stars=[2,4,6];        // indices of star coords
-  ctx.fillStyle="#000";
+  ctx.fillStyle="#FFF000";
   stars.forEach(ix=>{
     stars.forEach(iy=>{
       ctx.beginPath();
@@ -100,12 +92,12 @@ function drawStone(x,y,color){
         cy = GRID/2+y*GRID;
   const grd = ctx.createRadialGradient(cx-R/3,cy-R/3,2, cx,cy,R);
   if(color===1){                          // black
-    grd.addColorStop(0,"#666");
+    grd.addColorStop(0,"#750");
     grd.addColorStop(1,"#000");
   }else{                                  // white
-    grd.addColorStop(0,"#fff");
-    grd.addColorStop(.8,"#ddd");
-    grd.addColorStop(1,"#bbb");
+    grd.addColorStop(0,"#fc8");
+    grd.addColorStop(.8,"#d83");
+  
   }
   ctx.fillStyle=grd;
   ctx.beginPath();
@@ -178,13 +170,12 @@ function nextTurn(){
 
 
 /* === UI === */
-const badge=document.getElementById('turnBadge');
+
 const turnTxt=document.getElementById('turnTxt');
 const msg=document.getElementById('msg');
 
 function updateInfo(who,extra=""){
-  badge.style.background= (who==="Black")?"#000":"#fff";
-  badge.style.border= (who==="Black")?"2px solid #000":"2px solid #555";
+  
   turnTxt.textContent = gameOver? `${who} ${extra}` : `${who} to move`;
   if(extra && !gameOver) msg.textContent=extra;
 }
