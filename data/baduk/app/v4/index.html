@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Atari Go (Capture Go)</title>
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+            color: white;
+        }
+        #game-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        #info-panel {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+            max-width: 300px;
+        }
+        #game-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            display: flex;
+            gap: 15px;
+            z-index: 100;
+        }
+        .control-btn {
+            background: linear-gradient(to bottom, #4a69bd, #6096b4);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        .control-btn:active {
+            transform: translateY(1px);
+        }
+        .status-display {
+            text-align: center;
+            margin: 10px 0;
+            font-size: 18px;
+        }
+        .score-display {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 10px;
+        }
+        .score-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 15px;
+            border-radius: 8px;
+            min-width: 100px;
+            text-align: center;
+        }
+        .black-score {
+            color: #000;
+            font-weight: bold;
+        }
+        .white-score {
+            color: #fff;
+            font-weight: bold;
+        }
+        .current-player {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 8px;
+            border-radius: 5px;
+            margin: 5px 0;
+        }
+        .current-player.black {
+            background: rgba(0, 0, 0, 0.5);
+        }
+        .current-player.white {
+            background: rgba(255, 255, 255, 0.5);
+        }
+        h2 {
+            margin-top: 0;
+            color: #4da6ff;
+            text-align: center;
+        }
+        .instructions {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .instructions h3 {
+            margin: 0 0 8px 0;
+            color: #ff9e80;
+        }
+        @media (max-width: 768px) {
+            #info-panel {
+                width: 90%;
+                left: 5%;
+            }
+            #game-controls {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+            .control-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <a-scene antialias="true" vr-mode-ui="enabled: false">
+            <!-- Camera -->
+            <a-entity position="0 5 10" rotation="-30 0 0">
+                <a-camera></a-camera>
+            </a-entity>
+
+            <!-- Lighting -->
+            <a-light type="ambient" color="#444"></a-light>
+            <a-light type="directional" color="#ffffff" intensity="0.8" position="-1 1 0"></a-light>
+            <a-light type="directional" color="#ffffff" intensity="0.5" position="1 1 0"></a-light>
+            <a-light type="point" color="#4da6ff" intensity="1.5" position="0 8 0"></a-light>
+
+            <!-- Game box -->
+            <a-box id="gameBox" position="0 0 0" width="5" height="5" depth="5" 
+                   color="#8B4513" roughness="0.8" metalness="0.2" 
+                   shadow="cast: true; receive: true">
+                <!-- Stone entities will be added here dynamically -->
+            </a-box>
+
+            <!-- Sky -->
+            <a-sky color="#87CEEB" rotation="0 -90 0"></a-sky>
+        </a-scene>
+    </div>
+
+    <div id="info-panel">
+        <h2>3D Atari Go (Capture Go)</h2>
+        <div class="status-display">
+            <p>Current player: <span id="currentPlayer" class="current-player black">Black</span></p>
+        </div>
+        <div class="score-display">
+            <div class="score-box black-score">
+                Black: <span id="blackScore">0</span>
+            </div>
+            <div class="score-box white-score">
+                White: <span id="whiteScore">0</span>
+            </div>
+        </div>
+        <div class="instructions">
+            <h3>How to Play</h3>
+            <p>• Click on the 3D box to place stones</p>
+            <p>• Stones are captured when completely surrounded</p>
+            <p>• Ko rule prevents immediate recapture</p>
+            <p>• Pass to end your turn</p>
+            <p>• Game ends when both players pass consecutively</p>
+        </div>
+    </div>
+
+    <div id="game-controls">
+        <button class="control-btn" id="passButton">Pass</button>
+        <button class="control-btn" id="resetButton">New Game</button>
+        <button class="control-btn" id="helpButton">Help</button>
+    </div>
+
+    <script>
+        // Game state
+        const BOARD_SIZE = 9;
+        let board = Array(BOARD_SIZE).fill().map(() => Array(BOARD_SIZE).fill(null));
+        let currentPlayer = 'black';
+        let blackCaptured = 0;
+        let whiteCaptured = 0;
+        let gameActive = true;
+        let lastMove = null;
+        let lastPass = false;
+
+        // DOM elements
+        const currentPlayerElement = document.getElementById('currentPlayer');
+        const blackScoreElement = document.getElementById('blackScore');
+        const whiteScoreElement = document.getElementById('whiteScore');
+        const passButton = document.getElementById('passButton');
+        const resetButton = document.getElementById('resetButton');
+        const helpButton = document.getElementById('helpButton');
+        const gameBox = document.getElementById('gameBox');
+        const infoPanel = document.getElementById('info-panel');
+        const gameControls = document.getElementById('game-controls');
+
+        // Sound effects
+        const placeSound = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-arcade-game-jump-coin-2164.mp3');
+        const captureSound = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-quick-notification-237.mp3');
+        const passSound = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3');
+        placeSound.volume = 0.3;
+        captureSound.volume = 0.4;
+        passSound.volume = 0.3;
+
+        // Initialize the game
+        function initGame() {
+            // Clear the board
+            board = Array(BOARD_SIZE).fill().map(() => Array(BOARD_SIZE).fill(null));
+            currentPlayer = 'black';
+            blackCaptured = 0;
+            whiteCaptured = 0;
+            gameActive = true;
+            lastMove = null;
+            lastPass = false;
+
+            // Update UI
+            currentPlayerElement.textContent = 'Black';
+            currentPlayerElement.className = 'current-player black';
+            blackScoreElement.textContent = '0';
+            whiteScoreElement.textContent = '0';
+
+            // Clear any existing stones
+            const existingStones = document.querySelectorAll('.stone');
+            existingStones.forEach(stone => stone.parentNode.removeChild(stone));
+
+            // Create the grid lines
+            createGridLines();
+        }
+
+        // Create grid lines on the box
+        function createGridLines() {
+            // Remove existing grid lines if any
+            const existingLines = document.querySelectorAll('.grid-line');
+            existingLines.forEach(line => line.parentNode.removeChild(line));
+
+            // Create grid lines for each face of the box
+            const faces = ['front', 'back', 'left', 'right', 'top', 'bottom'];
+            const boxSize = 5;
+            const spacing = boxSize / (BOARD_SIZE - 1);
+
+            faces.forEach(face => {
+                // Skip the bottom face since it's not visible
+                if (face === 'bottom') return;
+
+                for (let i = 0; i < BOARD_SIZE; i++) {
+                    // Horizontal lines
+                    const horizontalLine = document.createElement('a-entity');
+                    horizontalLine.setAttribute('geometry', {
+                        primitive: 'box',
+                        width: boxSize,
+                        height: 0.02,
+                        depth: 0.02
+                    });
+                    horizontalLine.setAttribute('material', 'color', '#000');
+                    horizontalLine.setAttribute('class', 'grid-line');
+
+                    // Vertical lines
+                    const verticalLine = document.createElement('a-entity');
+                    verticalLine.setAttribute('geometry', {
+                        primitive: 'box',
+                        width: 0.02,
+                        height: boxSize,
+                        depth: 0.02
+                    });
+                    verticalLine.setAttribute('material', 'color', '#000');
+                    verticalLine.setAttribute('class', 'grid-line');
+
+                    // Position based on face
+                    const offset = (i - (BOARD_SIZE - 1)/2) * spacing;
+                    const halfSize = boxSize / 2;
+
+                    switch(face) {
+                        case 'front':
+                            horizontalLine.setAttribute('position', `0 ${offset} ${halfSize}`);
+                            verticalLine.setAttribute('position', `${offset} 0 ${halfSize}`);
+                            verticalLine.setAttribute('rotation', '0 90 0');
+                            break;
+                        case 'back':
+                            horizontalLine.setAttribute('position', `0 ${offset} -${halfSize}`);
+                            verticalLine.setAttribute('position', `${offset} 0 -${halfSize}`);
+                            verticalLine.setAttribute('rotation', '0 90 0');
+                            break;
+                        case 'left':
+                            horizontalLine.setAttribute('position', `-${halfSize} ${offset} 0`);
+                            verticalLine.setAttribute('position', `-${halfSize} 0 ${offset}`);
+                            break;
+                        case 'right':
+                            horizontalLine.setAttribute('position', `${halfSize} ${offset} 0`);
+                            verticalLine.setAttribute('position', `${halfSize} 0 ${offset}`);
+                            break;
+                        case 'top':
+                            horizontalLine.setAttribute('position', `${offset} ${halfSize} 0`);
+                            verticalLine.setAttribute('position', `0 ${halfSize} ${offset}`);
+                            verticalLine.setAttribute('rotation', '90 0 0');
+                            break;
+                    }
+
+                    gameBox.appendChild(horizontalLine);
+                    gameBox.appendChild(verticalLine);
+                }
+            });
+        }
+
+        // Get position for a cell on a specific face
+        function getPositionForCell(x, y, face) {
+            const boxSize = 5;
+            const spacing = boxSize / (BOARD_SIZE - 1);
+            const halfSize = boxSize / 2;
+
+            const offsetX = (x - (BOARD_SIZE - 1)/2) * spacing;
+            const offsetY = (y - (BOARD_SIZE - 1)/2) * spacing;
+
+            switch(face) {
+                case 'front':
+                    return `${offsetX} ${offsetY} ${halfSize}`;
+                case 'back':
+                    return `${offsetX} ${offsetY} -${halfSize}`;
+                case 'left':
+                    return `-${halfSize} ${offsetY} ${offsetX}`;
+                case 'right':
+                    return `${halfSize} ${offsetY} ${offsetX}`;
+                case 'top':
+                    return `${offsetX} ${halfSize} ${offsetY}`;
+                default:
+                    return '0 0 0';
+            }
+        }
+
+        // Check if a move is valid (Ko rule and other checks)
+        function isValidMove(x, y, face) {
+            if (board[x][y] !== null) return false;
+            
+            // Check Ko rule
+            if (lastMove && lastMove.x === x && lastMove.y === y && lastMove.face === face) {
+                // Check if this would be an immediate recapture
+                const tempBoard = JSON.parse(JSON.stringify(board));
+                tempBoard[x][y] = currentPlayer;
+                
+                // Check if this would capture exactly one stone
+                const captured = checkCapturesForKo(x, y, tempBoard);
+                if (captured.length === 1 && captured[0][0] === lastMove.x && captured[0][1] === lastMove.y) {
+                    return false; // Ko violation
+                }
+            }
+            
+            return true;
+        }
+
+        // Check for captures after a move
+        function checkCaptures(x, y) {
+            const opponent = currentPlayer === 'black' ? 'white' : 'black';
+            const directions = [[-1, 0], [1, 0], [0, -1], [0, 1]];
+            let captures = 0;
+
+            for (const [dx, dy] of directions) {
+                const nx = x + dx;
+                const ny = y + dy;
+
+                if (nx >= 0 && nx < BOARD_SIZE && ny >= 0 && ny < BOARD_SIZE && board[nx][ny] === opponent) {
+                    const group = findGroup(nx, ny);
+                    if (countLiberties(group) === 0) {
+                        // Capture the group
+                        group.forEach(([gx, gy]) => {
+                            board[gx][gy] = null;
+                            // Remove the stone from the scene
+                            const stones = document.querySelectorAll('.stone');
+                            stones.forEach(stone => {
+                                const pos = stone.getAttribute('position');
+                                const stoneX = Math.round((pos.x / (5 / (BOARD_SIZE - 1))) + (BOARD_SIZE - 1)/2);
+                                const stoneY = Math.round((pos.y / (5 / (BOARD_SIZE - 1))) + (BOARD_SIZE - 1)/2);
+                                if (stoneX === gx && stoneY === gy) {
+                                    stone.parentNode.removeChild(stone);
+                                }
+                            });
+                        });
+                        
+                        captures += group.length;
+                    }
+                }
+            }
+            
+            return captures;
+        }
+
+        // Find all connected stones of the same color
+        function findGroup(x, y) {
+            const color = board[x][y];
+            const visited = Array(BOARD_SIZE).fill().map(() => Array(BOARD_SIZE).fill(false));
+            const group = [];
+            const stack = [[x, y]];
+
+            while (stack.length > 0) {
+                const [cx, cy] = stack.pop();
+
+                if (cx < 0 || cx >= BOARD_SIZE || cy < 0 || cy >= BOARD_SIZE || board[cx][cy] !== color || visited[cx][cy]) {
+                    continue;
+                }
+
+                visited[cx][cy] = true;
+                group.push([cx, cy]);
+
+                // Add adjacent cells to stack
+                stack.push([cx - 1, cy]);
+                stack.push([cx + 1, cy]);
+                stack.push([cx, cy - 1]);
+                stack.push([cx, cy + 1]);
+            }
+
+            return group;
+        }
+
+        // Count liberties for a group
+        function countLiberties(group) {
+            const directions = [[-1, 0], [1, 0], [0, -1], [0, 1]];
+            const liberties = new Set();
+
+            for (const [x, y] of group) {
+                for (const [dx, dy] of directions) {
+                    const nx = x + dx;
+                    const ny = y + dy;
+
+                    if (nx >= 0 && nx < BOARD_SIZE && ny >= 0 && ny < BOARD_SIZE && board[nx][ny] === null) {
+                        liberties.add(`${nx},${ny}`);
+                    }
+                }
+            }
+
+            return liberties.size;
+        }
+
+        // Helper function for Ko rule check
+        function checkCapturesForKo(x, y, tempBoard) {
+            const opponent = tempBoard[x][y] === 'black' ? 'white' : 'black';
+            const directions = [[-1, 0], [1, 0], [0, -1], [0, 1]];
+            const capturedGroups = [];
+
+            for (const [dx, dy] of directions) {
+                const nx = x + dx;
+                const ny = y + dy;
+
+                if (nx >= 0 && nx < BOARD_SIZE && ny >= 0 && ny < BOARD_SIZE && tempBoard[nx][ny] === opponent) {
+                    const group = findGroupForKo(nx, ny, tempBoard);
+                    if (countLibertiesForKo(group, tempBoard) === 0) {
+                        capturedGroups.push(...group);
+                    }
+                }
+            }
+
+            return capturedGroups;
+        }
+
+        // Helper function for Ko rule check
+        function findGroupForKo(x, y, tempBoard) {
+            const color = tempBoard[x][y];
+            const visited = Array(BOARD_SIZE).fill().map(() => Array(BOARD_SIZE).fill(false));
+            const group = [];
+            const stack = [[x, y]];
+
+            while (stack.length > 0) {
+                const [cx, cy] = stack.pop();
+
+                if (cx < 0 || cx >= BOARD_SIZE || cy < 0 || cy >= BOARD_SIZE ||
+                    tempBoard[cx][cy] !== color || visited[cx][cy]) {
+                    continue;
+                }
+
+                visited[cx][cy] = true;
+                group.push([cx, cy]);
+
+                stack.push([cx - 1, cy]);
+                stack.push([cx + 1, cy]);
+                stack.push([cx, cy - 1]);
+                stack.push([cx, cy + 1]);
+            }
+
+            return group;
+        }
+
+        // Helper function for Ko rule check
+        function countLibertiesForKo(group, tempBoard) {
+            const directions = [[-1, 0], [1, 0], [0, -1], [0, 1]];
+            const liberties = new Set();
+
+            for (const [x, y] of group) {
+                for (const [dx, dy] of directions) {
+                    const nx = x + dx;
+                    const ny = y + dy;
+
+                    if (nx >= 0 && nx < BOARD_SIZE && ny >= 0 && ny < BOARD_SIZE && tempBoard[nx][ny] === null) {
+                        liberties.add(`${nx},${ny}`);
+                    }
+                }
+            }
+
+            return liberties.size;
+        }
+
+        // Place a stone on the board
+        function placeStone(x, y, face) {
+            if (!gameActive || !isValidMove(x, y, face)) return false;
+
+            // Create the stone
+            const stone = document.createElement('a-sphere');
+            stone.setAttribute('radius', '0.2');
+            stone.setAttribute('color', currentPlayer === 'black' ? '#000' : '#FFF');
+            stone.setAttribute('class', 'stone');
+            stone.setAttribute('position', getPositionForCell(x, y, face));
+            stone.setAttribute('shadow', 'cast: true; receive: false');
+            
+            // Add a slight glow effect
+            stone.setAttribute('material', 'side', 'double');
+            stone.setAttribute('material', 'opacity', '0.95');
+            stone.setAttribute('material', 'roughness', '0.2');
+            stone.setAttribute('material', 'metalness', '0.1');
+            
+            // Add to the scene
+            gameBox.appendChild(stone);
+
+            // Update the board state
+            board[x][y] = currentPlayer;
+
+            // Store the last move
+            lastMove = {x, y, face};
+
+            // Check for captures
+            const captured = checkCaptures(x, y);
+            if (captured > 0) {
+                captureSound.play();
+                if (currentPlayer === 'black') {
+                    whiteCaptured += captured;
+                    whiteScoreElement.textContent = whiteCaptured;
+                } else {
+                    blackCaptured += captured;
+                    blackScoreElement.textContent = blackCaptured;
+                }
+            }
+
+            // Switch player
+            currentPlayer = currentPlayer === 'black' ? 'white' : 'black';
+            currentPlayerElement.textContent = currentPlayer === 'black' ? 'Black' : 'White';
+            currentPlayerElement.className = `current-player ${currentPlayer}`;
+            
+            // Play sound effect
+            placeSound.currentTime = 0;
+            placeSound.play();
+            
+            return true;
+        }
+
+        // Check if the game is over (both players passed consecutively)
+        function isGameOver() {
+            return lastPass && lastMove === null;
+        }
+
+        // Calculate score (simplified for this implementation)
+        function calculateScore() {
+            let blackScore = 0;
+            let whiteScore = 0;
+            
+            // Count stones on board
+            for (let x = 0; x < BOARD_SIZE; x++) {
+                for (let y = 0; y < BOARD_SIZE; y++) {
+                    if (board[x][y] === 'black') blackScore++;
+                    if (board[x][y] === 'white') whiteScore++;
+                }
+            }
+            
+            // Add captured stones
+            blackScore += whiteCaptured;
+            whiteScore += blackCaptured;
+            
+            return { black: blackScore, white: whiteScore };
+        }
+
+        // Handle box click
+        gameBox.addEventListener('click', function(event) {
+            if (!gameActive) return;
+
+            // Get the intersection point
+            const intersection = event.detail.intersection;
+
+            // Determine which face was clicked and the cell coordinates
+            const boxSize = 5;
+            const halfSize = boxSize / 2;
+            const spacing = boxSize / (BOARD_SIZE - 1);
+
+            let face, x, y;
+
+            // Determine face based on normal
+            const normal = intersection.face.normal;
+            if (Math.abs(normal.x) > 0.5) {
+                face = normal.x > 0 ? 'right' : 'left';
+                x = Math.round((intersection.point.z / spacing) + (BOARD_SIZE - 1)/2);
+                y = Math.round((intersection.point.y / spacing) + (BOARD_SIZE - 1)/2);
+            } else if (Math.abs(normal.y) > 0.5) {
+                face = normal.y > 0 ? 'top' : 'bottom';
+                x = Math.round((intersection.point.x / spacing) + (BOARD_SIZE - 1)/2);
+                y = Math.round((intersection.point.z / spacing) + (BOARD_SIZE - 1)/2);
+            } else {
+                face = normal.z > 0 ? 'front' : 'back';
+                x = Math.round((intersection.point.x / spacing) + (BOARD_SIZE - 1)/2);
+                y = Math.round((intersection.point.y / spacing) + (BOARD_SIZE - 1)/2);
+            }
+
+            // Validate coordinates
+            if (x >= 0 && x < BOARD_SIZE && y >= 0 && y < BOARD_SIZE) {
+                placeStone(x, y, face);
+                
+                // Check if game is over
+                if (isGameOver()) {
+                    gameActive = false;
+                    const scores = calculateScore();
+                    blackScoreElement.textContent = scores.black;
+                    whiteScoreElement.textContent = scores.white;
+                    alert(`Game Over!\nBlack: ${scores.black}\nWhite: ${scores.white}`);
+                }
+            }
+        });
+
+        // Pass button functionality
+        passButton.addEventListener('click', function() {
+            if (!gameActive) return;
+            
+            passSound.play();
+            
+            if (lastPass) {
+                // Game ends when both players pass consecutively
+                gameActive = false;
+                const scores = calculateScore();
+                blackScoreElement.textContent = scores.black;
+                whiteScoreElement.textContent = scores.white;
+                alert(`Game Over!\nBlack: ${scores.black}\nWhite: ${scores.white}`);
+            } else {
+                lastPass = true;
+                // Switch player
+                currentPlayer = currentPlayer === 'black' ? 'white' : 'black';
+                currentPlayerElement.textContent = currentPlayer === 'black' ? 'Black' : 'White';
+                currentPlayerElement.className = `current-player ${currentPlayer}`;
+            }
+        });
+
+        // Reset button functionality
+        resetButton.addEventListener('click', function() {
+            initGame();
+            lastPass = false;
+            gameActive = true;
+        });
+
+        // Help button functionality
+        helpButton.addEventListener('click', function() {
+            alert("Atari Go (Capture Go) Rules:\n\n- Place stones on intersections\n- Capture opponent's stones by surrounding them\n- Ko rule prevents immediate recapture\n- Pass to end your turn\n- Game ends when both players pass consecutively");
+        });
+
+        // Initialize the game
+        initGame();
+    </script>
+</body>
+</html>

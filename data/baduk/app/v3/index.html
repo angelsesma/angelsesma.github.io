@@ -1,0 +1,235 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>3D Atari Go in A-Frame</title>
+    <!-- A-Frame Library -->
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <style>
+        /* Basic styling for the page background */
+        body {
+            margin: 0;
+            font-family: sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <a-scene background="color: #E0F7FA" cursor="rayOrigin: mouse">
+
+        <!-- Lighting -->
+        <a-light type="ambient" intensity="0.6"></a-light>
+        <a-light type="directional" position="0 5 0" intensity="0.8" shadow></a-light>
+
+        <!-- A-Frame Room Environment -->
+        <!-- Floor -->
+        <a-plane position="0 0 -4" rotation="-90 0 0" width="10" height="10" color="#BCAAA4" shadow></a-plane>
+        <!-- Back Wall -->
+        <a-plane position="0 3 -9" rotation="0 0 0" width="10" height="6" color="#D7CCC8"></a-plane>
+        <!-- Left Slanted Wall -->
+        <a-plane position="-5 3 -4" rotation="0 90 0" width="10" height="6" color="#D7CCC8"></a-plane>
+        <!-- Right Slanted Wall -->
+        <a-plane position="5 3 -4" rotation="0 -90 0" width="10" height="6" color="#D7CCC8"></a-plane>
+        <!-- Ceiling -->
+        <a-plane position="0 6 -4" rotation="90 0 0" width="10" height="10" color="#EFEBE9"></a-plane>
+
+        <!-- UI Text for Game Status -->
+        <a-text id="turn-indicator" value="White's Turn" position="-3 2.5 -3.5" width="3" color="black" align="left"></a-text>
+        <a-text id="score-white" value="White Captures: 0" position="-3 2 -3.5" width="3" color="black" align="left"></a-text>
+        <a-text id="score-black" value="Black Captures: 0" position="-3 1.5 -3.5" width="3" color="black" align="left"></a-text>
+
+        <!-- The Go Board will be generated here by JavaScript -->
+        <a-entity id="board" position="0 0.1 -4"></a-entity>
+
+        <!-- Camera -->
+        <a-camera position="0 1.6 1" look-controls="pointerLockEnabled: false"></a-camera>
+
+    </a-scene>
+
+<script>
+    // --- GAME STATE ---
+    const BOARD_SIZE = 5;
+    let currentPlayer = 'white';
+    let boardState = Array(BOARD_SIZE).fill().map(() => Array(BOARD_SIZE).fill(null));
+    let captures = { white: 0, black: 0 };
+
+    // --- A-FRAME COMPONENTS ---
+
+    // Component to generate the 5x5 board grid
+    AFRAME.registerComponent('go-board', {
+        init: function () {
+            const spacing = 1.2;
+            const centerOffset = (BOARD_SIZE - 1) / 2;
+
+            for (let x = 0; x < BOARD_SIZE; x++) {
+                for (let z = 0; z < BOARD_SIZE; z++) {
+                    const xPos = (x * spacing - centerOffset * spacing).toFixed(2);
+                    const zPos = (z * spacing - centerOffset * spacing).toFixed(2);
+
+                    // Create a clickable tile
+                    const tile = document.createElement('a-plane');
+                    tile.setAttribute('position', `${xPos} 0 ${zPos}`);
+                    tile.setAttribute('geometry', 'primitive: plane; width: 1; height: 1');
+                    tile.setAttribute('material', 'color: #8D6E63; transparent: true; opacity: 0.8');
+                    tile.setAttribute('rotation', '-90 0 0');
+                    tile.setAttribute('shadow', 'receive: true');
+                    
+                    // Add data attributes for coordinates
+                    tile.setAttribute('data-x', x);
+                    tile.setAttribute('data-z', z);
+                    
+                    // Add the click listener component
+                    tile.setAttribute('cursor-listener', '');
+
+                    this.el.appendChild(tile);
+                }
+            }
+        }
+    });
+
+    // Component to handle clicks on board tiles
+    AFRAME.registerComponent('cursor-listener', {
+        init: function () {
+            this.el.addEventListener('click', (evt) => {
+                const tile = evt.target; // The plane itself
+                const x = parseInt(tile.getAttribute('data-x'));
+                const z = parseInt(tile.getAttribute('data-z'));
+                placeStone(x, z);
+            });
+        }
+    });
+
+    // Component to create a 3D stone
+    AFRAME.registerComponent('stone', {
+        schema: {
+            color: { type: 'string', default: 'white' }
+        },
+        init: function () {
+            this.el.setAttribute('geometry', 'primitive: cylinder; radius: 0.45; height: 0.2');
+            this.el.setAttribute('material', `color: ${this.data.color}; roughness: 0.5; metalness: 0.1`);
+            this.el.setAttribute('rotation', '-90 0 0');
+            this.el.setAttribute('shadow', 'cast: true; receive: true');
+        }
+    });
+
+    // --- GAME LOGIC FUNCTIONS ---
+
+    function placeStone(x, z) {
+        // Check if the position is already occupied
+        if (boardState[x][z] !== null) {
+            console.log("Position already occupied!");
+            return;
+        }
+
+        // Update game state
+        boardState[x][z] = currentPlayer;
+
+        // Create and add the 3D stone to the scene
+        const tile = document.querySelector(`a-plane[data-x='${x}'][data-z='${z}']`);
+        const stoneEntity = document.createElement('a-entity');
+        stoneEntity.setAttribute('stone', `color: ${currentPlayer}`);
+        stoneEntity.setAttribute('position', '0 0.15 0');
+        tile.appendChild(stoneEntity);
+
+        // Check for enemy captures
+        checkCaptures(x, z, currentPlayer);
+
+        // Switch player
+        currentPlayer = (currentPlayer === 'white') ? 'black' : 'white';
+        updateUI();
+    }
+
+    function checkCaptures(lastX, lastZ, lastPlayerColor) {
+        const opponentColor = (lastPlayerColor === 'white') ? 'black' : 'white';
+        const neighbors = getNeighbors(lastX, lastZ);
+
+        neighbors.forEach(([nx, nz]) => {
+            if (boardState[nx][nz] === opponentColor) {
+                const group = getGroup(nx, nz);
+                if (!hasLiberties(group)) {
+                    captureGroup(group);
+                }
+            }
+        });
+    }
+
+    function getNeighbors(x, z) {
+        const neighbors = [];
+        const directions = [[-1, 0], [1, 0], [0, -1], [0, 1]];
+        directions.forEach(([dx, dz]) => {
+            const nx = x + dx;
+            const nz = z + dz;
+            if (nx >= 0 && nx < BOARD_SIZE && nz >= 0 && nz < BOARD_SIZE) {
+                neighbors.push([nx, nz]);
+            }
+        });
+        return neighbors;
+    }
+
+    function getGroup(startX, startZ) {
+        const color = boardState[startX][startZ];
+        if (!color) return [];
+        
+        const group = [];
+        const visited = new Set();
+        const queue = [[startX, startZ]];
+
+        while (queue.length > 0) {
+            const [x, z] = queue.shift();
+            const key = `${x},${z}`;
+            if (visited.has(key)) continue;
+            
+            visited.add(key);
+            group.push([x, z]);
+
+            getNeighbors(x, z).forEach(([nx, nz]) => {
+                if (boardState[nx][nz] === color && !visited.has(`${nx},${nz}`)) {
+                    queue.push([nx, nz]);
+                }
+            });
+        }
+        return group;
+    }
+
+    function hasLiberties(group) {
+        for (const [x, z] of group) {
+            for (const [nx, nz] of getNeighbors(x, z)) {
+                if (boardState[nx][nz] === null) {
+                    return true; // Found an empty space (liberty)
+                }
+            }
+        }
+        return false; // No liberties found for the group
+    }
+
+    function captureGroup(group) {
+        const capturedColor = boardState[group[0][0]][group[0][1]];
+        const capturer = (capturedColor === 'white') ? 'black' : 'white';
+        captures[capturer] += group.length;
+
+        group.forEach(([x, z]) => {
+            boardState[x][z] = null;
+            const tile = document.querySelector(`a-plane[data-x='${x}'][data-z='${z}']`);
+            const stone = tile.querySelector('a-entity[stone]');
+            if (stone) {
+                tile.removeChild(stone);
+            }
+        });
+    }
+
+    function updateUI() {
+        document.querySelector('#turn-indicator').setAttribute('value', `${currentPlayer.charAt(0).toUpperCase() + currentPlayer.slice(1)}'s Turn`);
+        document.querySelector('#score-white').setAttribute('value', `White Captures: ${captures.white}`);
+        document.querySelector('#score-black').setAttribute('value', `Black Captures: ${captures.black}`);
+    }
+
+    // --- INITIALIZE THE GAME ---
+    window.addEventListener('DOMContentLoaded', () => {
+        const boardEntity = document.querySelector('#board');
+        boardEntity.setAttribute('go-board', '');
+        updateUI();
+    });
+
+</script>
+</body>
+</html>
