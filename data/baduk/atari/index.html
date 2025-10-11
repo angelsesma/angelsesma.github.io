@@ -178,6 +178,15 @@ function nextTurn(){
   updateInfo(turn===1?"Negras":"Blancas");
 }
 
+function resetGame(){
+  board = Array.from({length:SIZE},_=>Array(SIZE).fill(0));
+  turn = 1;
+  cursor = {x:4,y:4};
+  gameOver = false;
+  updateInfo("Black");
+ 
+  drawBoard();
+}
 
 /* === UI === */
 const badge=document.getElementById('turnBadge');
@@ -190,6 +199,10 @@ function updateInfo(who,extra=""){
   turnTxt.textContent = gameOver? `${who} ${extra}` : `${who} Juegan`;
   if(extra && !gameOver) msg.textContent=extra;
 }
+
+document.getElementById('resetButton').addEventListener('click', ()=>{
+  resetGame();
+});
 
 
 
