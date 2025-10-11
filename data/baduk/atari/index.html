@@ -11,9 +11,12 @@
     canvas{background:#f1d9a5;border:4px solid #333;border-radius:8px;
            box-shadow:0 0 20px rgba(0,0,0,.2);touch-action:none;cursor:pointer}
     #info{margin-top:10px;font-size:1.1em;text-align:center}
+    #actionButtons{display:flex;gap:10px;margin-top:5px}
+    #controls{margin-top:15px;display:flex;flex-direction:column;align-items:center;gap:10px}
     #turnBadge{display:inline-block;width:1em;height:1em;border-radius:50%;vertical-align:middle;margin-right:6px}
     #msg{margin-top:6px;font-size:.9em;color:#555}
-    
+    #resetButton{background:#ff9800;color:white;border-color:#ef8900;padding:12px 20px}
+    #resetButton:hover{background:#ef8900}
    
 
     
@@ -36,8 +39,7 @@
 
   
   <div id="actionButtons">
-
-
+    <button class="button" id="resetButton">Nueva Partida</button>
   </div>
   
  
