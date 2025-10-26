@@ -40,7 +40,7 @@
             {
               "name": "atari-go",
               "type": "iframe",
-              "contents": "/data/baduk/atari/index.html"
+              "contents": "/data/baduk/atari/index1.html"
             },
              {
               "name": "Go-VR",
