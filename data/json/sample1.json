@@ -8,6 +8,26 @@
       "contents": "<strong>Ángel Alberto Sesma</strong>(MEX)</BR> Es artista transmedia, ascendente virgo, tigre de fuego y perro de cristal. Realizó su primera exposicion individual en la galeria autónoma de la FAD Xochimilco. Su trabajo ha sido reconocido en bienales y festivales internacionales como thewrong.org, biennale.no, 60sec.org, el festival de poesía de Yautepec, entre otros."
     },
     {
+      "name": "Audio",
+      "type": "dir",
+      "contents": [
+        {
+          "name": "Widget",
+          "type": "dir",
+          "contents": [
+            
+          
+          {
+          "name": "Radio",
+          "type": "exec",
+          "contents": "https://streamingcwsradio30.com/8232/stream"
+        }
+          ]
+        }
+        
+      ]
+    },
+    {
       "name": "Baduk",
       "type": "dir",
       "contents": [
@@ -61,7 +81,7 @@
           "type": "dir",
           "contents": [
             {
-              "name": "Vasija-0224",
+              "name": "Vasija_1",
               "type": "iframe",
               "contents": "data/vr/main1.html"
             }
@@ -72,12 +92,63 @@
           "type": "dir",
           "contents": [
             {
-              "name": "Vasija-0424",
+              "name": "Autorretrato",
+              "type": "iframe",
+              "contents": "data/vr/index.html"
+            },
+            {
+              "name": "Vasija_2",
               "type": "iframe",
               "contents": "data/vr/main2.html"
-            }
+            },
           ]
         }
+      ]
+    },
+    {
+      "name": "Cine",
+      "type": "dir",
+      "contents": [
+        {
+          "name": "Arte",
+          "type": "dir",
+          "contents": [
+            
+          
+          {
+          "name": "Propmaster",
+          "type": "iframe",
+          "contents": "/data/props/index.html"
+        }
+          ]
+        },
+        {
+          "name": "Fotografia",
+          "type": "dir",
+          "contents": [
+            
+          
+          {
+          "name": "Damnificados",
+          "type": "exec",
+          "contents": "https://www.imdb.com/title/tt12368072/"
+        }
+          ]
+        },
+        {
+          "name": "Produccion",
+          "type": "dir",
+          "contents": [
+            
+          
+          {
+          "name": "Mi-Amigo-Bernardo",
+          "type": "exec",
+          "contents": "https://www.imdb.com/title/tt38117863/"
+        }
+          ]
+        }        
+        
       ]
     },
     {
@@ -122,7 +193,7 @@
           "contents": "/data/pics/Grabado/Aguafuerte/index.html"
         },
           {
-          "name": "Linoleo",
+          "name": "Linotipia",
           "type": "iframe",
           "contents": "/data/pics/Grabado/Linoleo/index.html"
         }
@@ -240,74 +311,8 @@
           ]
         }
       ]
-    },
-    
-    {
-      "name": "Cine",
-      "type": "dir",
-      "contents": [
-        {
-          "name": "Arte",
-          "type": "dir",
-          "contents": [
-            
-          
-          {
-          "name": "Propmaster",
-          "type": "iframe",
-          "contents": "/data/props/index.html"
-        }
-          ]
-        },
-        {
-          "name": "Fotografia",
-          "type": "dir",
-          "contents": [
-            
-          
-          {
-          "name": "Damnificados",
-          "type": "exec",
-          "contents": "https://www.imdb.com/title/tt12368072/"
-        }
-          ]
-        },
-        {
-          "name": "Produccion",
-          "type": "dir",
-          "contents": [
-            
-          
-          {
-          "name": "Mi-Amigo-Bernardo",
-          "type": "exec",
-          "contents": "https://www.imdb.com/title/tt38117863/"
-        }
-          ]
-        }        
-        
-      ]
-    },
-     {
-      "name": "Widgets",
-      "type": "dir",
-      "contents": [
-        {
-          "name": "Audio",
-          "type": "dir",
-          "contents": [
-            
-          
-          {
-          "name": "Radio",
-          "type": "exec",
-          "contents": "https://streamingcwsradio30.com/8232/stream"
-        }
-          ]
-        }
-        
-      ]
     }
+     
 
   ]
 }
