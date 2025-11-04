@@ -219,7 +219,7 @@ COMMANDS.ls = function (argv, cb) {
   writeEntry = function (e, str) {
     this.writeLink(e, str);
     if (args.indexOf("l") > -1) {
-      if ("description" in e) this.write(" - " + e.description);
+     // if ("description" in e) this.write(" - " + e.description);
       this.write("<br>");
     } else {
       
@@ -385,7 +385,7 @@ COMMANDS.mapa = function (argv, cb) {
       else if (entry.type == "eidogo") str += "|&mdash;🧮";
       else if (entry.type == "exec") str += "|&mdash;🔗";
       else if (entry.type == "link") str += "|&mdash;🔗";
-      else if (entry.type == "dir") str += "|&mdash;&mdash;&mdash;";
+      else if (entry.type == "dir") str += "|&mdash;&mdash;⤳";
 
       term.write(str);
       term.writeLink(entry, term.dirString(dir) + "/" + entry.name);
