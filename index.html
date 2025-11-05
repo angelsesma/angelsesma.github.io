@@ -21,17 +21,36 @@
       
       });
       A = window.innerWidth / window.innerHeight;
-osc(40.328, -0.024, 0.255)
-	.scale(() => a.fft[2])
-	.pixelate(() => a.fft[2] * 149.243)
-	.kaleid(() => Math.sin(time / 20.397) / 23.553 + 8.396)
-	.rotate(0.409, 0.012)
-	.modulateRotate(shape(3.727)
-		.rotate(0.01, -0.499))
-	.diff(src(o0)
-		.brightness(0.192)
-		.color(0.896, 2.652, 1.775))
-	.out();
+ osc(18, 0.1, 0)
+	.color(0.146, 0.072, 1.558)
+	.mult(osc(20, 0.01, 0.87))
+	.repeat(2, 20)
+	.rotate(0.5)
+	.modulate(o1)
+	.scale(1, () => a.fft[0] * 0.9 + 2)
+	.diff(o1)
+	.out(o0);
+osc(20, 0.2, 0)
+	.color(3.969, 0.384, 0.1)
+	.mult(osc(40))
+	.modulateRotate(o0, 0.2)
+	.rotate(0.2)
+	.out(o1);
+src(o1)
+	.out(o2);
+osc(20, 0.2, 0)
+	.color(2, 0.7, 0.1)
+	.mult(osc(40))
+	.mult(osc(20, 0.01, 0.933))
+	.modulateRotate(o1, 0.2)
+	.rotate(0.2)
+	.diff(o2)
+	.diff(o1)
+	.kaleid(8)
+	.scale(a.fft[2] * 2)
+	.out(o3);
+render();
+
 
       setResolution(window.innerWidth * 1, window.innerHeight * 1);
     </script>
