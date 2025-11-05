@@ -22,17 +22,9 @@
       });
       A = window.innerWidth / window.innerHeight;
 
-osc(1.609, -0, 0.628)
-	.scale(() => a.fft[2])
-	.pixelate(() => a.fft[2] * 211.667)
-	.kaleid(() => Math.sin(time / 9.777) / 23.666 + 2.09)
-	.rotate(0.699, 0.003)
-	.modulateRotate(shape(2.213)
-		.rotate(0.098, -0.218))
-	.diff(src(o0)
-		.brightness(0.218)
-		.color(1.006, 2.919, 0.475))
-	.out();
+osc(100,-0.01245,1).pixelate(()=>a.fft[2]*100).kaleid(()=>(Math.sin(time/8)*9+3)).rotate(0,0.125)
+.modulateRotate(shape(3).scale(()=>(Math.cos(time)*2)).rotate(0,-0.25)).diff(src(o0).brightness(0.1).color(0,1,0))
+  .out()
 
       setResolution(window.innerWidth * 1, window.innerHeight * 1);
     </script>
