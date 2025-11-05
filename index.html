@@ -22,32 +22,18 @@
       });
       A = window.innerWidth / window.innerHeight;
 
-noise()
-	.color(() => a.fft[2] * 3.111, 0.717, 5.6)
-	.modulate(noise(() => a.fft[1] * 14.245))
-	.scale(() => a.fft[2] * 8.565)
-	.layer(src(o0)
-		.mask(osc(15.38)
-			.modulateRotate(osc(), 90, 0.949))
-		.scale(() => a.fft[2] * 2.098)
-		.luma(0.25, 0.419))
-	.blend(o0)
-	.out(o0);
-osc()
-	.modulate(noise(() => a.fft[1] + 3.484))
-	.color(0.146, 0.278, 0.818)
-	.out(o1);
-src(o0)
-	.modulate(o1)
-	.layer(src(o1)
-		.mask(o1)
-		.saturate(11.707))
-	.modulateRotate(o1)
-	.rotate(({
-		time
-	}) => time % 83.897 * 0.072)
-	.out(o2);
-render(o2);
+osc(1.609, -0, 0.628)
+	.scale(() => a.fft[2])
+	.pixelate(() => a.fft[2] * 211.667)
+	.kaleid(() => Math.sin(time / 9.777) / 23.666 + 2.09)
+	.rotate(0.699, 0.003)
+	.modulateRotate(shape(2.213)
+		.rotate(0.098, -0.218))
+	.diff(src(o0)
+		.brightness(0.218)
+		.color(1.006, 2.919, 0.475))
+	.out();
+
       setResolution(window.innerWidth * 1, window.innerHeight * 1);
     </script>
 </canvas>
