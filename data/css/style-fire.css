@@ -30,12 +30,12 @@ div.jsterm a:hover {
 }
 
 div.jsterm {
-  background: rgba(83, 33, 11, 0.798);
+  background: rgb(0, 0, 0);
   font-family: monospace;
   font-size: 31px;
   color: #ff8833;
   text-shadow:
-    0 0 5px rgba(255, 119, 0, 0.397),
+    0 0 5px rgba(255, 119, 0, 0.633),
     0 0 8px rgba(255, 150, 0, 0.456);
   font-weight: bold;
   width: 900px;
