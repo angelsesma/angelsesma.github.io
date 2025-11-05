@@ -385,7 +385,7 @@ COMMANDS.mapa = function (argv, cb) {
       else if (entry.type == "eidogo") str += "|&mdash;🧮";
       else if (entry.type == "exec") str += "|&mdash;🔗";
       else if (entry.type == "link") str += "|&mdash;🔗";
-      else if (entry.type == "dir") str += "|&mdash;&mdash;⤳";
+      else if (entry.type == "dir") str += "|&mdash;📂";
 
       term.write(str);
       term.writeLink(entry, term.dirString(dir) + "/" + entry.name);

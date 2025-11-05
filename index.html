@@ -3,8 +3,8 @@
   <head>
     <title>A.Sesma</title>
     <meta name="description" content="A.Sesma" />
-    <link type="text/css" rel="stylesheet" href="/data/css/style-fire.css" />
-    <!--script src="https://unpkg.com/hydra-synth"></script-->
+    <link type="text/css" rel="stylesheet" href="/data/css/style-thunder.css" />
+    <script src="https://unpkg.com/hydra-synth"></script>
   </head>
   <body>
 
@@ -12,7 +12,7 @@
     <script type="text/javascript" src="/data/config/config.js"></script>
     <script type="text/javascript" src="/data/config/js/jsterm1.js"></script>
    
-    <!--canvas id="myCanvas">
+    <canvas id="myCanvas">
 
       <script>
      
@@ -22,29 +22,37 @@
       });
       A = window.innerWidth / window.innerHeight;
 
-osc(5.175, -0.051, 0.209)
-	.color(2.238, 0.9892, 0.313)
-	.rotate(1,1.2,0).pixelate()
-  .out(o1);
-
-
-osc(3.084, -0.078, 0.02)
-	.color(() => 2.568, 0.078, 0.002)
-	.modulate(noise())
-	.scale()
+noise()
+	.color(() => a.fft[2] * 0.341, 1.537, 0.943)
+	.modulate(noise(() => a.fft[1] * 2.494))
+	.scale(() => a.fft[2] - 0.116)
 	.layer(src(o0)
-		.mask(osc(0.733)
-			.modulateRotate(osc(), 2.138, 0.213))
-		.scale(1.657)
-		.luma(0.007, 0.003))
-	.blend(o1)
-	.pixelate(361, 2.61, 19.415)
-	.out(o3);
-render(o3);
+		.mask(osc(5.6)
+			.modulateRotate(osc(), 0.014, 16.726))
+		.scale(() => a.fft[2] * 0.811)
+		.luma(0.075, 0.444))
+	.blend(o0)
+	.kaleid(0.231)
+	.out(o0);
+voronoi(398.456, 0.092)
+	.modulateScale(osc(15.064)
+		.rotate(Math.sin(time)), 0.265)
+	.thresh(0.265)
+	.modulateRotate(osc(7), 0.671)
+	.thresh(0.656)
+	.diff(src(o0)
+		.scale(2.678))
+	.modulateScale(osc(0.475)
+		.modulateRotate(o0, .74))
+	.diff(src(o0)
+		.rotate([-.012, .01, -0, 0.054])
+		.scrollY(0.35, [-0.046 / 317291.015, 0.756].fast(0.473)))
+	.brightness([-.02, -0.172].smooth()
+		.fast(.5))
 
       setResolution(window.innerWidth * 1, window.innerHeight * 1);
     </script>
-</canvas-->
+</canvas>
    
 
 </body>
