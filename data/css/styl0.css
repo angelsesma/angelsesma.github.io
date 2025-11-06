@@ -1,5 +1,5 @@
 body {
-  background: rgba(16, 16, 16, 0.60);
+  background: rgba(16, 16, 16, 0.860);
 }
 
 #myCanvas {
@@ -30,7 +30,7 @@ div.jsterm a:hover {
 }
 
 div.jsterm {
-  background: rgb(0, 0, 0);
+  background: rgb(0, 0, 0, 0.7);
   font-family: monospace;
   font-size: 31px;
   color: #ff8833;
