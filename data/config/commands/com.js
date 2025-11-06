@@ -208,48 +208,46 @@ COMMANDS.iframe = function (argv, cb) {
   cb();
 };
 
-COMMANDS.ls = function (argv, cb) {
-  var result = this._terminal.parseArgs(argv),
-    args = result.args,
-    filename = result.filenames[0],
-    entry = filename ? this._terminal.getEntry(filename) : this._terminal.cwd,
-    maxLen = 0,
-    writeEntry;
+COMMANDS.ls = function(argv, cb) {
+   var result = this._terminal.parseArgs(argv),
+       args = result.args,
+       filename = result.filenames[0],
+       entry = filename ? this._terminal.getEntry(filename) : this._terminal.cwd,
+       maxLen = 0,
+       writeEntry;
 
-  writeEntry = function (e, str) {
-    this.writeLink(e, str);
-    if (args.indexOf("l") > -1) {
-     // if ("description" in e) this.write(" - " + e.description);
-      this.write("<br>");
-    } else {
-      
-      this.write(Array(maxLen - e.name.length + 2).join("&nbsp") + " ");
-    }
-  }.bind(this._terminal);
+   writeEntry = function(e, str) {
+      this.writeLink(e, str);
+      if (args.indexOf('l') > -1) {
+         if ('description' in e)
+            this.write(' - ' + e.description);
+         this.write('<br>');
+      } else {
+  
+         this.write(Array(maxLen - e.name.length + 2).join('&nbsp') + ' ');
+      }
+   }.bind(this._terminal);
 
-  if (!entry)
-    this._terminal.write(
-      "ls: no pudo accesar a " +
-        filename +
-        ":  No existe tal archivo o directorio"
-    );
-  else if (entry.type === "dir") {
-    var dirStr = this._terminal.dirString(entry);
-    maxLen = entry.contents.reduce(function (prev, cur) {
-      return Math.max(prev, cur.name.length);
-    }, 0);
+   if (!entry)
+      this._terminal.write('ls: no se puede accesar ' + filename + ': Archivo o directorio no existente');
+   else if (entry.type === 'dir') {
+      var dirStr = this._terminal.dirString(entry);
+      maxLen = entry.contents.reduce(function(prev, cur) {
+         return Math.max(prev, cur.name.length);
+      }, 0);
 
-    for (var i in entry.contents) {
-      var e = entry.contents[i];
-      if (args.indexOf("a") > -1 || e.name[0] !== ".")
-        writeEntry(e, dirStr + "/" + e.name);
-    }
-  } else {
-    maxLen = entry.name.length;
-    writeEntry(entry, filename);
-  }
-  cb();
-};
+      for (var i in entry.contents) {
+         var e = entry.contents[i];
+         if (args.indexOf('a') > -1 || e.name[0] !== '.')
+            writeEntry(e, dirStr + '/' + e.name);
+      }
+   } else {
+      maxLen = entry.name.length;
+      writeEntry(entry, filename);
+   }
+   cb();
+}
+
 
 COMMANDS.gimp = function (argv, cb) {
   var filename = this._terminal.parseArgs(argv).filenames[0],
