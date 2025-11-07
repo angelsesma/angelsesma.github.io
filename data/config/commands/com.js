@@ -241,10 +241,11 @@ COMMANDS.ls = function(argv, cb) {
          if (args.indexOf('a') > -1 || e.name[0] !== '.')
             writeEntry(e, dirStr + '/' + e.name);
       }
-   } else {
-      maxLen = entry.name.length;
-      writeEntry(entry, filename);
    }
+   // else {
+   //   maxLen = entry.name.length;
+   //   writeEntry(entry, filename);
+   //}
    cb();
 }
 
