@@ -110,8 +110,8 @@
           
           {
           "name": "Damnificados",
-          "type": "link",
-          "contents": "https://www.imdb.com/title/tt12368072/"
+          "type": "exec",
+          "contents": "<a href='https://www.imdb.com/title/tt12368072/'>Imdb</a>"
         }
           ]
         },
@@ -124,7 +124,7 @@
           {
           "name": "Mi-Amigo-Bernardo",
           "type": "exec",
-          "contents": "https://www.imdb.com/title/tt38117863/"
+          "contents": "<a href='https://www.imdb.com/title/tt38117863/'>Imdb</a>"
         }
           ]
         }        
