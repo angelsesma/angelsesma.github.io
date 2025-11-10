@@ -8,26 +8,6 @@
       "contents": "<strong>Ángel Alberto Sesma</strong>(MEX)</BR> Es artista transmedia, ascendente virgo, tigre de fuego y perro de cristal. Realizó su primera exposicion individual en la galeria autónoma de la FAD Xochimilco. Su trabajo ha sido reconocido en bienales y festivales internacionales como thewrong.org, biennale.no, 60sec.org, el festival de poesía de Yautepec, entre otros."
     },
     {
-      "name": "Audio",
-      "type": "dir",
-      "contents": [
-        {
-          "name": "Widget",
-          "type": "dir",
-          "contents": [
-            
-          
-          {
-          "name": "Radio",
-          "type": "exec",
-          "contents": "https://streamingcwsradio30.com/8232/stream"
-        }
-          ]
-        }
-        
-      ]
-    },
-    {
       "name": "Baduk",
       "type": "dir",
       "contents": [
@@ -130,7 +110,7 @@
           
           {
           "name": "Damnificados",
-          "type": "exec",
+          "type": "link",
           "contents": "https://www.imdb.com/title/tt12368072/"
         }
           ]
@@ -155,34 +135,7 @@
       "name": "Grafica",
       "type": "dir",
       "contents": [
-        {
-          "name": "Digital",
-          "type": "dir",
-          "contents": [
-            {
-          "name": "3D",
-          "type": "iframe",
-          "contents": "/data/pics/3D/index.html"
-        },
-          
-          {
-          "name": "Glitch-AI",
-          "type": "iframe",
-          "contents": "/data/pics/GlitchArt/glitch3.pdf"
-        },
-          {
-          "name": "Monolitos",
-          "type": "iframe",
-          "contents": "/data/pics/Monolitos/index.html"
-        },
-        {
-          "name": "Mural",
-          "type": "iframe",
-          "contents": "/data/pics/Mural/index.html"
-        }
-          
-          ]
-        },
+        
         {
           "name": "Grabado",
           "type": "dir",
@@ -201,22 +154,6 @@
       ]
     }
     ]
-    },
-    {
-      "name": "Libros-de-arte",
-      "type": "dir",
-      "contents": [
-        {
-          "name": "yarn3.0",
-          "type": "exec", 
-          "contents": "<h2><a href='https://www.amazon.es/Yarn-3-0-solarized-generated-tokenized/dp/B0C9SHK3T5/' target='_blank'><strong>Yarn 3.0</a></h2><br>Es resultado de tres años de investigacion y experimentos con redes neuronales artificiales que traducen texto a imagen.Se produjo en lenguaje Python 3.0 con procesadores gráficos de https://colab.research.google.com/ usando la libreta https://github.com/openai/glide-text2im/blob/main/notebooks/clip_guided.ipynb.</strong>"
-        },
-        {
-          "name": "kiosk3.0",
-          "type": "exec", 
-          "contents": "<h2><a href='https://www.amazon.com/Kiosk-3-0-Angel-Alberto-Sesma/dp/B0CFZG3DB7/' target='_blank'><strong>Kiosk 3.0</a></h2><br>Discover a digital world in which payphones still exist.<br>Kiosk 3.0 emerges as text-to-image algorithms fail to imagine the obsolete payphone. <p><br>Instead, prism-like objects such as electric vehicle chargers, ATMs, vending machines, and parking meters merge into monolithic machines filled with bells, whistles, surrealism and the occasional wire.</p></strong>"
-        }
-      ]
     },
     
   {
