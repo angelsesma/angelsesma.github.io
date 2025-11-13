@@ -116,6 +116,20 @@
           ]
         },
         {
+          "name": "Festivales",
+          "type": "dir",
+          "contents": [
+            
+          
+          {
+          "name": "60Seconds-2021",
+          "type": "iframe",
+          "contents": "/data/60S/Prognosis.mp4",
+          "description": "<a href='https://60sec.org' target='blank'>60Seconds</a>"
+        }
+          ]
+        },
+        {
           "name": "Produccion",
           "type": "dir",
           "contents": [
@@ -127,7 +141,7 @@
           "contents": "<a href='https://www.imdb.com/title/tt38117863/' target='blank'>Imdb</a>"
         }
           ]
-        }        
+        }         
         
       ]
     },
