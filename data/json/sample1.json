@@ -111,7 +111,7 @@
           {
           "name": "Damnificados",
           "type": "exec",
-          "contents": "<a href='https://www.imdb.com/title/tt12368072/'>Imdb</a>"
+          "contents": "<a href='https://www.imdb.com/title/tt12368072/' target='blank'>Imdb</a>"
         }
           ]
         },
@@ -124,7 +124,7 @@
           {
           "name": "Mi-Amigo-Bernardo",
           "type": "exec",
-          "contents": "<a href='https://www.imdb.com/title/tt38117863/'>Imdb</a>"
+          "contents": "<a href='https://www.imdb.com/title/tt38117863/' target='blank'>Imdb</a>"
         }
           ]
         }        
@@ -157,7 +157,7 @@
     },
     
   {
-      "name": "PoeCiFi",
+      "name": "Literatura",
       "type": "dir",
       "contents": [
         {
@@ -167,8 +167,8 @@
         } , 
         {
           "name": "Simbiografia",
-          "type": "iframe",
-          "contents": "/data/simbio/index.html"
+          "type": "exec",
+          "contents": "<a href='https://youtu.be/Fb-d69xpf2A?si=kU1rhFwXJQYfRqR0' target='blank'>Litelat2</a>"
         } , 
         {
           "name": "FungiFiction",  
