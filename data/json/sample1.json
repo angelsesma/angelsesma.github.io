@@ -126,7 +126,13 @@
           "type": "iframe",
           "contents": "/data/60S/Prognosis.mp4",
           "description": "<a href='https://60sec.org' target='blank'>60Seconds</a>"
-        }
+        },
+        {
+          "name": "60Seconds-2021",
+          "type": "iframe",
+          "contents": "/data/60S/Prognosis.mp4",
+          "description": "<a href='https://60sec.org' target='blank'>60Seconds</a>"
+        },
           ]
         },
         {
