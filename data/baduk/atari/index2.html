@@ -101,16 +101,8 @@ function drawBoard(){
   }
   ctx.stroke();
 
-  /* Star-points on 9×9 (optional aesthetics) */
-  const stars=[2,4,6];        // indices of star coords
-  ctx.fillStyle="#000";
-  stars.forEach(ix=>{
-    stars.forEach(iy=>{
-      ctx.beginPath();
-      ctx.arc(GRID/2+ix*GRID,GRID/2+iy*GRID,4,0,2*Math.PI);
-      ctx.fill();
-    })
-  });
+
+
 
   /* Stones */
   for(let y=0;y<SIZE;y++)
