@@ -217,11 +217,11 @@
             }
           }
         }
-        for (var c in this.commands) {
+        //for (var c in this.commands) {
           // Private member.
-          if (c[0] == "_") continue;
-          if (c.startswith(parts[0]) && c != parts[0]) matches.push(c + " ");
-        }
+        //  if (c[0] == "_") continue;
+        //  if (c.startswith(parts[0]) && c != parts[0]) matches.push(c + " ");
+       //}
       } else {
         fullPath = parts[parts.length - 1];
         pathParts = fullPath.replace(/[\/]+/, "/").split("/");
@@ -297,24 +297,24 @@
         );
       }
 
-      if (entry.type == "dir" || entry.type == "link") {
+      if (entry.type == "dir") {
         return typeLink("ls -l " + str, entry.name);
       } else if (entry.type == "text") {
         return typeLink("cat " + str, entry.name);
-      } else if (entry.type == "bio") {
-        return typeLink("bio " + str, entry.name);
-      } else if (entry.type == "agua") {
-        return typeLink("agua " + str, entry.name);
-      } else if (entry.type == "lava") {
-        return typeLink("lava " + str, entry.name);
-      } else if (entry.type == "snes") {
-        return typeLink("snes " + str, entry.name);
-      } else if (entry.type == "img") {
-        return typeLink("gimp " + str, entry.name);
+      //} else if (entry.type == "bio") {
+      //  return typeLink("bio " + str, entry.name);
+      //} else if (entry.type == "agua") {
+      //  return typeLink("agua " + str, entry.name);
+      //} else if (entry.type == "lava") {
+      //  return typeLink("lava " + str, entry.name);
+      //} else if (entry.type == "snes") {
+      //  return typeLink("snes " + str, entry.name);
+      //} else if (entry.type == "img") {
+      //  return typeLink("gimp " + str, entry.name);
       } else if (entry.type == "iframe") {
         return typeLink("iframe " + str, entry.name);
-      } else if (entry.type == "eidogo") {
-        return typeLink("eidogo " + str, entry.name);
+      //} else if (entry.type == "eidogo") {
+      //  return typeLink("eidogo " + str, entry.name);
       } else if (entry.type == "exec") {
         return typeLink("exec " + str, entry.name);
       }
@@ -518,7 +518,7 @@
 
         
   var term = Object.create(Terminal);
-  term.init(CONFIG, 'https://storage.googleapis.com/nucita/json/sample1.json', COMMANDS, function () {
+  term.init(CONFIG, '/data/json/sample.json', COMMANDS, function () {
     term.enqueue("taogpt").enqueue("raiz").begin();
   });
 
