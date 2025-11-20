@@ -519,7 +519,7 @@
         
   var term = Object.create(Terminal);
   term.init(CONFIG, '/data/json/sample1.json', COMMANDS, function () {
-    term.enqueue("taogpt").enqueue("raiz").begin();
+    term.enqueue("taogpt").enqueue("mapa").begin();
   });
 
   window.typeCommand = function (command) {
