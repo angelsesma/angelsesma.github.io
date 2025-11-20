@@ -18,7 +18,7 @@
             {
               "name": "Heatmaps",
               "type": "iframe",
-              "contents": "data/baduk/heat/heatmaps.pdf",
+              "contents": "data/baduk/heat/heatmaps.pdf"
              },
             {
               "name": "Go-VR",
