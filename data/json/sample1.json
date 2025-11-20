@@ -20,12 +20,12 @@
               "type": "iframe",
               "contents": "data/baduk/heat/heatmaps.pdf",
              },
-             {
+            {
               "name": "Go-VR",
               "type": "iframe",
               "contents": "/data/baduk/app/index.html"
             },
-             {
+            {
               "name": "MusicalGo",
               "type": "iframe",
               "contents": "/data/baduk/musicalGo/index.html"
