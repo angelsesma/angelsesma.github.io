@@ -118,49 +118,9 @@ COMMANDS.fecha= async function (argv, cb) {
   }
 };
 
-COMMANDS.lava = async function (argv, cb) {
-  var filenames = this._terminal.parseArgs(argv).filenames,
-    stdout;
-     const PASSWORD = "mySecret123"; // 🔒 Change this to your desired password
-
-  // Prompt for password
-  const inputPassword = prompt("Enter password:");
-
-  if (inputPassword !== PASSWORD) {
-    this._terminal.write("<br><strong>Access denied:</strong> Incorrect password.<br>");
-    if (typeof cb === "function") cb(new Error("Unauthorized"));
-    return;
-  }
-
-  else this._terminal.scroll();
-  if (!filenames.length) {
-    this._terminal.returnHandler = function () {
-      stdout = this.stdout();
-      if (!stdout) return;
-      stdout.innerHTML +=
-        "<br><div id='lava'>" + stdout.innerHTML + "<br></div>";
-      this.scroll();
-      this.newStdout();
-    }.bind(this._terminal);
-    return;
-  }
-  filenames.forEach(function (filename, i) {
-    var entry = this._terminal.getEntry(filename);
-
-    if (!entry)
-      this._terminal.write(
-        "lava: " + filename + ": No existe tal archivo o directorio"
-      );
-    else if (entry.type === "dir")
-      this._terminal.write("lava: " + filename + ": No es un archivo lava.");
-    else this._terminal.write(entry.contents);
-    if (i !== filenames.length - 1) this._terminal.write("<br>");
-  }, this);
-  cb();
-};
 
 
-COMMANDS.cd = async function (argv, cb) {
+COMMANDS.cd = function (argv, cb) {
   const terminal = this._terminal;
   const args = terminal.parseArgs(argv);
   const filename = args.filenames[0] || "~";
@@ -242,40 +202,13 @@ COMMANDS.ls = function(argv, cb) {
             writeEntry(e, dirStr + '/' + e.name);
       }
    }
-   // else {
-   //   maxLen = entry.name.length;
-   //   writeEntry(entry, filename);
-   //}
+    else {
+      maxLen = entry.name.length;
+      writeEntry(entry, filename);
+   }
    cb();
 }
 
-
-COMMANDS.gimp = function (argv, cb) {
-  var filename = this._terminal.parseArgs(argv).filenames[0],
-    entry,
-    imgs;
-
-  if (!filename) {
-    this._terminal.write("gimp: porfavor especifica un archivo de imagen.");
-    cb();
-    return;
-  }
-
-  entry = this._terminal.getEntry(filename);
-  if (!entry || entry.type !== "img") {
-    this._terminal.write(
-      "gimp: el archivo " + filename + " no es un archivo de imagen."
-    );
-  } else {
-    this._terminal.write('<img src="' + entry.contents + '"/>');
-    imgs = this._terminal.div.getElementsByTagName("img");
-    imgs[imgs.length - 1].onload = function () {
-      this.scroll();
-    }.bind(this._terminal);
-    if ("caption" in entry) this._terminal.write("<br/>" + entry.caption);
-  }
-  cb();
-};
 
 COMMANDS.borrar = function (argv, cb) {
   this._terminal.div.innerHTML = "";
@@ -474,34 +407,6 @@ COMMANDS.hongo = function (argv, cb) {
   cb();
 };
 
-COMMANDS.raiz = async function (argv, cb) {
-  var term = this._terminal,
-    home;
-  function writeTree(dir, level) {
-      dir.contents.forEach(function(entry) {
-         var str = '';
-
-         if (entry.name.startswith('.'))
-            return;
-         for (var i = 0; i < level; i++) str += "⭆  ";
-         if (entry.type == "dir") str += '⤇';
-         else str += '_' 
-         if (entry.type != "log")
-            term.write(str);
-            term.writeLink(entry, term.dirString(dir) + '/' + entry.name);
-            term.write('<br>');
-         if (entry.type === 'dir')
-            writeTree(entry, level + 1);
-         
-      });
-   };
-   home = this._terminal.getEntry('~');
-   this._terminal.writeLink(home, '~');
-   this._terminal.write('<br>');
-   writeTree(home, 0);
-   cb();
-}
-;
 
 COMMANDS.deviceInfo = async function (argv, cb) {
     const PASSWORD = "mySecret123"; // 🔒 Change this to your desired password
