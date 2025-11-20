@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Musical Go Game</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/addons/p5.sound.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+      font-family: Arial, sans-serif;
+    }
+    #game-container {
+      text-align: center;
+    }
+    #controls {
+      margin: 10px;
+      padding: 10px;
+      background-color: #ddd;
+      border-radius: 5px;
+    }
+    button {
+      padding: 8px 15px;
+      margin: 0 5px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    #status {
+      margin: 10px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div id="game-container">
+    <div id="status">Musical Go Game - Bass (Black) vs Treble (White)</div>
+    <div id="controls">
+      <button id="pass-btn">Pass</button>
+      <button id="clear-btn">Clear Board</button>
+      <button id="tempo-up">Tempo +</button>
+      <button id="tempo-down">Tempo -</button>
+    </div>
+  </div>
+
+  <script>
+    // Game settings
+    let gridSize = 13;
+    let cellSize;
+    let boardSize;
+    let grid = [];
+    let currentPlayer = 1; // 1 = bass (black), 2 = treble (white)
+    let liberties = [];
+    let groupIds = [];
+    let nextGroupId = 1;
+    let passCount = 0;
+    let gameOver = false;
+    let koX = -1, koY = -1;
+
+    // Sound objects
+    let bassOsc, trebleOsc;
+    let playInterval = 500;
+    let lastPlayTime = 0;
+    let isPlayingSequence = false;
+    let sequence = [];
+    let currentSequenceIndex = 0;
+
+    // Colors
+    const boardColor = [210, 180, 130];
+    const lineColor = [0, 0, 0];
+    const starPointColor = [0, 0, 0];
+    const bassColor = [50, 50, 50]; // Black stones
+    const trebleColor = [240, 240, 240]; // White stones
+    const highlightColor = [255, 0, 0, 150];
+    const lastMoveColor = [255, 0, 0, 100];
+
+    // Note frequencies
+    const bassFreqs = [65.41, 73.42, 82.41, 87.31, 98.00, 110.00, 123.47,
+                      130.81, 146.83, 164.81, 174.61, 196.00, 220.00];
+    const trebleFreqs = [261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88,
+                        523.25, 587.33, 659.25, 698.46, 783.99, 880.00];
+
+    function setup() {
+      // Create canvas
+      let canvas = createCanvas(700, 750);
+      canvas.parent('game-container');
+
+      // Calculate cell size
+      boardSize = min(width, height - 50);
+      cellSize = boardSize / (gridSize + 1);
+
+      // Initialize the grid
+      for (let i = 0; i < gridSize; i++) {
+        grid[i] = [];
+        liberties[i] = [];
+        groupIds[i] = [];
+        for (let j = 0; j < gridSize; j++) {
+          grid[i][j] = new Cell(i, j, cellSize);
+          liberties[i][j] = false;
+          groupIds[i][j] = 0;
+        }
+      }
+
+      // Initialize sound
+      bassOsc = new p5.SinOsc();
+      trebleOsc = new p5.SinOsc();
+      bassOsc.amp(0.5);
+      trebleOsc.amp(0.5);
+
+      // Set up UI event listeners
+      document.getElementById('pass-btn').addEventListener('click', passTurn);
+      document.getElementById('clear-btn').addEventListener('click', clearBoard);
+      document.getElementById('tempo-up').addEventListener('click', () => {
+        playInterval = max(100, playInterval - 50);
+        updateStatus();
+      });
+      document.getElementById('tempo-down').addEventListener('click', () => {
+        playInterval = min(2000, playInterval + 50);
+        updateStatus();
+      });
+
+      // Draw the Go board
+      drawGoBoard();
+      updateStatus();
+    }
+
+    function draw() {
+      // Draw all stones
+      for (let i = 0; i < gridSize; i++) {
+        for (let j = 0; j < gridSize; j++) {
+          if (grid[i][j].state !== 0) {
+            grid[i][j].display();
+          }
+        }
+      }
+
+      // Draw UI elements
+      drawUI();
+
+      // Check for captures and update liberties periodically
+      if (frameCount % 10 === 0) {
+        updateAllLiberties();
+      }
+
+      // Play sequence if active
+      if (isPlayingSequence && sequence.length > 0) {
+        if (millis() - lastPlayTime > playInterval) {
+          playNextInSequence();
+          lastPlayTime = millis();
+        }
+      }
+    }
+
+    function drawGoBoard() {
+      // Draw wooden board background
+      background(boardColor);
+
+      // Draw grid lines
+      stroke(lineColor);
+      strokeWeight(1);
+
+      // Vertical lines
+      for (let i = 0; i < gridSize; i++) {
+        let x = (i + 1) * cellSize;
+        line(x, cellSize, x, boardSize - cellSize);
+      }
+
+      // Horizontal lines
+      for (let j = 0; j < gridSize; j++) {
+        let y = (j + 1) * cellSize;
+        line(cellSize, y, boardSize - cellSize, y);
+      }
+
+      // Draw star points (hoshi)
+      fill(starPointColor);
+      noStroke();
+      const starPoints = [3, 9, 6]; // Positions for 13x13 board
+
+      for (let i of starPoints) {
+        for (let j of starPoints) {
+          let x = (i + 1) * cellSize;
+          let y = (j + 1) * cellSize;
+          ellipse(x, y, 8, 8);
+        }
+      }
+
+      // Draw board border
+      stroke(lineColor);
+      strokeWeight(3);
+      noFill();
+      rect(cellSize, cellSize, boardSize - 2*cellSize, boardSize - 2*cellSize);
+    }
+
+    function drawUI() {
+      // Draw current player indicator
+      fill(currentPlayer === 1 ? bassColor : trebleColor);
+      noStroke();
+      ellipse(width/2, height - 30, 30, 30);
+
+      // Draw player labels
+      fill(0);
+      textAlign(CENTER, CENTER);
+      textSize(14);
+      text(currentPlayer === 1 ? "BASS (Black)" : "TREBLE (White)", width/2, height - 45);
+
+      // Draw game status
+      textSize(16);
+      if (gameOver) {
+        fill(255, 0, 0);
+        text("GAME OVER", width/2, 20);
+      } else {
+        fill(0);
+        text(`Turn: ${currentPlayer === 1 ? "BASS" : "TREBLE"} | Tempo: ${Math.round(60000 / playInterval)} BPM`,
+             width/2, 20);
+      }
+
+      // Draw ko position if active
+      if (koX !== -1) {
+        fill(highlightColor);
+        noStroke();
+        ellipse((koX + 1) * cellSize, (koY + 1) * cellSize, 10, 10);
+      }
+    }
+
+    function mousePressed() {
+      if (gameOver) return;
+
+      // Determine which cell was clicked
+      let col = round((mouseX - cellSize) / cellSize);
+      let row = round((mouseY - cellSize) / cellSize);
+
+      // Check bounds
+      if (col >= 0 && col < gridSize && row >= 0 && row < gridSize) {
+        // Check if move is valid
+        if (isValidMove(col, row)) {
+          // Place the stone
+          grid[col][row].state = currentPlayer;
+          grid[col][row].lastMove = true;
+
+          // Play sound
+          playNote(col, row, currentPlayer);
+
+          // Add to sequence
+          sequence.push(grid[col][row]);
+
+          // Check for captures
+          checkCaptures(col, row);
+
+          // Update ko position
+          koX = -1;
+          koY = -1;
+
+          // Check for ko
+          if (isKo(col, row)) {
+            koX = col;
+            koY = row;
+          }
+
+          // Switch player
+          currentPlayer = 3 - currentPlayer;
+          passCount = 0;
+          updateStatus();
+        }
+      }
+    }
+
+    function isValidMove(x, y) {
+      // Check if position is empty
+      if (grid[x][y].state !== 0) return false;
+
+      // Check ko rule
+      if (x === koX && y === koY) return false;
+
+      // Check if move would have liberties or capture opponent
+      // Create a temporary board state
+      let tempBoard = [];
+      for (let i = 0; i < gridSize; i++) {
+        tempBoard[i] = [];
+        for (let j = 0; j < gridSize; j++) {
+          tempBoard[i][j] = grid[i][j].state;
+        }
+      }
+      tempBoard[x][y] = currentPlayer;
+
+      // Check if this move would have liberties
+      if (countLiberties(tempBoard, x, y) > 0) return true;
+
+      // Check if this move would capture any opponent groups
+      let wouldCapture = false;
+      for (let dx = -1; dx <= 1; dx++) {
+        for (let dy = -1; dy <= 1; dy++) {
+          if (abs(dx) + abs(dy) !== 1) continue; // Only check orthogonally adjacent
+
+          let nx = x + dx;
+          let ny = y + dy;
+
+          if (nx >= 0 && nx < gridSize && ny >= 0 && ny < gridSize) {
+            if (tempBoard[nx][ny] === 3 - currentPlayer) {
+              if (countLiberties(tempBoard, nx, ny) === 0) {
+                wouldCapture = true;
+              }
+            }
+          }
+        }
+      }
+
+      return wouldCapture;
+    }
+
+    function checkCaptures(x, y) {
+      // Check all adjacent opponent groups
+      for (let dx = -1; dx <= 1; dx++) {
+        for (let dy = -1; dy <= 1; dy++) {
+          if (abs(dx) + abs(dy) !== 1) continue; // Only check orthogonally adjacent
+
+          let nx = x + dx;
+          let ny = y + dy;
+
+          if (nx >= 0 && nx < gridSize && ny >= 0 && ny < gridSize) {
+            if (grid[nx][ny].state === 3 - currentPlayer) {
+              // Check if this group has no liberties
+              if (countLiberties(grid, nx, ny) === 0) {
+                // Capture this group
+                captureGroup(nx, ny);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    function captureGroup(x, y) {
+      // Find all stones in this group
+      let group = findGroup(x, y);
+
+      // Remove all stones in the group
+      for (let pos of group) {
+        let px = pos[0];
+        let py = pos[1];
+        grid[px][py].state = 0;
+        grid[px][py].lastMove = false;
+
+        // Remove from sequence
+        let index = sequence.indexOf(grid[px][py]);
+        if (index !== -1) {
+          sequence.splice(index, 1);
+        }
+      }
+    }
+
+    function findGroup(x, y) {
+      let group = [];
+      let visited = Array(gridSize).fill().map(() => Array(gridSize).fill(false));
+      let targetState = grid[x][y].state;
+
+      // Use a stack for DFS
+      let stack = [[x, y]];
+
+      while (stack.length > 0) {
+        let current = stack.pop();
+        let cx = current[0];
+        let cy = current[1];
+
+        if (visited[cx][cy]) continue;
+        visited[cx][cy] = true;
+
+        if (grid[cx][cy].state === targetState) {
+          group.push([cx, cy]);
+
+          // Check neighbors
+          for (let dx = -1; dx <= 1; dx++) {
+            for (let dy = -1; dy <= 1; dy++) {
+              if (abs(dx) + abs(dy) !== 1) continue; // Only orthogonally adjacent
+
+              let nx = cx + dx;
+              let ny = cy + dy;
+
+              if (nx >= 0 && nx < gridSize && ny >= 0 && ny < gridSize) {
+                if (!visited[nx][ny] && grid[nx][ny].state === targetState) {
+                  stack.push([nx, ny]);
+                }
+              }
+            }
+          }
+        }
+      }
+
+      return group;
+    }
+
+    function countLiberties(board, x, y) {
+      let visited = Array(gridSize).fill().map(() => Array(gridSize).fill(false));
+      let targetState = board[x][y];
+      let libertyCount = 0;
+
+      // Use a stack for DFS
+      let stack = [[x, y]];
+
+      while (stack.length > 0) {
+        let current = stack.pop();
+        let cx = current[0];
+        let cy = current[1];
+
+        if (visited[cx][cy]) continue;
+        visited[cx][cy] = true;
+
+        // Check neighbors
+        for (let dx = -1; dx <= 1; dx++) {
+          for (let dy = -1; dy <= 1; dy++) {
+            if (abs(dx) + abs(dy) !== 1) continue; // Only orthogonally adjacent
+
+            let nx = cx + dx;
+            let ny = cy + dy;
+
+            if (nx >= 0 && nx < gridSize && ny >= 0 && ny < gridSize) {
+              if (board[nx][ny] === 0) {
+                libertyCount++;
+              } else if (board[nx][ny] === targetState && !visited[nx][ny]) {
+                stack.push([nx, ny]);
+              }
+            }
+          }
+        }
+      }
+
+      return libertyCount;
+    }
+
+    function updateAllLiberties() {
+      // Reset group tracking
+      nextGroupId = 1;
+      groupIds = Array(gridSize).fill().map(() => Array(gridSize).fill(0));
+
+      // Find all groups and their liberties
+      for (let i = 0; i < gridSize; i++) {
+        for (let j = 0; j < gridSize; j++) {
+          if (grid[i][j].state !== 0 && groupIds[i][j] === 0) {
+            // Found a new group
+            let group = findGroup(i, j);
+
+            // Assign group ID
+            for (let pos of group) {
+              groupIds[pos[0]][pos[1]] = nextGroupId;
+            }
+
+            // Count liberties for this group
+            let liberties = countLiberties(grid, i, j);
+
+            // Update liberty count for all stones in group
+            for (let pos of group) {
+              grid[pos[0]][pos[1]].liberties = liberties;
+            }
+
+            nextGroupId++;
+          }
+        }
+      }
+    }
+
+    function isKo(x, y) {
+      // Check if this move recreates a previous board position
+      // For simplicity, we'll implement a basic ko rule that prevents
+      // immediate recapture of a single stone
+
+      // If this move captured exactly one stone, and that stone was the
+      // last move of the opponent, then it's a ko
+      let captureCount = 0;
+      let lastX = -1, lastY = -1;
+
+      // Check all adjacent positions
+      for (let dx = -1; dx <= 1; dx++) {
+        for (let dy = -1; dy <= 1; dy++) {
+          if (abs(dx) + abs(dy) !== 1) continue;
+
+          let nx = x + dx;
+          let ny = y + dy;
+
+          if (nx >= 0 && nx < gridSize && ny >= 0 && ny < gridSize) {
+            if (grid[nx][ny].state === 0 && grid[nx][ny].lastMove) {
+              captureCount++;
+              lastX = nx;
+              lastY = ny;
+            }
+          }
+        }
+      }
+
+      return (captureCount === 1);
+    }
+
+    function passTurn() {
+      currentPlayer = 3 - currentPlayer;
+      passCount++;
+
+      // If both players pass consecutively, game is over
+      if (passCount >= 2) {
+        gameOver = true;
+        updateStatus();
+      } else {
+        updateStatus();
+      }
+    }
+
+    function clearBoard() {
+      // Reset the game
+      for (let i = 0; i < gridSize; i++) {
+        for (let j = 0; j < gridSize; j++) {
+          grid[i][j].state = 0;
+          grid[i][j].lastMove = false;
+        }
+      }
+
+      currentPlayer = 1;
+      passCount = 0;
+      gameOver = false;
+      koX = -1;
+      koY = -1;
+      sequence = [];
+      currentSequenceIndex = 0;
+      isPlayingSequence = false;
+
+      // Redraw the board
+      drawGoBoard();
+      updateStatus();
+    }
+
+    function playNote(x, y, player) {
+      // Calculate note index based on position
+      let noteIndex = (x + y) % 13;
+
+      if (player === 1) { // Bass
+        bassOsc.freq(bassFreqs[noteIndex]);
+        bassOsc.start();
+        setTimeout(() => {
+          bassOsc.stop();
+        }, 300);
+      } else { // Treble
+        trebleOsc.freq(trebleFreqs[noteIndex]);
+        trebleOsc.start();
+        setTimeout(() => {
+          trebleOsc.stop();
+        }, 200);
+      }
+    }
+
+    function playNextInSequence() {
+      if (sequence.length === 0) return;
+
+      // Reset all cells' playing state
+      for (let cell of sequence) {
+        cell.isCurrentlyPlaying = false;
+      }
+
+      // Play current note
+      let currentCell = sequence[currentSequenceIndex];
+      currentCell.isCurrentlyPlaying = true;
+      playNote(currentCell.x, currentCell.y, currentCell.state);
+
+      // Move to next position (loop back to start)
+      currentSequenceIndex = (currentSequenceIndex + 1) % sequence.length;
+    }
+
+    function toggleSequencePlayback() {
+      isPlayingSequence = !isPlayingSequence;
+      if (isPlayingSequence) {
+        currentSequenceIndex = 0;
+        lastPlayTime = millis();
+        document.getElementById('pass-btn').textContent = "Stop Sequence";
+      } else {
+        document.getElementById('pass-btn').textContent = "Play Sequence";
+      }
+    }
+
+    function updateStatus() {
+      let statusElement = document.getElementById('status');
+      if (gameOver) {
+        statusElement.textContent = "GAME OVER - Click 'Clear Board' to restart";
+      } else {
+        statusElement.textContent = `Musical Go Game - ${currentPlayer === 1 ? "BASS (Black)" : "TREBLE (White)"}'s turn | Sequence: ${sequence.length} notes`;
+      }
+    }
+
+    // Cell class representing each intersection on the Go board
+    class Cell {
+      constructor(x, y, cellSize) {
+        this.x = x;
+        this.y = y;
+        this.state = 0; // 0 = empty, 1 = bass (black), 2 = treble (white)
+        this.lastMove = false;
+        this.liberties = 0;
+        this.isCurrentlyPlaying = false;
+      }
+
+      display() {
+        // Set stone color based on state
+        if (this.state === 1) {
+          fill(bassColor);
+        } else if (this.state === 2) {
+          fill(trebleColor);
+          // Add highlight to white stones for better visibility
+          stroke(200);
+          strokeWeight(1);
+        }
+
+        // Highlight last move
+        if (this.lastMove) {
+          noStroke();
+          fill(lastMoveColor);
+          ellipse((this.x + 1) * cellSize, (this.y + 1) * cellSize, cellSize * 0.8);
+        }
+
+        // Highlight currently playing note
+        if (this.isCurrentlyPlaying) {
+          noStroke();
+          fill(highlightColor);
+          ellipse((this.x + 1) * cellSize, (this.y + 1) * cellSize, cellSize * 0.9);
+        }
+
+        // Draw the stone
+        noStroke();
+        if (this.state === 1) {
+          fill(bassColor);
+        } else {
+          fill(trebleColor);
+        }
+        ellipse((this.x + 1) * cellSize, (this.y + 1) * cellSize, cellSize * 0.8);
+
+        // Draw liberty count for debugging
+        
+        if (this.state !== 0) {
+          fill(255, 0, 0);
+          textSize(10);
+          textAlign(CENTER, CENTER);
+          text(this.liberties, (this.x + 1) * cellSize, (this.y + 1) * cellSize);
+        }
+        
+      }
+    }
+
+    // Modify the pass button to toggle sequence playback
+    document.getElementById('pass-btn').addEventListener('click', function() {
+      if (isPlayingSequence) {
+        toggleSequencePlayback();
+      } else {
+        passTurn();
+      }
+    });
+  </script>
+</body>
+</html>
