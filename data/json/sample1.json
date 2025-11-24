@@ -12,25 +12,16 @@
       "type": "dir",
       "contents": [
         {
-          "name": "Arte",
-          "type": "dir",
-          "contents": [
-            {
+          
               "name": "Heatmaps",
               "type": "iframe",
               "contents": "data/baduk/heat/heatmaps.pdf"
              },
             {
-              "name": "Go-VR",
-              "type": "iframe",
-              "contents": "/data/baduk/app/index.html"
-            },
-            {
               "name": "MusicalGo",
               "type": "iframe",
               "contents": "/data/baduk/musicalGo/index.html"
-            }
-          ]
+            
         },
         {
           "name": "Zine_de_baduk",
@@ -43,10 +34,7 @@
             } 
           ]
         },
-        {
-          "name": "Apps",
-          "type": "dir",
-          "contents": [
+        
             {
               "name": "atari-go",
               "type": "iframe",
@@ -57,31 +45,22 @@
               "type": "iframe",
               "contents": "/data/baduk/app/index.html"
             } 
-          ] 
-          
-        }
+       
       ]
     },
     {
-      "name": "Ceramica",
+      "name": "Arcilla",
       "type": "dir",
       "contents": [
-        {
-          "name": "Alta-temperatura",
-          "type": "dir",
-          "contents": [
+        
             {
               "name": "Vasija_1",
               "type": "iframe",
               "contents": "data/vr/main1.html"
             }
-          ]
-        },
+         ,
         {
-          "name": "Baja-temperatura",
-          "type": "dir",
-          "contents": [
-            {
+        
               "name": "Autorretrato",
               "type": "iframe",
               "contents": "data/vr/index.html"
@@ -91,8 +70,8 @@
               "type": "iframe",
               "contents": "data/vr/main2.html"
             }
-          ]
-        }
+          
+        
       ]
     },
     {
@@ -126,7 +105,7 @@
           ]
         },
         {
-          "name": "Festivales",
+          "name": "Cineminutos",
           "type": "dir",
           "contents": [
             
@@ -167,6 +146,19 @@
       "contents": [
         
         {
+      "name": "Digital",
+      "type": "dir",
+      "contents": [
+        
+        {
+          
+          "name": "Chipart",
+          "type": "iframe",
+          "contents": "/data/pics/chipart/index.html"
+        }
+        
+      ]
+    },{
           "name": "Grabado",
           "type": "dir",
           "contents": [
@@ -187,7 +179,7 @@
     },
     
   {
-      "name": "Literatura",
+      "name": "Escritura",
       "type": "dir",
       "contents": [
         {
