@@ -82,7 +82,7 @@
             
           
           {
-          "name": "Propmaster",
+          "name": "Props",
           "type": "iframe",
           "contents": "/data/props/index.html"
         }
@@ -102,7 +102,7 @@
           ]
         },
         {
-          "name": "Cineminutos",
+          "name": "Experimental",
           "type": "dir",
           "contents": [
             
@@ -204,21 +204,21 @@
           "type": "iframe",
           "contents": "/data/doscompuertas/index.html"
         } ,
-        {
-          "name": "Nucita",
-          "type": "text",
-          "contents": "<h3>HUMITA</br>A veces pienso que no sé lo que quieres. </br>Luego vienes para posarte en mi pecho y no cabe duda:</br>Quieres comer atún y perderte poco a poco barranca abajo.</br>Arañar un insecto y dejarlo medio vivo.</br>Dormir durante la mitad de tu vida.</br></h3>"
-        },
-        {
-          "name": "H2O",
-          "type": "text",
-          "contents": "<p>Éter palpable</p><p>Antiguedad del universo</p><p>Su estado puro es inerte</p><p>Pero sostiene la vida y hierve</p><p>Hiela y detiene el tiempo.</p><p>Y así separa universos</p><p>Antíquisimos</p><p>Infinitos</p><p>Microscópicos</p><p>Como un banco de semillas</p><p>Quieta.</p><p>Mientras la humanidad se encierra en su invernadero</p><p>Y derrite todo a la vez.</p>"
-        },
-        {
-          "name": "Prosopopeya",
-          "type": "text",
-          "contents": "</br>Soy la tierra fundida que hiberna en las profundidades.</br>En el fondo del lago se extienden generaciones de mi familia.</br>Nadie me espera, ni se prepara para mi visita. Quienes sueñan no temen que despierte.</br>Huelo a pluma chamuscada, azufre y hierro. Evaporo el agua que me calma.</br>Apenas salgo y ya busco el retorno al subsuelo, voy abriéndome paso entre milpas, acequias, presas, lumbreras y túneles.</br>Con burbujas rojas y negras voy palpando el suelo.</br>El aire también es rojo y negro, en él soy la ceniza que viaja cubriendo ciudades.</br>Desde varias chimeneas me transporto buscando algún hueco, excavando.</br>Para mi no hay desperdicios: Todo lo que no llegue a fundirse quedará incrustado, aglomerado en lodos incandescentes.</br>En el lago se formó un cráter y en el cráter ya se forma un lago.</br>"
-        },
+   //     {
+    //      "name": "Nucita",
+     //     "type": "text",
+      //    "contents": "<h3>HUMITA</br>A veces pienso que no sé lo que quieres. </br>Luego vienes para posarte en mi pecho y no cabe duda:</br>Quieres comer atún y perderte poco a poco barranca abajo.</br>Arañar un insecto y dejarlo medio vivo.</br>Dormir durante la mitad de tu vida.</br></h3>"
+       // },
+       // {
+       //   "name": "H2O",
+       //   "type": "text",
+      //    "contents": "<p>Éter palpable</p><p>Antiguedad del universo</p><p>Su estado puro es inerte</p><p>Pero sostiene la vida y hierve</p><p>Hiela y detiene el tiempo.</p><p>Y así separa universos</p><p>Antíquisimos</p><p>Infinitos</p><p>Microscópicos</p><p>Como un banco de semillas</p><p>Quieta.</p><p>Mientras la humanidad se encierra en su invernadero</p><p>Y derrite todo a la vez.</p>"
+    //    },
+ //      {
+ //         "name": "Prosopopeya",
+ //         "type": "text",
+    //      "contents": "</br>Soy la tierra fundida que hiberna en las profundidades.</br>En el fondo del lago se extienden generaciones de mi familia.</br>Nadie me espera, ni se prepara para mi visita. Quienes sueñan no temen que despierte.</br>Huelo a pluma chamuscada, azufre y hierro. Evaporo el agua que me calma.</br>Apenas salgo y ya busco el retorno al subsuelo, voy abriéndome paso entre milpas, acequias, presas, lumbreras y túneles.</br>Con burbujas rojas y negras voy palpando el suelo.</br>El aire también es rojo y negro, en él soy la ceniza que viaja cubriendo ciudades.</br>Desde varias chimeneas me transporto buscando algún hueco, excavando.</br>Para mi no hay desperdicios: Todo lo que no llegue a fundirse quedará incrustado, aglomerado en lodos incandescentes.</br>En el lago se formó un cráter y en el cráter ya se forma un lago.</br>"
+      //  },
         {
           "name": "Serpentinas-y-espantasuegras",
           "type": "text",
@@ -266,6 +266,21 @@
             }
           ]
         }
+      ]
+    },
+    {
+      "name": "Transmedia",
+      "type": "dir",
+      "contents": [
+        
+            {
+              "name": "Primera-Persona",
+              "type": "iframe",
+              "contents": "data/3d/index.html"
+            }
+   
+          
+        
       ]
     }
      
