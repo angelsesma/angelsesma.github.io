@@ -71,72 +71,7 @@
         
       ]
     },
-    {
-      "name": "Cine",
-      "type": "dir",
-      "contents": [
-        {
-          "name": "Arte",
-          "type": "dir",
-          "contents": [
-            
-          
-          {
-          "name": "Props",
-          "type": "iframe",
-          "contents": "/data/props/index.html"
-        }
-          ]
-        },
-        {
-          "name": "Fotografia",
-          "type": "dir",
-          "contents": [
-            
-          
-          {
-          "name": "Damnificados",
-          "type": "exec",
-          "contents": "<a href='https://www.imdb.com/title/tt12368072/' target='blank'>Imdb</a>"
-        }
-          ]
-        },
-        {
-          "name": "Experimental",
-          "type": "dir",
-          "contents": [
-            
-          
-          {
-          "name": "60Seconds-2021",
-          "type": "iframe",
-          "contents": "/data/60S/Prognosis.mp4",
-          "description": "<a href='https://60sec.org' target='blank'>60Seconds</a>"
-        },
-        {
-          "name": "60Seconds-2025",
-          "type": "iframe",
-          "contents": "/data/60S/catsuji.mp4",
-          "description": "<a href='https://60sec.org' target='blank'>60Seconds</a>"
-        }
-          ]
-        },
-        {
-          "name": "Produccion",
-          "type": "dir",
-          "contents": [
-            
-          
-          {
-          "name": "Mi-Amigo-Bernardo",
-          "type": "exec",
-          "contents": "<a href='https://www.imdb.com/title/tt38117863/' target='blank'>Imdb</a>"
-        }
-          ]
-        }         
-        
-      ]
-    },
+    
     {
       "name": "Grafica",
       "type": "dir",
