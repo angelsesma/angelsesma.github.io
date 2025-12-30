@@ -85,8 +85,8 @@
         {
           
           "name": "Chipart",
-          "type": "iframe",
-          "contents": "/data/pics/chipart/index.html"
+          "type": "exec",
+          "contents": "<a href='/data/pics/chipart/index.html' target='blank'>ChipArt</a>"
         }
         
       ]
