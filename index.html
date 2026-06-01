@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>TiernukiOS</title>
+    <meta name="description" content="TiernukiOS" />
+    <link type="text/css" rel="stylesheet" href="/data/css/styl0.css" />
+    <script src="https://unpkg.com/hydra-synth"></script>
+  </head>
+  <body>
+
+    <script type="text/javascript" src="/data/config/commands/com.js"></script>
+    <script type="text/javascript" src="/data/config/config.js"></script>
+    <script type="text/javascript" src="/data/config/js/jsterm1.js"></script>
+   
+    <canvas id="myCanvas">
+
+      <script>
+     
+      var hydra = new Hydra({
+        canvas: document.getElementById("myCanvas"),
+      
+      });
+      A = window.innerWidth / window.innerHeight;
+shape(437.363)
+	.thresh(1.894, 0.061)
+	.scrollX([0.232, 1.236, 0.3, 0.377].fit(-0.231, 0.203))
+	.repeat(1.235, 10.555, 0.02, 0.103)
+	.kaleid(a.fft[0])
+	.color(0.741, 0.137, 0.1)
+	.out(o0);
+noise(1.676, 0.026)
+	.thresh(0.025, 0.03)
+	.thresh(0.228, 0.012)
+	.pixelate(33.815, 20)
+	.out(o1);
+src(o1)
+	.color(5.69, 1.128, 1.255)
+	.scrollX([1.253, 1.186, 0.326, 1.743, 3.011, 2.337, 0.878, 1.257].fit(-0.095, 0.039))
+	.repeat(3.0, 0.128, 1.926, 0.005)
+	.kaleid(0.474)
+	.out(o2);
+src(o1)
+	.colorama()
+	.diff(src(o2))
+	.out(o3);
+render(o3);
+
+
+      setResolution(window.innerWidth * 1, window.innerHeight * 1);
+    </script>
+</canvas>
+   
+
+</body>
+</html>
+
