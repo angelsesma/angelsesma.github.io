@@ -67,59 +67,6 @@ COMMANDS.exec = async function (argv, cb) {
   cb();
 };
 
-COMMANDS.fecha= async function (argv, cb) {
-  try {
-    // Get current date in YYYY-MM-DD format
-    const now = new Date();
-    const today = now.toISOString().split('T')[0];
-    
-    // Get moon phase data from free API
-    const response = await fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/moon?unitGroup=us&key=VRNNQH2W84XRWM84GNPRQADSM&contentType=json`);
-    const data = await response.json();
-    
-    if (!data || !data.days || data.days.length === 0) {
-      throw new Error('No moon data received from API');
-    }
-    
-    // Find today's moon data
-    const todayMoonData = data.days.find(day => day.datetime === today) || data.days[0];
-    
-    // Moon phase emoji mapping
-    const moonEmoji = {
-      'New Moon': '🌑',
-      'Waxing Crescent': '🌒',
-      'First Quarter': '🌓',
-      'Waxing Gibbous': '🌔',
-      'Full Moon': '🌕',
-      'Waning Gibbous': '🌖',
-      'Last Quarter': '🌗',
-      'Waning Crescent': '🌘'
-    };
-    
-    // output
-    let output = `<br>`;
-    output += `Fecha: <strong>${todayMoonData.datetime}</strong><br>`;
-    output += `Fase lunar: <strong>${todayMoonData.moonphase}</strong> ${moonEmoji[todayMoonData.moonphase] || ''}<br>`;
-    this._terminal.write(output);
-    
-    // Callback with data
-    if (typeof cb === 'function') {
-      cb(null, {
-        date: todayMoonData.datetime,
-        phase: todayMoonData.moonphase,
-        illumination: Math.round(todayMoonData.moonphase * 100),
-        moonrise: todayMoonData.moonrise,
-        moonset: todayMoonData.moonset
-      });
-    }
-  } catch (err) {
-    this._terminal.write(`<br><strong>Error fetching moon phase:</strong> ${err.message}<br>`);
-    if (typeof cb === 'function') cb(err);
-  }
-};
-
-
-
 COMMANDS.cd = function (argv, cb) {
   const terminal = this._terminal;
   const args = terminal.parseArgs(argv);
