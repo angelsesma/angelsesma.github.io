@@ -2,12 +2,12 @@ var COMMANDS = COMMANDS || {};
 
 COMMANDS.hola = async function (argv, cb) {
   this._terminal.write(
-    "<strong>E</strong>ste sitio web emula una línea de comandos </br>" +
-    "Usa el comando <strong>hola</strong> seguido de la tecla enter para ver este mensaje</br>" +
-    "Usa el comando <strong>mapa</strong> seguido de la tecla enter para ver el directorio de archivos</br>" +
+    "<strong>H</strong>ola, </br>" +
+    //"Usa el comando <strong>hola</strong> seguido de la tecla enter para ver este mensaje</br>" +
+    //"Usa el comando <strong>mapa</strong> seguido de la tecla enter para ver el directorio de archivos</br>" +
     "Usa el comando <strong>iching</strong> seguido de la tecla enter para consultar el libro de los cambios</br>");
 
-  this._terminal.write("Comandos disponibles:<br>");
+  //this._terminal.write("Comandos disponibles:<br>");
   for (var c in this._terminal.commands) {
     if (this._terminal.commands.hasOwnProperty(c) && !c.startswith("_"))
       this._terminal.write(c + "  ");

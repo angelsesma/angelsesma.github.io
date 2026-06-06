@@ -3,7 +3,7 @@
   "type": "dir",
   "contents": [
   {
-      "name": "Acerca-de-mi",
+      "name": "README",
       "type": "iframe",
       "contents": "data/README/index.html"}
     
