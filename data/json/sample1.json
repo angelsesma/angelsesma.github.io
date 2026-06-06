@@ -7,59 +7,7 @@
       "type": "text",
       "contents": "<strong>Ángel Alberto Sesma</strong>(MEX)</BR> Es artista transmedia, ascendente virgo, tigre de fuego y perro de cristal. Realizó su primera exposicion individual en la galeria autónoma de la FAD Xochimilco. Su trabajo ha sido reconocido en bienales y festivales internacionales como thewrong.org, biennale.no, 60sec.org, el festival de poesía de Yautepec, entre otros."
     },
-    {
-      "name": "Baduk",
-      "type": "dir",
-      "contents": [
-        {
-      "name": "Estadistica",
-      "type": "dir",
-      "contents": [
-        
-            {
-              "name": "Pattern-Acquisition",
-              "type": "exec",
-              "contents": "<a href='http://www.intergostudies.net//WEB_FileUpLoad/journal/%EB%B0%94%EB%91%91%ED%95%99%ED%9A%8C-2025-19-2%ED%98%B8.pdf' target='blank'>Journal of Go Studies 2025 Vol.2</a>"
-            }
-   
-          
-        
-      ]
-    },
-    {
-          
-              "name": "Heatmaps",
-              "type": "iframe",
-              "contents": "data/baduk/heat/heatmaps.pdf"
-             },
-            {
-              "name": "MusicalGo",
-              "type": "iframe",
-              "contents": "/data/baduk/musicalGo/index.html"
-            
-        },
-        {
-          "name": "Zine_de_baduk",
-          "type": "iframe",
-          "contents": "/data/baduk/zdb/index.html"
-            
-            
-          
-        },
-        
-            {
-              "name": "atari-go",
-              "type": "iframe",
-              "contents": "/data/baduk/atari/index1.html"
-            },
-             {
-              "name": "Go-VR",
-              "type": "iframe",
-              "contents": "/data/baduk/app/index.html"
-            } 
-       
-      ]
-    },
+    
     {
       "name": "Arcilla",
       "type": "dir",
@@ -103,16 +51,7 @@
           "type": "exec",
           "contents": "<a href='https://youtu.be/Fb-d69xpf2A?si=kU1rhFwXJQYfRqR0' target='blank'>Litelat2</a>"
         } , 
-        {
-          "name": "FungiFiction",  
-          "type": "text",
-          "contents": "[Created with CHATGPT-3 (2021)] The spores were getting out of hand. I put them in a lead-lined box, but they could still see each other. So I put tin foil on the box, but that didn't stop them from talking to each other. I put the box in a lead-lined room, but they could still hear each other. So I put acoustic dampening material on the walls, but they could still feel each other. I put the room in a lead-lined basement, but they could still smell each other. So I put the basement in a lead-lined house, but they could still feel each other. </br>So I put the house in a lead-lined neighborhood, but they could still feel each other. So I put the neighborhood on a rocket and shot it into space, but they could still feel each other. So I put the rocket in orbit around Jupiter, but they could still feel each other. So I put Jupiter on a rocket and shot it into space, but they could still feel each other. So I put the rocket in orbit around the sun, but they could still feel each other. So I put the sun on a rocket and shot it into space, but they could still feel each other. </br>So I put the rocket in orbit around a black hole, but they could still feel each other. So I put the black hole on a rocket and shot it into space, but they could still feel each other. So I put the rocket in orbit around a supernova, but they could still feel each other. So I put the supernova on a rocket and shot it into space, but they could still feel each other. So I put the rocket in orbit around a galaxy, but they could still feel each other. So I put the galaxy on a rocket and shot it into space, but they could still feel each other. So I put the rocket in orbit around a cluster of galaxies, but they could still feel each other. So I put the cluster of galaxies on a rocket and shot it into space, but they could still feel each other. So I put the rocket in orbit around a supercluster of galaxies, but they could still feel each other. </br>So I put the supercluster of galaxies on a rocket and shot it into space, but they could still feel each other. So I put the rocket in orbit around a wall of galaxies, but they could still feel each other. So I put the wall of galaxies on a rocket and shot it into space, but they could still feel each other. So I put the rocket in orbit around a supercluster of superclusters of galaxies, but they could still feel each other. So I put the supercluster of superclusters of galaxies on a rocket and shot it into space, but they could still feel each other. So I put the rocket in orbit around a void, but they could still feel each other. So I put the void on a rocket and shot it into space, but they could still feel each other. So I put the rocket in orbit around a supercluster of superclusters of superclusters of galaxies, but they could still feel each other.</br>So I put the supercluster of superclusters of superclusters of galaxies on a rocket and shot it into space, but they could still feel each other. So I put the rocket in orbit around an empty void, but they could still feel each other. So I put the empty void on a rocket and shot it into space, but they could still feel each other."
-        },
-        {
-          "name": "Tiradero",
-          "type": "text",
-          "contents": "Recientemente se celebró la asamblea pro-común para la tecnología orbital decolonial. Como parte de la orden del día se presentó un plan de desarrollo para el primer satélite decolonial diseñado por la agencia espacial de Abya Yala, se expusieron dudas, ideas y sentimientos en torno al tema y finalmente se votó a favor de financiar el proyecto, siempre que el satélite cumpliera la función de ayudar a limpiar el basurero que orbita sobre nuestra atmósfera: Fases de cohetes propulsores como casquillos de bala gigantescos y escombros como cuchillas milimétricas aceleradas a altísimas velocidades, un tiradero de proyectiles a la deriva capaces de desorbitar las sondas más avanzadas y pulverizar los satélites más diminutos. Otra pesadilla fabricada a pulso por la mano del hombre. En los laboratorios donde se reúne el consejo de personas medicina se logró aislar una bacteria capaz de digerir metales y semiconductores. Se trata de una bacteria autótrofa, es decir, que puede producir su propio alimento utilizando una fuente de energía -como pueden ser los electrones disponibles en el óxido de manganeso-  también es anaerobia: no necesita oxígeno para vivir. La bacteria se descubrió en un juego de cristalería arrumbado que acumulaba en su superficie óxido de manganeso, en el momento que alguien notó que esta cambiaba de color, sugiriendo una pérdida de electrones. Se lanzó al espacio una población de dicha bacteria en un satélite CUBESAT de 10 x 10 x 20 cm que contenía además un circuito regulador de temperatura diseñado para mantener el sistema de control y comunicación funcionando y para mantener la bacteria en equilibrio térmico. El satélite liberaría parte de la bacteria tan pronto los sensores de colisión se activaran. La bacteria se adaptó paulatinamente a las condiciones del espacio y logró soportar temperaturas entre los -55 y los 17 grados centígrados sin la ayuda de los sistemas electrónicos. además mutó para ser capaz de generar esporas y facilitar su propagación en toda la estratósfera. Seis meses después de haber sido lanzado, el satélite tejió una red de bacterias aglutinantes que comenzó a disolver los cúmulos de basura orbital. De pronto las comunicaciones de radio y telemetría comenzaron a interrumpirse periódicamente. La base de monitoreo de la agencia espacial concluyó que la bacteria había comenzado a devorar el satélite."
-        },
+        
         {
           "name": "Dos_Compuertas",
           "type": "iframe",
