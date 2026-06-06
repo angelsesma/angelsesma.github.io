@@ -24,11 +24,6 @@
               "name": "Autorretrato",
               "type": "iframe",
               "contents": "data/vr/index.html"
-            },
-            {
-              "name": "Vasija_2",
-              "type": "iframe",
-              "contents": "data/vr/main2.html"
             }
           
         
