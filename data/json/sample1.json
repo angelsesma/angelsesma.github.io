@@ -3,9 +3,10 @@
   "type": "dir",
   "contents": [
   {
-      "name": "README",
+      "name": "GALERIA",
       "type": "iframe",
-      "contents": "data/README/index.html"}
+      "contents": "data/GALERIA/index.html"}
+
     
     
     
