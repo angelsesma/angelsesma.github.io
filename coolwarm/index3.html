@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Selector</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #000000;
+            color: #ff8c00;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            width: 100%;
+            max-width: 1000px;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .side {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            border: 1px solid #ff8c00;
+            border-radius: 5px;
+            background-color: #111111;
+        }
+
+        h2 {
+            margin-top: 0;
+            color: #ff8c00;
+        }
+
+        select {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+            background-color: #000000;
+            color: #ff8c00;
+            border: 1px solid #ff8c00;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+
+        select option {
+            background-color: #000000;
+            color: #ff8c00;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #000000;
+            color: #ff8c00;
+            border: 1px solid #ff8c00;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #ff8c00;
+            color: #000000;
+        }
+
+        .image-container {
+            width: 100%;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            max-height: 300px;
+            border: 1px solid #ff8c00;
+            background-color: #111111;
+        }
+
+        .dropdown-group {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #ff8c00;
+        }
+    </style>
+</head>
+<body>
+    <h1>Image Selector</h1>
+
+    <div class="container">
+        <!-- Left Side -->
+        <div class="side">
+            <h2>Left Side</h2>
+            <div class="dropdown-group">
+                <label>Select Folder:</label>
+                <select id="folderDropdownA" onchange="updateFilenameDropdown('A')">
+                    <option value="" disabled selected>Select a folder</option>
+                </select>
+            </div>
+            <div class="dropdown-group">
+                <label>Select Image:</label>
+                <select id="filenameDropdownA" disabled>
+                    <option value="" disabled selected>Select a folder first</option>
+                </select>
+            </div>
+            <div class="image-container">
+                <img id="imageA" src="" alt="Selected from Left Folder" style="display: none;">
+            </div>
+        </div>
+
+        <!-- Right Side -->
+        <div class="side">
+            <h2>Right Side</h2>
+            <div class="dropdown-group">
+                <label>Select Folder:</label>
+                <select id="folderDropdownB" onchange="updateFilenameDropdown('B')">
+                    <option value="" disabled selected>Select a folder</option>
+                </select>
+            </div>
+            <div class="dropdown-group">
+                <label>Select Image:</label>
+                <select id="filenameDropdownB" disabled>
+                    <option value="" disabled selected>Select a folder first</option>
+                </select>
+            </div>
+            <div class="image-container">
+                <img id="imageB" src="" alt="Selected from Right Folder" style="display: none;">
+            </div>
+        </div>
+    </div>
+
+    <button id="renderButton">Render Images</button>
+
+    <script>
+        // Define your folder structure: folder paths and their respective files
+        const folderStructure = {
+            "old/black": ["Izawa Akino_12.png", "Chen Xiaonan_42.png", "Yin Hang_14.png", "Lee Seongjae_17.png", "Gu Lingyi_111.png", "Xiao Zhenghao_39.png", "Paek Hongseok_92.png", "Lee Wondo_16.png", "Shi Yue_86.png", "Lee Jaeung_27.png", "Zhou Heyang_182.png", "Lee Sanghun (s)_17.png", "Choi Jeong_8.png", "Kiyonari Tetsuya_29.png", "Feng Wei_36.png", "Lee Sanghun (b)_22.png", "Choi Cheolhan_230.png", "Xie He_173.png", "Yan Huan_18.png", "Dai Jiashen_12.png", "Seo Bongsoo_46.png", "Yang Mengyun_9.png", "Park Jeonggeun_15.png", "Ko Iso_68.png", "Yamashiro Hiroshi_52.png", "Seo Nungwuk_22.png", "Ando Kazushige_10.png", "Tokimoto Hajime_9.png", "Iyama Yuuta_132.png", "Lee Yongshin_12.png", "Liu Jing_50.png", "Otake Hideo_67.png", "Lin Feng_14.png", "Kataoka Satoshi_60.png", "Awaji Shuzo_20.png", "Zhang Xuan_30.png", "Dang Yifei_25.png", "Yamada Noriyoshi_10.png", "Peng Liyao_51.png", "Yoda Norimoto_200.png", "Mannami Nao_21.png", "Tao Xin_51.png", "Wang Chenxing_11.png", "Cao Hengting_17.png", "Uchida Shuhei_15.png", "Zhao Xinghua_10.png", "Ha Youngil_12.png", "Hane Naoki_178.png", "Cho Riyu_29.png", "Kim Hyeoimin_44.png", "Niu Yutian_85.png", "Liu Xiaoguang_17.png", "Morita Michihiro_17.png", "Wang Xiangyun_11.png", "Weon Seongjin_140.png", "Park Yeonghun_212.png", "Yamashita Keigo_227.png", "color.py", "Wang Xi_180.png", "Park Cheongsang_121.png", "Hong Kipyo_11.png", "Huang Chen_44.png", "Ishii Kunio_9.png", "Suzuki Yoshimichi_10.png", "Komatsu Hideki_53.png", "index.html", ".DS_Store", "Kato Atsushi_37.png", "Park Shiun_66.png", "Tan Xiao_71.png", "Zhang Dongyue_31.png", "Anzai Nobuaki_30.png", "Kobayashi Satoru_128.png", "Yoo Changhyuk_123.png", "Kim Yeongsam_19.png", "Kim Hyeongwoo_31.png", "Wang Haoyang_55.png", "Zhang Weijin_14.png", "Furuya Yutaka_9.png", "Lee Huiseong_50.png", "Okada Yumiko_10.png", "Nie Weiping_69.png", "Ishida Yoshio_70.png", "Takanashi Seiken_8.png", "Piao Wenyao_147.png", "Meng Zhaoyu_25.png", "Nakano Yasuhiro_17.png", "Sun Mengsha_16.png", "Lee Tahye_14.png", "Jin Siyoung_17.png", "Jin Donggyu_37.png", "Cui Can_20.png", "Yun Chanhee_22.png", "Lee Changho_326.png", "Zhu Yuanhao_70.png", "Yamada Kimio_160.png", "Yue Liang_32.png", "Kim Daehee_10.png", "Chinen Kaori_39.png", "Ishida Atsushi_11.png", "Kanazawa Makoto_9.png", "So Yokoku_85.png", "Lin Shengxian_10.png", "Shuto Shun_20.png", "Liao Xingwen_40.png", "Fujii Shuhya_9.png", "Cho Hyeyeon_95.png", "Kato Masao_42.png", "Liu Xing_142.png", "Kong Jie_235.png", "Konishi Kazuko_11.png", "Meng Tailing_61.png", "Han Zenki_37.png", "Mizokami Tomochika_57.png", "Kim Dongyeop_8.png", "Lee Sula_17.png", "Kim Juho_66.png", "Yuki Satoshi_123.png", "Chen Seuyen_49.png", "Kono Mitsuki_10.png", "Lee Sedol_316.png", "On Sojin_58.png", "Yang Yi_50.png", "Chen Linxin_8.png", "Kim Myeongwan_24.png", "Takemiya Masaki_86.png", "Fang Jie_12.png", "Yanagisawa Satoshi_12.png", "Ishida Akira_19.png", "Kim Seonryong_43.png", "Cho Chikun_199.png", "Kang Yootaek_42.png", "Jiang Zhujiu_28.png", "Seo Gunwoo_15.png", "Gueon Hyojin_17.png", "Jen Youngkyu_11.png", "Moon Dowon_10.png", "Kim Sooyong_11.png", "Park Byeongkyu_20.png", "Honda Kunihisa_32.png", "Kudo Norio_42.png", "Yamada Shinji_8.png", "Park Seungcheol_29.png", "Peng Jinghua_12.png", "Paek Daehyun_23.png", "Hane Yasumasa_11.png", "Mochizuki Kenichi_23.png", "Yun Hyunseok_21.png", "An Dalhun_38.png", "Li Huasong_10.png", "Li Jie_43.png", "Ju Hyeongwuk_15.png", "Park Jiyeon_26.png", "Lee Hyeonwuk_11.png", "Yang Keon_10.png", "Wang Lei (b)_133.png", "Son Geungi_8.png", "Zhu Songli_12.png", "Zhong Wenjing_78.png", "Li Xuanhao_9.png", "Hei Jiajia_20.png", "Sakai Hideyuki_88.png", "Yu Ping_27.png", "Duan Rong_15.png", "Ma Xiaobing_49.png", "Dong Yan_37.png", "Song Taekon_106.png", "Suzuki Ayumi_48.png", "Heo Yongho_116.png", "Kim Jiseok_99.png", "Ko Keuntae_61.png", "Liu Shizhen_60.png", "Terayama Rei_9.png", "Lee Jungwoo_37.png", "Gu Li_287.png", "Xia Daming_11.png", "Tang Yi_30.png", "Ko Reibun_9.png", "Chang Suyeong_14.png", "Wang Lei (s)_101.png", "Yun Junsang_122.png", "Huang Yizhong_102.png", "An Hyungjoon_10.png", "Ohashi Hirofumi_11.png", "Imamura Toshiya_62.png", "Hu Yuqing_9.png", "Chen Yaoye_152.png", "Tajiri Yuto_8.png", "Lee Yongchan_8.png", "Hang Tianpeng_14.png", "Rin Kaiho_109.png", "Tanemura Sayuri_11.png", "Zhang Wendong_55.png", "Ryu Shikun_103.png", "Takao Shinji_185.png", "Shiraishi Yuichi_8.png", "Kim Nahyun_10.png", "Ko Joyeon_8.png", "Makihata Taeko_14.png", "Oya Koichi_13.png", "Oh Kyuchul_15.png", "Park Jungwhan_66.png", "An Joyeong_117.png", "Zhou Junxun_87.png", "Kim Donghee_9.png", "Choi Myeonghun_53.png", "Zou Junjie_56.png", "Song Ronghui_19.png", "Kim Kiyoung_44.png", "Lin Shuyang_24.png", "Tsuruyama Atsushi_27.png", "Hashimoto Yujiro_12.png", "Kim Junghyun_13.png", "Liu Xi_10.png", "Zhou Hexi_8.png", "Ding Lie_21.png", "Bae Junhee_21.png", "Akiyama Jiro_31.png", "Okada Shinichiro_9.png", "Hong Minpyo_60.png", "Inori Yoko_10.png", "Imamura Yoshiaki_20.png", "Sun Tengyu_35.png", "Yamada Takuji_14.png", "Sonoda Yuichi_16.png", "Lee Ishu_24.png", "Ding Wei_119.png", "Kobayashi Koichi_115.png", "Jiang Weijie_41.png", "Nakano Hironari_31.png", "Yo Kagen_15.png", "Zhou Pingqiang_9.png", "Sun Li_50.png", "Murakawa Daisuke_35.png", "Miyazawa Goro_22.png", "O Meien_186.png", "Rin Shien_19.png", "Mukai Kozue_10.png", "Wang Yimin_12.png", "Ma Xiaochun_100.png", "Kim Seongjae_38.png", "Obuchi Morito_9.png", "Tamai Shin_9.png", "Kang Jiseong_12.png", "Chin Kaei_12.png", "Matsumoto Takehisa_25.png", "Kim Soojang_12.png", "Ogata Masaki_40.png", "Li Kang_89.png", "Zhu Jianshun_12.png", "Tao Xinran_17.png", "Mimura Tomoyasu_78.png", "Kurahashi Masayuki_15.png", "Tang Weixing_22.png", "Ahn Kukhyun_9.png", "Kim Ilhwan_14.png", "Han Chongjin_9.png", "Zhang Kaixin_8.png", "Aoki Shinichi_10.png", "Ye Gui_18.png", "Hoshino Masaki_8.png", "namer.py", "Kamimura Haruo_9.png", "Kim Soojin_15.png", "Zhou Kui_11.png", "Nakaonoda Tomomi_32.png", "Umezawa Yukari_35.png", "Mitani Tetsuya_26.png", "Lee Minjin_32.png", "Iguchi Toyohide_8.png", "Wang Yao_139.png", "Hua Xueming_10.png", "Zhang Wei_49.png", "Fu Chong_39.png", "Cho U_258.png", "Yukawa Mitsuhisa_17.png", "Yokota Shigeaki_23.png", "Fan Weijing_11.png", "Kono Rin_147.png", "Kang Dongyun_143.png", "Cho Hanseung_182.png", "Kim Mansoo_16.png", "Ishii Akane_9.png", "Choi Wongyong_41.png", "Lee Yeongkyu_137.png", "Yoo Kyeongmin_12.png", "Chen Yida_8.png", "Rui Naiwei_113.png", "Yu Bin_155.png", "Qiu Jun_119.png", "Ohba Junya_8.png", "Wu Guangya_27.png", "Yun Seonghyeon_43.png", "Cao Dayuan_28.png", "Aoki Kikuyo_33.png", "Kim Hyeongwan_8.png", "Zhang Li_82.png", "Fujita Akihiko_9.png", "Mao Ruilong_41.png", "Wang Yuhui_107.png", "Lian Xiao_12.png", "Zhu Yi_18.png", "Zhao Zhelun_31.png", "Choi Kyubyeong_20.png", "Goto Shungo_9.png", "Rin Kanketsu_32.png", "Kim Jinwoo_9.png", "Mannami Kana_32.png", "Han Wonggyu_20.png", "Yeom Jeonghun_14.png", "Cao Youyin_13.png", "Wu Xinyu_14.png", "Tuo Jiaxi_93.png", "Wang Tao_19.png", "Osawa Narumi_16.png", "Lan Tian_29.png", "Chang Hao_221.png", "O Rissei_173.png", "Hong Jansik_8.png", "Nakamura Shinya_32.png", "Lin Zhihan_52.png", "Wang Youxia_21.png", "Park Seunghwa_39.png", "Kim Sujun_49.png", "Luo Xihe_142.png", "Ryu Chaehyeong_35.png", "Takano Hideki_9.png", "Mok Jinseok_122.png", "Okuda Aya_27.png", "Zheng Yan_29.png", "Zhou Ruiyang_155.png", "Hu Yaoyu_160.png", "Kim Hwansoo_15.png", "Fan Tingyu_25.png", "Peng Quan_138.png", "Cho Daehyeon_12.png", "Cho Hunhyun_182.png", "Zhang Qiang_10.png", "Zhou Bo_9.png", "Mukai Kaori_16.png", "Yun Yeongseon_18.png", "Hong Seongji_74.png", "Lee Jihyun_11.png", "Hyun Mijin_18.png", "Shao Weigang_80.png", "Zhang Xuebin_42.png", "An Younggil_33.png", "Li Haojie_8.png", "Park Seunghyeon_30.png", "Kim Eunseon_15.png", "Xie Yimin_69.png", "Kato Tomoko_17.png", "Lee Chungyu_10.png", "Li Zhe_123.png", "Han Sanghoon_41.png", "Hikosaka Naoto_59.png", "Kim Yeonghwan_13.png", "Ogaki Yusaku_15.png", "Yang Jaeho_26.png", "Wang Yang_24.png", "Pan Fei_10.png", "Kato Keiko_33.png", "Yashiro Kumiko_31.png", "Yoshida Mika_25.png", "Seto Taiki_39.png", "Kim Yoonyoung_20.png", "Lee Hajin_15.png", "Wu Shuhao_8.png", "Kobayashi Izumi_52.png", "Koyama Terumi_27.png", "Yun Hyuk_19.png", "Kim Seungjun_78.png", "Huang Xiangren_8.png", "Michael Redmond_24.png", "Li He_25.png", "Cho Chien_14.png", "Lee Taehyun_14.png", "Shida Tatsuya_21.png", "Cho Sonjin_117.png", "Mukai Chiaki_49.png", "Zhao Shouxun_50.png", "Lu Jia_10.png"],
+            "old/white": ["Weon Seongjin_152.png", "Wang Xiangyun_17.png", "Yoo Jaeseong_10.png", "Shao Weigang_71.png", "Aoba Kaori_11.png", "Takagi Shoichi_12.png", "Lee Taehyun_19.png", "Yashiro Kumiko_29.png", "Kang Changbae_10.png", "Dang Yifei_32.png", "Fu Chong_43.png", "Kubo Hideo_9.png", "Yun Hyuk_15.png", "Kiyonari Tetsuya_28.png", "Cui Can_19.png", "Choi Kihoon_8.png", "Peng Liyao_46.png", "Kim Daeyoung_10.png", "Choi Kyubyeong_17.png", "Lee Yongshin_10.png", "Okada Yumiko_14.png", "Cho Sonjin_125.png", "Kim Sooyong_9.png", "Cho Riyu_14.png", "Wang Haoyang_79.png", "Dai Jiashen_10.png", "Moriyama Naoki_8.png", "Paek Hongseok_85.png", "Awaji Shuzo_20.png", "Lee Wondo_15.png", "Zhang Xuan_18.png", "Osawa Narumi_22.png", "Zheng Yan_19.png", "Ishida Akira_8.png", "Lee Sanghun (s)_14.png", "Rui Naiwei_130.png", "Michael Redmond_17.png", "Yeom Jeonghun_20.png", "Yoo Changhyuk_126.png", "Shi Yue_84.png", "Tao Xin_51.png", "Cho Hunhyun_165.png", "Takanashi Seiken_9.png", "Hong Seongji_97.png", "Park Seunghwa_30.png", "Chen Xiaonan_50.png", "Park Jeonggeun_12.png", "Yue Liang_24.png", "Wang Chenxing_15.png", "Komatsu Hideki_53.png", "Cao Dayuan_26.png", "Ueki Yoshio_8.png", ".DS_Store", "Kim Yoonyoung_16.png", "Feng Wei_25.png", "Tan Xiao_65.png", "Jin Donggyu_34.png", "Goto Shungo_11.png", "Han Sanghoon_62.png", "Huang Chen_45.png", "Cao Hengting_12.png", "Liao Xingwen_30.png", "Park Cheongsang_134.png", "Seo Bongsoo_54.png", "Ryu Chaehyeong_29.png", "Yin Hang_13.png", "Peng Jinghua_9.png", "Shida Tatsuya_17.png", "Seo Nungwuk_18.png", "Cho Hanseung_167.png", "Lin Shengxian_11.png", "Kanazawa Makoto_8.png", "Nakano Yasuhiro_17.png", "O Rissei_169.png", "Uchida Shuhei_12.png", "Lee Jaeung_22.png", "Zhang Li_64.png", "Jin Siyoung_17.png", "Tuo Jiaxi_89.png", "Seto Taiki_30.png", "Kang Yootaek_33.png", "Park Shiun_70.png", "Wang Lei (b)_147.png", "Lee Hajin_21.png", "Zhu Yuanhao_70.png", "Li Zhe_117.png", "Hong Kipyo_13.png", "Lan Tian_26.png", "Kim Daehee_10.png", "Rin Kanketsu_28.png", "Hyun Mijin_12.png", "Heo Yongho_105.png", "Huang Yizhong_106.png", "Wang Yang_88.png", "Wang Dongliang_16.png", "Li Huasong_16.png", "Park Siyeol_8.png", "Seo Gunwoo_17.png", "Cho U_269.png", "Kim Seongjae_37.png", "Kim Seonryong_40.png", "Murakami Akihide_8.png", "Bae Junhee_16.png", "Yanagisawa Satoshi_10.png", "Li Kang_92.png", "Lee Jungwoo_27.png", "Ko Keuntae_59.png", "Lin Zhihan_39.png", "Liu Jing_33.png", "Zou Junjie_49.png", "Liu Shizhen_66.png", "Jen Youngkyu_10.png", "Peng Quan_142.png", "namer2.py", "Takemiya Masaki_79.png", "Lee Sula_15.png", "Jeong Daesang_10.png", "Mukai Kozue_9.png", "Zhang Yingting_13.png", "Kong Jie_236.png", "Jiang Zhujiu_28.png", "Ma Xiaochun_48.png", "Choi Cheolhan_244.png", "An Joyeong_135.png", "Matsuoka Hideki_9.png", "Yukawa Mitsuhisa_24.png", "Park Byeongkyu_20.png", "Wang Yuhui_71.png", "Ye Gui_14.png", "Piao Wenyao_123.png", "Ha Youngil_9.png", "Kim Hyeoimin_37.png", "Mukai Chiaki_35.png", "Song Taekon_107.png", "Mochizuki Kenichi_23.png", "Duan Rong_14.png", "Miyazawa Goro_17.png", "Yokota Shigeaki_28.png", "Cho Hyeyeon_78.png", "An Dalhun_38.png", "Zhang Wei_80.png", "Yang Keon_11.png", "Tang Yi_32.png", "Liu Xing_144.png", "Ju Hyeongwuk_14.png", "Kim Donghee_10.png", "Ohashi Naruya_8.png", "O Meien_171.png", "Kurahashi Masayuki_20.png", "Choi Myeonghun_48.png", "Yuki Satoshi_119.png", "Kobayashi Koichi_119.png", "Song Xuelin_9.png", "Kim Kangkeun_10.png", "Jiang Weijie_65.png", "On Sojin_60.png", "Paek Daehyun_18.png", "Wu Shuhao_17.png", "Ohashi Hirofumi_9.png", "Nakane Naoyuki_8.png", "Seo Musang_8.png", "Fang Jie_14.png", "Lee Jihyun_9.png", "Meng Tailing_59.png", "Lee Hyeonwuk_12.png", "Xia Daming_11.png", "Park Jiyeon_24.png", "Kim Junghyun_8.png", "Chen Zude_17.png", "Ko Reibun_9.png", "Qiu Jun_176.png", "Chang Suyeong_14.png", "Anzai Nobuaki_44.png", "Huang Xiangren_18.png", "Mok Jinseok_176.png", "Moon Dowon_16.png", "Shuto Shun_30.png", "Nakano Hironari_23.png", "Gu Lingyi_99.png", "Kim Soojin_10.png", "Song Ronghui_18.png", "Tsuruyama Atsushi_30.png", "Hashimoto Yujiro_11.png", "Shinkai Hiroko_8.png", "Kato Keiko_41.png", "Lee Ishu_26.png", "Wang Yao_100.png", "Kim Sesil_9.png", "Yu Bin_136.png", "Kuwabara Yoko_10.png", "Chin Kaei_14.png", "Lee Minjin_36.png", "Park Jungwhan_72.png", "Mizokami Tomochika_62.png", "Zhou Junxun_78.png", "Tanemura Sayuri_10.png", "Park Jinsol_13.png", "Luo Xihe_126.png", "Kudo Norio_48.png", "Kamimura Haruo_12.png", "Lin Shuyang_18.png", "Shiraishi Yuichi_14.png", "Sakai Hideyuki_91.png", "Zhang Qiang_9.png", "Sonoda Yuichi_17.png", "Kim Hyelim_11.png", "An Sungjoon_12.png", "Kato Masao_48.png", "Kim Soojang_16.png", "Imamura Yoshiaki_20.png", "Sun Tengyu_35.png", "Yamada Takuji_14.png", "Iguchi Toyohide_11.png", "Ryu Shikun_115.png", "Kim Ilhwan_11.png", "Chinen Kaori_41.png", "An Hyungjoon_23.png", "Chen Yaoye_150.png", "Suzuki Ayumi_54.png", "Yun Hyunseok_28.png", "Ahn Kukhyun_8.png", "Tang Weixing_37.png", "Hei Jiajia_14.png", "Zhu Songli_26.png", "Rin Shien_19.png", "Takao Shinji_183.png", "Han Zenki_39.png", "Matsumoto Takehisa_24.png", "Hong Minpyo_64.png", "Gu Li_267.png", "Zhong Wenjing_65.png", "Kim Myeongwan_15.png", "Yamada Kimio_135.png", "Li Xuanhao_11.png", "Cho Chikun_209.png", "Fan Weijing_12.png", "Lee Sedol_319.png", "Zhou Kui_13.png", "Ma Xiaobing_54.png", "Ohba Junya_14.png", "Kim Kiyoung_40.png", "Yo Kagen_14.png", "namer.py", "Mao Ruilong_32.png", "Murakawa Daisuke_22.png", "Sun Li_53.png", "Honda Kunihisa_28.png", "Chen Seuyen_50.png", "Choi Wongyong_33.png", "Guo Wenchao_10.png", "Kono Mitsuki_9.png", "Kim Jiseok_102.png", "Zhang Kaixin_11.png", "Makihata Taeko_11.png", "Oya Koichi_16.png", "Xu Ying_8.png", "Hua Xueming_11.png", "Li Jie_48.png", "Ding Lie_26.png", "Mitani Tetsuya_27.png", "Gueon Hyojin_18.png", "Kobayashi Satoru_155.png", "Wang Lei (s)_120.png", "Yun Junsang_117.png", "Tao Xinran_14.png", "Zhou Hexi_10.png", "Kim Juho_81.png", "Mimura Tomoyasu_90.png", "Park Seungcheol_26.png", "Yang Yi_76.png", "Zhao Zhelun_41.png", "Imamura Toshiya_72.png", "Kang Dongyun_118.png", "So Yokoku_88.png", "Kim Mansoo_16.png", "Hane Naoki_173.png", "Kim Hyeongwan_9.png", "Kim Yeonghwan_16.png", "Mannami Nao_16.png", "Kim Dongyeop_11.png", "Chen Yida_8.png", "Meng Zhaoyu_9.png", "Sun Mengsha_8.png", "Zhang Dongyue_16.png", "Kato Atsushi_39.png", "Zhou Ruiyang_146.png", "Terayama Rei_11.png", "Ogaki Yusaku_11.png", "Kataoka Satoshi_80.png", "Kanda Ei_8.png", "Xie Yimin_51.png", "Yamashita Keigo_229.png", "Kim Eunseon_11.png", "Nakaonoda Tomomi_41.png", "Lee Changho_289.png", "Yun Yeongseon_22.png", "Ishida Yoshio_57.png", "Lu Jia_15.png", "Wang Youxia_20.png", "Izawa Akino_18.png", "Niu Yutian_99.png", "Morita Michihiro_27.png", "Kono Rin_137.png", "Dong Yan_65.png", "Yamashiro Hiroshi_59.png", "Park Yeonghun_222.png", "Zhang Wendong_21.png", "Hikosaka Naoto_63.png", "Li Chunhua_10.png", "Yoo Kyeongmin_11.png", "Yoda Norimoto_208.png", "Zhou Heyang_163.png", "Chang Hao_194.png", "Kim JongJoon_10.png", "Rin Kaiho_87.png", "Hu Yaoyu_159.png", "Lee Sanghun (b)_28.png", "Lee Yeongkyu_135.png", "Cao Youyin_12.png", "Yang Jaeho_21.png", "Tamai Shin_11.png", "Xie He_179.png", "Yun Seonghyeon_40.png", "Xiao Zhenghao_32.png", "Ishida Atsushi_9.png", "Kim Hwansoo_10.png", "Lee Seongjae_20.png", "Kim Yeongsam_15.png", "Otake Hideo_53.png", "Inori Yoko_9.png", "Zhao Shouxun_56.png", "Zhu Yi_19.png", "Nakamura Shinya_26.png", "Zhang Xuebin_51.png", "Lian Xiao_17.png", "Nie Weiping_75.png", "Lee Huiseong_58.png", "Ko Iso_66.png", "Ding Wei_142.png", "Mannami Kana_37.png", "Kim Hyeongwoo_39.png", "Hasegawa Sunao_8.png", "Fan Tingyu_24.png", "Umezawa Yukari_41.png", "Ogata Masaki_36.png", "Ok Teukjin_13.png", "Son Geungi_12.png", "Kobayashi Izumi_45.png", "Koyama Terumi_24.png", "Dang Xiyun_8.png", "Akiyama Jiro_42.png", "Zhou Pingqiang_13.png", "Pan Fei_12.png", "Yoshida Mika_27.png", "Wang Tao_34.png", "Okuda Aya_26.png", "Yan Huan_17.png", "Wu Guangya_21.png", "Li He_26.png", "Kato Tomoko_15.png", "Wang Xi_163.png", "An Younggil_25.png", "Iyama Yuuta_129.png", "Liu Xiaoguang_31.png", "Kim Sujun_62.png", "Mukai Kaori_14.png", "Aoki Kikuyo_37.png", "Kubo Katsuaki_8.png", "Lee Tahye_21.png", "Sakai Maki_9.png", "Kim Seungjun_79.png", "Suzuki Shinji_8.png", "Yun Chanhee_17.png", "Han Chongjin_15.png", "Lin Feng_32.png", "Lee Chungyu_11.png", "Park Seunghyeon_19.png", "Yang Dingxin_9.png", "Cho Chien_9.png"],
+            "new/black": ["Awaji Shuzo_8.png", "Shida Tatsuya_38.png", "Cao Dayuan_8.png", "Ding Shixiong_65.png", "Lee Wondo_16.png", "Paek Hongseok_45.png", "Seto Taiki_21.png", "Terayama Rei_19.png", "Jia Ganglu_10.png", "Gan Siyang_9.png", "Han Seungjoo_66.png", "Byun Sangil_194.png", "Kato Keiko_8.png", "Yang Dingxin_250.png", "Mimura Tomoyasu_14.png", "Zhang Qiang_37.png", "Rong Yi_62.png", "Lee Taehyun_18.png", "Kang Dongyun_163.png", "Peng Liyao_140.png", "Tao Xinran_136.png", "Zhao Guanru_10.png", "O Meien_38.png", "Hu Yuqing_10.png", "Lee Changho_89.png", "Choi Kyubyeong_15.png", "Cho Daehyeon_23.png", "Kim Jiseok_146.png", "Cho Chikun_67.png", "Yashiro Kumiko_16.png", "Shu Yixiao_13.png", "Oh Yujin_124.png", "Takemiya Masaki_32.png", "Ida Athushi_84.png", "Li Zhe_39.png", "Park Yeongchan_8.png", "Hu Yuefeng_15.png", "Liu Zhaozhe_19.png", "Fujita Akihiko_39.png", "Fan Yunruo_116.png", "Ko Keuntae_11.png", "Kim Eunseon_27.png", "Jimmy Cha_15.png", "Chen Hao_44.png", "Nakano Yasuhiro_10.png", "Wang Shuang_53.png", "Kobayashi Satoru_54.png", "Cho U_58.png", "Ding Hao_228.png", "Furuya Yutaka_13.png", "Huang Jingyuan_34.png", "color.py", "Hei Jiajia_42.png", "Chang Hao_19.png", "index.html", "Yoda Norimoto_53.png", "Yamashita Keigo_92.png", ".DS_Store", "Jin Siyoung_28.png", "Lin Lixiang_17.png", "Wang Lei (b)_8.png", "Hwang Jaeyeon_21.png", "Uchida Shuhei_10.png", "Sugiuchi Kazuko_25.png", "Ma Xiaochun_8.png", "Li He_102.png", "Murakawa Daisuke_62.png", "Yuan Tingyu_11.png", "Cho Riyu_10.png", "Imamura Toshiya_27.png", "Ying Yitao_10.png", "Na Hyun_66.png", "Wang Yubo_54.png", "Kim Junghyun_43.png", "Shin Jinseo_290.png", "Jiang Qirun_94.png", "Wang Zejin_109.png", "Tang Yi_53.png", "Mutsuura Yuta_34.png", "Lian Xiao_240.png", "Han Wonggyu_12.png", "Aoki Kikuyo_17.png", "Ke Jie_309.png", "Kudo Norio_8.png", "You Byungyong_22.png", "Suzuki Ayumi_28.png", "Koyama Terumi_8.png", "Wang Chen_30.png", "Yin Mingming_10.png", "Nie Weiping_19.png", "Ahn Kukhyun_51.png", "Kim Minho_12.png", "An Dongxu_22.png", "Bai Baoxiang_20.png", "Hikosaka Naoto_36.png", "Kim Seongjae_37.png", "Hu Yaoyu_50.png", "Park Shiun_16.png", "Wang Xi_10.png", "Gu Zihao_266.png", "Fujii Shuhya_8.png", "Koyama Kuya_16.png", "Yokota Shigeaki_13.png", "Kim Jinhyu_35.png", "An Kwanwuk_24.png", "Lee Hyungjin_11.png", "Seol Hyunjun_60.png", "Yang Kaiwen_125.png", "Xie Erhao_199.png", "Ishida Yoshio_17.png", "Han Taehee_41.png", "Iyama Yuuta_186.png", "Seo Nungwuk_43.png", "Liu Xi_31.png", "Yang Jaeho_9.png", "Cho Hyeyeon_41.png", "Wang Chenxing_73.png", "Umezawa Yukari_12.png", "Rin Shien_15.png", "Wu Guangya_73.png", "Cao Xiaoyang_38.png", "Konishi Kazuko_13.png", "Tan Xiao_150.png", "Qiao Zhijian_13.png", "Kataoka Satoshi_16.png", "Kim Dongmyeon_14.png", "Chino Tadahiko_9.png", "Wang Haoyang_27.png", "Fan Tingyu_237.png", "Kono Rin_65.png", "Niu Yutian_19.png", "Yi Lingtao_106.png", "Tsuruyama Atsushi_13.png", "Xia Chenkun_90.png", "Ha Youngil_9.png", "Chang Doojin_8.png", "Hu Yuhan_36.png", "Lee Hoseong_8.png", "Yun Junsang_47.png", "Kim Cheayoung_96.png", "Tang Weixing_183.png", "Akiyama Jiro_15.png", "Kang Hun (s)_37.png", "Yoo Changhyuk_38.png", "Jeong Daesang_28.png", "Tao Ran_26.png", "Komatsu Hideki_25.png", "Meng Tailing_114.png", "Gao Xing_57.png", "Lu Jia_51.png", "Suzuki Shinji_25.png", "Li Weiqing_152.png", "Ko Iso_33.png", "Liao Xingwen_45.png", "Hane Naoki_40.png", "Ryu Shikun_35.png", "Mitani Tetsuya_13.png", "Lee Sanghun (b)_8.png", "Oh Kyuchul_18.png", "Kobayashi Izumi_10.png", "Park Jiyeon_18.png", "Hirata Tomoya_14.png", "Li Ming_17.png", "Cho Hanseung_66.png", "Zhou Hexi_25.png", "Park Minkyu_53.png", "Yu Lijun_12.png", "Chen Zijian_121.png", "Han Yizhou_134.png", "Hsu Chiayuan_65.png", "Mukai Chiaki_23.png", "So Yokoku_25.png", "Weon Seongjin_109.png", "Lee Wonyoung_58.png", "Na Jonghoon_11.png", "Yao Zhiteng_9.png", "Gu Lingyi_99.png", "Mao Ruilong_37.png", "Kim Soojin_10.png", "Guo Yuzheng_17.png", "Zhou Heyang_10.png", "Lee Sedol_85.png", "Mochizuki Kenichi_10.png", "Yun Hyunseok_12.png", "data.json", "Zhao Chenyu_192.png", "Xie Ke_188.png", "Hoshiai Shiho_17.png", "He Yuhan_84.png", "Kiyonari Tetsuya_9.png", "Chen Zhengxun_67.png", "Chen Yusen_16.png", "Kim Dongho_15.png", "Watanabe Kouki_21.png", "Han Sanghoon_26.png", "Otake Hideo_27.png", "Guo Wenchao_14.png", "Huang Yunsong_136.png", "Fan Yin_134.png", "Nakane Naoyuki_11.png", "Yoshida Mika_9.png", "Ishii Akane_13.png", "Tong Yulin_8.png", "Wu Baiyi_13.png", "Lin Junyan_22.png", "O Rissei_37.png", "Ryu Suhang_26.png", "Li Qincheng_205.png", "Zhong Wenjing_49.png", "Sun Zhe_16.png", "Takei Takashi_10.png", "Cao Youyin_58.png", "Cai Jing_60.png", "Kim Soojang_17.png", "Muramatsu Hiroki_12.png", "Park Cheongsang_19.png", "Nakamura Shinya_9.png", "Tuo Jiaxi_186.png", "Park Jungwhan_265.png", "Kurahashi Masayuki_10.png", "Fujisawa Rina_65.png", "Kim Sujun_12.png", "Shi Yue_211.png", "Xu Jiayang_221.png", "Han Zenki_8.png", "Lee Jihyun_67.png", "Chen Yaoye_154.png", "Motoki Katsuya_56.png", "Shiraishi Yuichi_11.png", "Zhang Kaixin_12.png", "Lee Ishu_20.png", "Yu Bin_15.png", "Yang Keon_18.png", "Sada Atsushi_24.png", "Qin Yuexin_24.png", "Lee Minjin_30.png", "Rin Kaiho_22.png", "Yukawa Mitsuhisa_14.png", "Sonoda Yuichi_13.png", "Kim Myounghoon_149.png", "Lee Sula_18.png", "Wang Jingyi_10.png", "Gu Li_105.png", "Yu Zhiying_167.png", "Park Kyuongkeun_11.png", "Kim Kihun_20.png", "Kim Hyenchan_10.png", "Liao Yuanhe_152.png", "Zhang Zihan_49.png", "namer.py", "Wang Yuanjun_59.png", "Kim Hyeoimin_29.png", "Choi Cheolhan_114.png", "Kim Sinyoung_9.png", "Kim Chongsu_30.png", "Mi Yuting_269.png", "Lee Yeongkyu_59.png", "Xie He_36.png", "Paek Seongho_24.png", "Luo Xihe_16.png", "Cai Bihan_29.png", "Zhang Li_27.png", "Su Shengfang_16.png", "Chang Suyeong_21.png", "Gueon Hyojin_18.png", "Song Taekon_12.png", "Li Xiangyu_66.png", "Kim Ilhwan_17.png", "Yamashiro Hiroshi_15.png", "Park Taehee_32.png", "Song Ronghui_34.png", "An Joyeong_32.png", "Kim Kiyoung_18.png", "Chen Seuyen_22.png", "Ma Tianfang_19.png", "Lee Changseok_71.png", "Seo Bongsoo_72.png", "Mok Jinseok_30.png", "Tong Mengcheng_172.png", "Zhou Ruiyang_153.png", "Yu Zhengqi_99.png", "Cho Sonjin_31.png", "Chen Yiming_58.png", "Zheng Yan_12.png", "Han Chongjin_10.png", "Li Kang_13.png", "Nakano Hironari_8.png", "Song Sanghun_8.png", "Ichiriki Ryo_164.png", "Park Seungmun_28.png", "Park Jinsol_58.png", "Tsuruta Kazushi_13.png", "Kim Miri_24.png", "Rin Kanketsu_18.png", "Wang Xiangyun_23.png", "Hong Seongji_58.png", "Min Sangyoun_9.png", "Shi Yulai_17.png", "Chen Yunong_41.png", "Ma Yichao_54.png", "Li Xiaoxi_33.png", "Ryu Minhyung_34.png", "Oh Jeonga_41.png", "Kang Seungmin_41.png", "Shibano Toramaru_156.png", "Zhang Xuan_11.png", "Takao Shinji_49.png", "Dang Yifei_185.png", "Hong Minpyo_16.png", "Yamada Kimio_28.png", "Kim JongJoon_10.png", "Kang Yootaek_29.png", "Zhang Tao_143.png", "Chen Xian_94.png", "Sun Tengyu_56.png", "An Sungjoon_70.png", "Xiao Zhenghao_32.png", "Jiang Weijie_199.png", "Lee Chungyu_17.png", "Kato Tomoko_10.png", "Zhan Ying_22.png", "Tang Chongzhe_14.png", "Li Xuanhao_193.png", "Fan Weijing_8.png", "Lee Donghoon_141.png", "Kim Hyeongwoo_11.png", "Kang Dajeong_15.png", "Liu Xing_39.png", "Yuki Satoshi_37.png", "Anzai Nobuaki_10.png", "Kim Dongyeop_17.png", "Rui Naiwei_92.png", "Yun Chanhee_29.png", "Park Yeonghun_90.png", "Mizokami Tomochika_13.png", "Kobayashi Koichi_28.png", "Choi Myeonghun_22.png", "Hong Kipyo_25.png", "Kim Yeongsam_10.png", "Sakai Hideyuki_35.png", "Kubo Katsuaki_8.png", "Choi Jeong_134.png", "Choi Youngchan_11.png", "Yan Zaiming_24.png", "Lee Youngjoo_28.png", "Huang Xin_54.png", "Heo Yongho_41.png", "Okuda Aya_19.png", "Xie Yimin_68.png", "Adachi Toashimasa_19.png", "Shin Minjun_226.png"],
+            "new/white": ["Ichiriki Ryo_178.png", "Choi Cheolhan_66.png", "Xie Yimin_65.png", "Li Xiaoxi_39.png", "Lee Changseok_78.png", "Cho Chikun_70.png", "Hei Jiajia_50.png", "Okuda Aya_14.png", "Kim Myounghoon_118.png", "Gan Siyang_9.png", "Terayama Rei_18.png", "Kim Dongyeop_19.png", "Cho Hyeyeon_34.png", "Shi Yulai_20.png", "Huang Jingyuan_33.png", "Awaji Shuzo_9.png", "Kobayashi Satoru_53.png", "Hu Yuqing_10.png", "Adachi Toashimasa_17.png", "Kim Junghyun_51.png", "Kudo Norio_20.png", "Ryu Minhyung_29.png", "Lian Xiao_247.png", "Kurahashi Masayuki_8.png", "Lee Hyeonjun_10.png", "Ida Athushi_84.png", "Lee Hoseong_15.png", "Yamashita Keigo_68.png", "Tang Yi_55.png", "Yamada Kimio_34.png", "Kang Seungmin_61.png", "Lee Donghoon_94.png", "Kim Hyenchan_9.png", "Zhou Hexi_54.png", "Yuan Tingyu_14.png", "Wang Xiangyun_15.png", "Ha Youngil_16.png", "Sugiuchi Kazuko_24.png", "Rong Yi_71.png", "Fan Yunruo_112.png", "Kang Dajeong_20.png", "Takemiya Masaki_37.png", ".DS_Store", "Cao Youyin_37.png", "Tong Mengcheng_155.png", "Lin Lixiang_17.png", "Han Seungjoo_49.png", "Jiang Qirun_68.png", "Jin Siyoung_15.png", "Chang Hao_30.png", "Xiao Zhenghao_16.png", "Zhang Qiang_19.png", "Yukawa Mitsuhisa_9.png", "Sakai Hideyuki_28.png", "Hu Yuhan_40.png", "Yu Zhengqi_110.png", "Kim Kiyoung_28.png", "Mimura Tomoyasu_10.png", "Weon Seongjin_71.png", "An Sungjoon_81.png", "Yao Zhiteng_11.png", "Oh Yujin_122.png", "Ryu Shikun_42.png", "Yashiro Kumiko_10.png", "Seto Taiki_30.png", "Yun Chanhee_37.png", "Koyama Terumi_12.png", "Yang Dingxin_297.png", "Kang Yootaek_26.png", "Mutsuura Yuta_34.png", "Sun Tengyu_59.png", "Konishi Kazuko_8.png", "Yang Zi_8.png", "Aoki Kikuyo_17.png", "Shin Jinseo_285.png", "Yun Hyunseok_8.png", "Chen Seuyen_13.png", "Park Seungmun_24.png", "Hong Maleunsaem_11.png", "Murakawa Daisuke_61.png", "Seo Nungwuk_27.png", "Zhang Xuebin_9.png", "Kim Sedong_17.png", "Peng Liyao_136.png", "Hsu Chiayuan_49.png", "Kibe Natsuki_10.png", "Chinen Kaori_9.png", "Yu Zhiying_141.png", "An Dongxu_22.png", "O Rissei_29.png", "Fujii Shuhya_9.png", "Li Kang_9.png", "Liu Xing_41.png", "Tao Ran_35.png", "Park Cheongsang_12.png", "Kim Seongjae_36.png", "Lee Minjin_17.png", "Zhang Li_17.png", "Hikosaka Naoto_23.png", "Watanabe Kouki_14.png", "Park Minkyu_56.png", "Ke Jie_390.png", "Yamashiro Hiroshi_19.png", "Tan Xiao_219.png", "Yang Kaiwen_125.png", "Wang Yuanjun_56.png", "Xie Ke_237.png", "Lee Jihyun_57.png", "Shi Yue_219.png", "Mukai Chiaki_18.png", "Motoki Katsuya_66.png", "Fan Weijing_23.png", "Gao Xing_90.png", "Kim Jinhyu_37.png", "Wang Haoyang_26.png", "Uchida Shuhei_8.png", "Yokota Shigeaki_11.png", "Koyama Kuya_14.png", "Qiao Zhijian_12.png", "Umezawa Yukari_12.png", "Park Jiyeon_23.png", "Hirata Tomoya_12.png", "Lee Ishu_11.png", "Chino Tadahiko_9.png", "Fujisawa Rina_87.png", "Park Jungwhan_278.png", "Tsuruyama Atsushi_13.png", "Park Taehee_29.png", "Hong Minpyo_8.png", "Xie Erhao_198.png", "Nie Weiping_27.png", "Xia Chenkun_128.png", "Suzuki Shinji_32.png", "Fan Tingyu_233.png", "Kim Minho_14.png", "Liu Xi_34.png", "Kim Ilhwan_34.png", "Han Sanghoon_28.png", "Lee Yeongkyu_53.png", "Paek Hongseok_34.png", "Cho Hanseung_64.png", "Kim Chanwu_9.png", "Wu Guangya_76.png", "Kobayashi Izumi_13.png", "Kang Hun (s)_22.png", "Matsumoto Takehisa_10.png", "Wang Xi_16.png", "Tuo Jiaxi_175.png", "Gu Zihao_274.png", "Tang Weixing_196.png", "Zheng Yan_8.png", "Shibano Toramaru_138.png", "Kim Cheayoung_97.png", "Han Wonggyu_8.png", "Yun Junsang_52.png", "Zhou Zhenyu_16.png", "Lee Hyungjin_17.png", "Chen Hao_36.png", "Ohashi Hirofumi_10.png", "Tao Xinran_151.png", "Niu Yutian_22.png", "Yu Lijun_13.png", "An Kwanwuk_34.png", "Zhong Wenjing_46.png", "Takanashi Seiken_11.png", "Sun Zhe_19.png", "Song Sanghun_15.png", "Kim Soojang_31.png", "Oh Kyuchul_24.png", "Zhang Tao_91.png", "Sada Atsushi_12.png", "Qin Yuexin_12.png", "Mi Yuting_275.png", "Ko Iso_32.png", "Wang Yubo_36.png", "So Yokoku_19.png", "Chen Yaoye_188.png", "Zhang Zihan_43.png", "Mao Ruilong_23.png", "Zhao Guanru_9.png", "Fan Yin_121.png", "Cho Insun_13.png", "Hane Naoki_58.png", "Shiraishi Yuichi_8.png", "Han Zenki_17.png", "Akiyama Jiro_26.png", "Hoshiai Shiho_17.png", "Cai Jing_62.png", "Paek Seongho_20.png", "Park Yeonghun_109.png", "Li He_94.png", "Kono Rin_53.png", "Lee Sedol_84.png", "Cho Hunhyun_10.png", "Yi Lingtao_124.png", "Seol Hyunjun_69.png", "Ahn Kukhyun_59.png", "Kim Kihun_26.png", "Gu Lingyi_98.png", "Li Weiqing_188.png", "Yoshida Mika_9.png", "O Meien_44.png", "Kim Soojin_11.png", "Lu Jia_60.png", "Song Ronghui_27.png", "An Joyeong_35.png", "Bai Baoxiang_16.png", "Nakano Yasuhiro_8.png", "Jeong Daesang_19.png", "Mitani Tetsuya_20.png", "Park Shiun_21.png", "Cao Xiaoyang_18.png", "Li Ming_30.png", "Xie He_31.png", "Yuki Satoshi_50.png", "Song Taekon_14.png", "Gueon Hyojin_22.png", "Oh Jeonga_37.png", "Komatsu Hideki_15.png", "Otake Hideo_18.png", "Guo Yuzheng_15.png", "Liao Yuanhe_180.png", "Iyama Yuuta_171.png", "Lee Wonyoung_53.png", "Li Qincheng_189.png", "Shida Tatsuya_40.png", "Li Xiangyu_58.png", "Liao Xingwen_67.png", "He Yuhan_54.png", "Luo Xihe_15.png", "Meng Tailing_90.png", "Chen Yusen_11.png", "Hu Yaoyu_63.png", "Kim Sonjin_8.png", "Choi Jeong_155.png", "Yamada Takuji_11.png", "Chang Suyeong_36.png", "Lee Sula_18.png", "Wang Chen_16.png", "namer.py", "Ishida Yoshio_30.png", "Chen Zijian_129.png", "Ohba Junya_16.png", "Wu Baiyi_15.png", "Ma Yichao_19.png", "Kim Yeongsam_9.png", "Kim Sujun_15.png", "Kim Chongsu_18.png", "Xu Jiayang_187.png", "Ryu Suhang_20.png", "Wang Chenxing_68.png", "Li Xuanhao_242.png", "Rin Kaiho_20.png", "Kim Dongho_11.png", "Heo Yongho_37.png", "Su Shengfang_9.png", "Chen Zhengxun_62.png", "Yu Bin_17.png", "Sonoda Yuichi_10.png", "Zhao Chenyu_196.png", "Kataoka Satoshi_25.png", "Kim Dongmyeon_27.png", "Na Jonghoon_8.png", "Kim Sinyoung_8.png", "Wang Jingyi_13.png", "Shuto Shun_11.png", "Han Yizhou_96.png", "Na Hyun_95.png", "Kang Dongyun_194.png", "You Byungyong_13.png", "Rin Kanketsu_31.png", "Jimmy Cha_22.png", "Huang Yunsong_140.png", "Kim Jiseok_158.png", "Anzai Nobuaki_16.png", "Park Junsuck_12.png", "Chen Yiming_64.png", "Lee Youngjoo_11.png", "Han Chongjin_10.png", "Yoda Norimoto_49.png", "Yan Huan_11.png", "Jiao Shiwei_13.png", "Byun Sangil_200.png", "Wang Zejin_82.png", "Ishii Akane_8.png", "Jiang Weijie_159.png", "Wang Shuang_49.png", "Lee Changho_82.png", "Kim Juho_9.png", "Suzuki Ayumi_18.png", "Choi Kyubyeong_20.png", "Choi Myeonghun_26.png", "Lin Junyan_41.png", "Seo Bongsoo_71.png", "Ding Shixiong_53.png", "Mok Jinseok_33.png", "Hwang Jaeyeon_10.png", "Zhou Ruiyang_144.png", "Mizokami Tomochika_8.png", "Fujita Akihiko_18.png", "Liu Zhaozhe_10.png", "Cho Sonjin_33.png", "Muramatsu Hiroki_8.png", "Takao Shinji_48.png", "Dang Yifei_225.png", "Ma Tianfang_27.png", "Kim Eunseon_12.png", "Chen Yunong_40.png", "Shin Minjun_208.png", "Hong Mujin_12.png", "Imamura Toshiya_17.png", "Hong Seongji_61.png", "Cho Riyu_24.png", "Park Jinsol_63.png", "Tsuruta Kazushi_14.png", "Kobayashi Koichi_29.png", "Mannami Nao_10.png", "Hu Yuefeng_31.png", "Li Biqi_8.png", "Kenmochi Joe_8.png", "Huang Xin_42.png", "Yoo Changhyuk_47.png", "Cai Bihan_49.png", "Lee Wondo_24.png", "Kim Hyeongwoo_10.png", "Lee Taehyun_17.png", "Guo Xinyi_10.png", "Gu Li_74.png", "Kim Hyeoimin_48.png", "Han Taehee_39.png", "Kim Miri_20.png", "Moon Dowon_8.png", "Cho Daehyeon_10.png", "Hong Kipyo_27.png", "Ding Hao_197.png", "Taniguchi Tooru_11.png", "Kiyonari Tetsuya_19.png", "Yan Zaiming_24.png", "Chen Xian_101.png", "Ma Xiaochun_18.png", "Choi Youngchan_10.png", "Rui Naiwei_116.png", "Li Zhe_37.png", "Zhan Ying_18.png", "Cho U_53.png"]
+        };
+
+        // Populate folder dropdowns
+        function populateFolderDropdowns() {
+            const folderDropdownA = document.getElementById("folderDropdownA");
+            const folderDropdownB = document.getElementById("folderDropdownB");
+
+            Object.keys(folderStructure).forEach(folder => {
+                const optionA = document.createElement("option");
+                optionA.value = folder;
+                optionA.textContent = folder;
+                folderDropdownA.appendChild(optionA);
+
+                const optionB = document.createElement("option");
+                optionB.value = folder;
+                optionB.textContent = folder;
+                folderDropdownB.appendChild(optionB);
+            });
+        }
+
+        // Update filename dropdown based on selected folder
+        function updateFilenameDropdown(side) {
+            const folderDropdown = document.getElementById(`folderDropdown${side}`);
+            const filenameDropdown = document.getElementById(`filenameDropdown${side}`);
+            const selectedFolder = folderDropdown.value;
+
+    // Clear and disable filename dropdown
+            filenameDropdown.innerHTML = '<option value="" disabled selected>Select an image</option>';
+            filenameDropdown.disabled = !selectedFolder;
+
+            if (selectedFolder) {
+        // Sort filenames alphabetically
+             const sortedFilenames = [...folderStructure[selectedFolder]].sort();
+
+        // Populate filename dropdown with sorted files from the selected folder
+             sortedFilenames.forEach(filename => {
+                        const option = document.createElement("option");
+                  option.value = filename;
+                  option.textContent = filename;
+                filenameDropdown.appendChild(option);
+                });
+                filenameDropdown.disabled = false;
+            }
+        }
+
+        // Render selected images
+        function renderImages() {
+            const filenameDropdownA = document.getElementById("filenameDropdownA");
+            const filenameDropdownB = document.getElementById("filenameDropdownB");
+            const folderDropdownA = document.getElementById("folderDropdownA");
+            const folderDropdownB = document.getElementById("folderDropdownB");
+            const imageA = document.getElementById("imageA");
+            const imageB = document.getElementById("imageB");
+
+            const selectedFolderA = folderDropdownA.value;
+            const selectedFolderB = folderDropdownB.value;
+            const selectedFileA = filenameDropdownA.value;
+            const selectedFileB = filenameDropdownB.value;
+
+            if (selectedFolderA && selectedFileA) {
+                imageA.src = `${selectedFolderA}/${selectedFileA}`;
+                imageA.style.display = "block";
+            }
+
+            if (selectedFolderB && selectedFileB) {
+                imageB.src = `${selectedFolderB}/${selectedFileB}`;
+                imageB.style.display = "block";
+            }
+        }
+
+        // Initialize
+        window.onload = function() {
+            populateFolderDropdowns();
+            document.getElementById("renderButton").addEventListener("click", renderImages);
+        };
+    </script>
+</body>
+</html>
