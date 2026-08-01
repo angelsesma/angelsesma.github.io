@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>___</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #000000;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            width: 100%;
+            max-width: 1000px;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .side {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            border: 1px solid black;
+            border-radius: 5px;
+            background-color: #111111;
+        }
+
+        h2 {
+            margin-top: 0;
+            color: rgb(249, 249, 246);
+        }
+
+        select {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+            background-color: #000000;
+            color: white;
+            border: 1px solid aquamarine;
+            border-radius: 3px;
+            font-size: 11px;
+        }
+
+        select option {
+            background-color: #000000;
+            color: white;
+        }
+
+        .cropped {
+            clip-path: inset(0 0 17px 17px);
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #000000;
+            color: aquamarine;
+            border: 1px solid white;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 13px;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: aquamarine;
+            color: #000000;
+        }
+
+        .image-container {
+            width: 100%;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            max-height: 100%;
+            border: 1px solid black;
+            background-color: #111111;
+        }
+
+        .dropdown-group {
+            width: 45%;
+            margin-bottom: 10px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!--h1>Image Selector</h1-->
+
+    <div class="container">
+        <!-- Left Side -->
+        <div class="side">
+            <!--h2>Left Side</h2-->
+            <div class="dropdown-group">
+                <label>Archivo:</label>
+                <select id="folderDropdownA" onchange="updateFilenameDropdown('A')">
+                    <option value="" disabled selected>Elige un archivo</option>
+                </select>
+            </div>
+            <div class="dropdown-group">
+                <label>Jugador:</label>
+                <select id="filenameDropdownA" disabled>
+                    <option value="" disabled selected>Elige un archivo</option>
+                </select>
+            </div>
+            <div class="image-container">
+                <img id="imageA" src="" alt=" " class="cropped" style="display: none;">
+            </div>
+        </div>
+
+        <!-- Right Side -->
+        <div class="side">
+            <!--h2>Right Side</h2-->
+            <div class="dropdown-group">
+                <label>Archivo:</label>
+                <select id="folderDropdownB" onchange="updateFilenameDropdown('B')">
+                    <option value="" disabled selected>Elige un archivo</option>
+                </select>
+            </div>
+            <div class="dropdown-group">
+                <label>Jugador:</label>
+                <select id="filenameDropdownB" disabled>
+                    <option value="" disabled selected>Elige un archivo</option>
+                </select>
+            </div>
+            <div class="image-container">
+                <img id="imageB" src="" alt="" class="cropped" style="display: none;">
+            </div>
+        </div>
+    </div>
+
+    <button id="renderButton">Comparar</button>
+
+    <script>
+        // Define your folder structure: folder paths and their respective files
+        const folderStructure = {
+            "old/black": ["Park Yeonghun_214.png", "Choi Cheolhan_231.png", "Xie He_173.png", "Iyama Yuuta_132.png", "Yoda Norimoto_201.png", "Wang Yao_140.png", "Hane Naoki_178.png", "Wang Yuhui_109.png", "Weon Seongjin_140.png", "Lee Yeongkyu_138.png", ".DS_Store", "Zhou Heyang_184.png", "Kobayashi Satoru_128.png", "Yoo Changhyuk_123.png", "Wang Xi_181.png", "Park Cheongsang_122.png", "Gu Lingyi_114.png", "Yamada Kimio_160.png", "Peng Quan_140.png", "Yuki Satoshi_123.png", "Lee Sedol_316.png", "Wang Lei (b)_137.png", "Cho Chikun_199.png", "Kong Jie_237.png", "Liu Xing_145.png", "An Joyeong_118.png", "Heo Yongho_116.png", "Yun Junsang_122.png", "Rin Kaiho_109.png", "Takao Shinji_185.png", "Gu Li_289.png", "Kobayashi Koichi_115.png", "Chen Yaoye_154.png", "O Meien_186.png", "namer.py", "Cho U_258.png", "Ding Wei_123.png", "Kono Rin_147.png", "Kang Dongyun_143.png", "Cho Hanseung_182.png", "Yamashita Keigo_228.png", "Rui Naiwei_113.png", "Luo Xihe_145.png", "Piao Wenyao_148.png", "Li Zhe_125.png", "Yu Bin_156.png", "Lee Changho_329.png", "Chang Hao_225.png", "Cho Hunhyun_183.png", "Mok Jinseok_123.png", "O Rissei_174.png", "Hu Yaoyu_162.png", "Zhou Ruiyang_157.png", "Qiu Jun_120.png", "Cho Sonjin_117.png"],
+            "old/white": ["Iyama Yuuta_130.png", "Cho Sonjin_125.png", "Rui Naiwei_130.png", "Yoo Changhyuk_126.png", "Weon Seongjin_154.png", "Wang Lei (b)_150.png", "Park Cheongsang_134.png", "Cho Hanseung_167.png", "An Joyeong_137.png", "Chen Yaoye_158.png", "Choi Cheolhan_245.png", "Peng Quan_143.png", "Yun Junsang_118.png", "Yuki Satoshi_120.png", "Luo Xihe_128.png", "O Meien_171.png", "Kobayashi Koichi_119.png", "Piao Wenyao_126.png", "Yu Bin_136.png", "Takao Shinji_184.png", "Mok Jinseok_178.png", "Qiu Jun_178.png", "Liu Xing_148.png", "Ryu Shikun_115.png", "Wang Lei (s)_122.png", "Yamada Kimio_135.png", "Huang Yizhong_108.png", "Cho Chikun_209.png", "Lee Sedol_319.png", "namer.py", "Kang Dongyun_119.png", "Cho U_271.png", "Gu Li_271.png", "Kong Jie_238.png", "Kobayashi Satoru_155.png", "Ding Wei_144.png", "Hane Naoki_173.png", "Zhou Ruiyang_146.png", "Hu Yaoyu_166.png", "Yamashita Keigo_229.png", "Wang Xi_165.png", "Lee Changho_289.png", "O Rissei_170.png", "Kono Rin_137.png", "Park Yeonghun_222.png", "Yoda Norimoto_208.png", "Chang Hao_194.png", "Lee Yeongkyu_135.png", "Cho Hunhyun_168.png", "Li Zhe_120.png", "Xie He_183.png", "Zhou Heyang_165.png"],
+            "new/black": ["Yang Dingxin_245.png", "Shibano Toramaru_149.png", "Kim Jiseok_146.png", "Fan Yunruo_116.png", ".DS_Store", "Oh Yujin_120.png", "Shin Jinseo_279.png", "Byun Sangil_190.png", "Dang Yifei_175.png", "Jiang Weijie_196.png", "Peng Liyao_145.png", "Tao Xinran_140.png", "Fan Tingyu_235.png", "Meng Tailing_113.png", "Kim Myounghoon_147.png", "Tan Xiao_152.png", "Gu Zihao_264.png", "Li Weiqing_151.png", "Zhao Chenyu_189.png", "Tang Weixing_182.png", "Yang Kaiwen_121.png", "Chen Zijian_120.png", "Lian Xiao_236.png", "Xie Ke_185.png", "Shi Yue_213.png", "Liao Yuanhe_155.png", "Tuo Jiaxi_184.png", "Han Yizhou_138.png", "Fan Yin_136.png", "Chen Yaoye_154.png", "Iyama Yuuta_175.png", "Xu Jiayang_219.png", "Yu Zhiying_166.png", "Park Jungwhan_261.png", "Li Qincheng_200.png", "namer.py", "Choi Cheolhan_114.png", "Mi Yuting_268.png", "Xie Erhao_197.png", "Shin Minjun_222.png", "Ke Jie_310.png", "Huang Yunsong_140.png", "Tong Mengcheng_172.png", "Zhou Ruiyang_153.png", "Li Xuanhao_190.png", "Kang Dongyun_156.png", "Choi Jeong_132.png", "Zhang Tao_143.png", "Ding Hao_231.png", "Lee Donghoon_141.png", "Ichiriki Ryo_160.png"],
+            "new/white": ["Fan Yunruo_114.png", "Yang Dingxin_292.png", "Oh Yujin_119.png", "Dang Yifei_228.png", "Kim Jiseok_156.png", "Shin Minjun_206.png", "Shin Jinseo_284.png", "Peng Liyao_145.png", "Gu Zihao_273.png", "Yu Zhiying_140.png", "Li Qincheng_187.png", "Xie Ke_235.png", "Tuo Jiaxi_171.png", "Ke Jie_387.png", "Shi Yue_218.png", "Yang Kaiwen_123.png", "Tao Xinran_151.png", "Mi Yuting_275.png", "Chen Yaoye_191.png", "Huang Yunsong_137.png", "Fan Yin_121.png", "Park Jungwhan_267.png", "Choi Jeong_152.png", "Park Yeonghun_109.png", "Yi Lingtao_124.png", "Li Weiqing_188.png", "Zhao Chenyu_194.png", "Tang Weixing_202.png", "Iyama Yuuta_160.png", "namer.py", "Xia Chenkun_126.png", "Tan Xiao_214.png", "Liao Yuanhe_178.png", "Fan Tingyu_239.png", "Xu Jiayang_187.png", "Li Xuanhao_242.png", "Shibano Toramaru_133.png", "Chen Zijian_128.png", "Xie Erhao_197.png", "Kim Myounghoon_111.png", "Zhou Ruiyang_147.png", "Jiang Weijie_159.png", "Tong Mengcheng_159.png", "Ding Hao_190.png", "Kang Dongyun_192.png", "Rui Naiwei_114.png", "Byun Sangil_198.png", "Lian Xiao_249.png", "Ichiriki Ryo_175.png"]
+        };
+
+        // Populate folder dropdowns
+        function populateFolderDropdowns() {
+            const folderDropdownA = document.getElementById("folderDropdownA");
+            const folderDropdownB = document.getElementById("folderDropdownB");
+
+            Object.keys(folderStructure).forEach(folder => {
+                const optionA = document.createElement("option");
+                optionA.value = folder;
+                optionA.textContent = folder;
+                folderDropdownA.appendChild(optionA);
+
+                const optionB = document.createElement("option");
+                optionB.value = folder;
+                optionB.textContent = folder;
+                folderDropdownB.appendChild(optionB);
+            });
+        }
+
+        // Update filename dropdown based on selected folder
+        function updateFilenameDropdown(side) {
+            const folderDropdown = document.getElementById(`folderDropdown${side}`);
+            const filenameDropdown = document.getElementById(`filenameDropdown${side}`);
+            const selectedFolder = folderDropdown.value;
+
+    // Clear and disable filename dropdown
+            filenameDropdown.innerHTML = '<option value="" disabled selected>Elige un jugador</option>';
+            filenameDropdown.disabled = !selectedFolder;
+
+            if (selectedFolder) {
+        // Sort filenames alphabetically
+             const sortedFilenames = [...folderStructure[selectedFolder]].sort();
+
+        // Populate filename dropdown with sorted files from the selected folder
+             sortedFilenames.forEach(filename => {
+                        const option = document.createElement("option");
+                  option.value = filename;
+                  option.textContent = filename;
+                filenameDropdown.appendChild(option);
+                });
+                filenameDropdown.disabled = false;
+            }
+        }
+
+        // Render selected images
+        function renderImages() {
+            const filenameDropdownA = document.getElementById("filenameDropdownA");
+            const filenameDropdownB = document.getElementById("filenameDropdownB");
+            const folderDropdownA = document.getElementById("folderDropdownA");
+            const folderDropdownB = document.getElementById("folderDropdownB");
+            const imageA = document.getElementById("imageA");
+            const imageB = document.getElementById("imageB");
+
+            const selectedFolderA = folderDropdownA.value;
+            const selectedFolderB = folderDropdownB.value;
+            const selectedFileA = filenameDropdownA.value;
+            const selectedFileB = filenameDropdownB.value;
+
+            if (selectedFolderA && selectedFileA) {
+                imageA.src = `${selectedFolderA}/${selectedFileA}`;
+                imageA.style.display = "block";
+            }
+
+            if (selectedFolderB && selectedFileB) {
+                imageB.src = `${selectedFolderB}/${selectedFileB}`;
+                imageB.style.display = "block";
+            }
+        }
+
+        // Initialize
+        window.onload = function() {
+            populateFolderDropdowns();
+            document.getElementById("renderButton").addEventListener("click", renderImages);
+        };
+    </script>
+</body>
+</html>
