@@ -520,7 +520,7 @@
 
   var term = Object.create(Terminal);
   term.init(CONFIG, "/data/json/sample1.json", COMMANDS, function () {
-    term.enqueue("iframe ~/GALERIA").enqueue("deviceInfo").enqueue("taogpt").enqueue("iframe ~/README").begin();
+    term.enqueue("iframe ~/mapas").enqueue("taogpt").begin();
   });
 
   window.typeCommand = function (command) {
