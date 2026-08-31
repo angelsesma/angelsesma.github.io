@@ -2,20 +2,11 @@
   "name": "~",
   "type": "dir",
   "contents": [
-  {
-      "name": "galerIA",
-      "type": "iframe",
-      "contents": "data/GALERIA/index.html"},
   
       {
-      "name": "galerIA2",
+      "name": "galerIA",
       "type": "iframe",
       "contents": "data/GALERIA2/index.html"},
-
-      {
-      "name": "mapas",
-      "type": "iframe",
-      "contents": "terrain/index.html"},
 
       {
       "name": "zine",
