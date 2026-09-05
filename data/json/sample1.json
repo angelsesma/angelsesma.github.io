@@ -4,12 +4,12 @@
   "contents": [
   
       {
-      "name": "galerIA",
+      "name": "atariGo",
       "type": "iframe",
-      "contents": "data/GALERIA2/index.html"},
+      "contents": "data/baduk/atari/index1.html"},
 
       {
-      "name": "zine",
+      "name": "zine_de_baduk_2",
       "type": "iframe",
       "contents": "data/baduk/zdb/index.html"}
 
